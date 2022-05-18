@@ -1,0 +1,426 @@
+"        _
+" __   _(_)_ __ ___  _ __ ___
+" \ \ / / | '_ ` _ \| '__/ __|
+"  \ V /| | | | | | | | | (__
+" (_)_/ |_|_| |_| |_|_|  \___|
+"
+"###############################################################################
+"##                          VIMRC SETUP FILE                                 ##
+"###############################################################################
+"" ver: 0.4
+"" Apr 6, 2022
+"" ATTENTION: This version is for the Raspberry Pi 4 64 bit OS
+"" Airline on line 415 or <S-G> 126k
+"" NOTE: If changing Airline check: laststatus, ruler, showmode
+
+"###############################################################################
+"##                               GENERAL                                     ##
+"###############################################################################
+set nocompatible
+syntax enable
+set termguicolors
+set guioptions="!a"
+set t_Co=256
+set number
+set relativenumber
+set shortmess+=a
+set shortmess+=c
+set shortmess+=s
+set shortmess+=w
+" set updatetime=300
+set belloff=all
+
+set noerrorbells
+" set autochdir
+set undolevels=1000
+
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set smarttab
+
+set ignorecase
+set smartcase
+set clipboard^=unnamed,unnamedplus
+set scrolloff=3
+set backspace=indent,eol,start
+set colorcolumn=80,100,120
+" set signcolumn=yes
+set nowrap
+set incsearch
+set hlsearch
+set hidden
+set showcmd
+set ttyfast
+set background=dark
+set cursorline
+set cursorlineopt=number
+set lazyredraw
+
+set encoding=utf8
+set splitright
+set autoindent
+set smartindent
+set showmatch
+" set noswapfile
+set nojoinspaces
+
+set visualbell
+set t_vb=
+
+set wildmode=list:longest
+set completeopt=menu,menuone,popup
+
+filetype plugin indent on
+
+set wildmenu
+set path+=**
+
+"" Needs to be 2 for airline
+set laststatus=1
+"" Not needed when using airline
+set noruler
+set noshowmode
+
+"###############################################################################
+"##                                 FOLDING                                   ##
+"###############################################################################
+set foldmethod=indent
+set foldenable
+"" Sets the fold level: Folds w/ higher lvl will be clsd. 0 closes all, higher
+""   number closes fewer folds. Default = 0.
+set foldlevel=2
+"" Sets fold level when starting to edit other buff. All folds clsd (0),
+""   some folds clsd (1), no folds clsd (99) setting modeline overrules this.
+set foldlevelstart=10
+"" Max nested folds in syntax and indent modes. Default and max is 20
+set foldnestmax=10
+" Fold syntax's indent, manual (d), syntax, expr, marker, diff
+set foldcolumn=1
+"" Fold closes when cursor isn't in it
+" set foldclose=all
+"" Used only with indent. Folds get their lvl form surrounding lines. Good for C
+set foldignore=#
+"" Set min num of lines that can be folded. Default 1
+set foldminlines=0
+"" Specify for which commands open folds
+"" all,block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+set foldopen="block,hor,mark,percent,quickfix,serch,tag,undo"
+"" Text displayed for a closed fold, EXPERIMENTAL
+set foldtext=foldtext()
+
+"###############################################################################
+"##                            BACKUP/UNDO AIDS                               ##
+"###############################################################################
+if !isdirectory($HOME . '/.vim/backups')
+    call mkdir($HOME . '/.vim/backups', 'p')
+endif
+set backup
+set backupdir=~/.vim/backups
+if !isdirectory($HOME . '/.vim/swaps')
+    call mkdir($HOME . '/.vim/swaps', 'p')
+endif
+set swapfile
+set directory=~/.vim/swaps
+
+if has('persistent_undo')
+    if !isdirectory($HOME . '/.vim/undo')
+        call mkdir($HOME . '/.vim/undodir', 'p')
+    endif
+    set undodir=~/.vim/undodir
+    set undofile
+    set undolevels=1000
+    set undoreload=10000
+endif
+
+"###############################################################################
+"##                              Plugins                                      ##
+"###############################################################################
+""" "" Run :PlugInstall
+call plug#begin('~/.vim/plugged')
+" Plug 'yggdroot/indentline'
+Plug 'nvie/vim-flake8'
+" Plug 'flazz/vim-colorschemes'
+Plug 'gruvbox-community/gruvbox'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'mattn/emmet-vim'
+" Plug 'valloric/youcompleteme'
+call plug#end()
+
+colorscheme gruvbox
+
+" nnoremap ,f :NERDTreeFocus<CR>
+nnoremap ,f :NERDTree<CR>
+let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeShowHidden=1
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
+
+"" INDENTLINE PLUGIN FORAMT
+" let g:indentLine_setColors = 0
+" let g:indentLine_char = '|'
+
+"" Emmet plug leader change
+let g:user_emmet_mode='n'
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key=","
+
+"###############################################################################
+"##                              MAPPINGS                                     ##
+"###############################################################################
+let mapleader=" "
+inoremap kj <esc>
+
+"" Experimental
+"" Creates a C/C++ block comment space
+nnoremap ,d i/*<CR><ESC>0i<SPACE>*<CR>*<CR>* */<ESC>ka<SPACE>
+nnoremap w W
+nnoremap e E
+
+nnoremap <silent><CR> :noh<CR>
+
+nnoremap <leader>ga :Git add .<CR>
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gac :Git add .<CR> :git commit<CR>
+
+nnoremap <silent> <leader><leader> <C-^>
+
+"" Copys to void register then pastes from yank/delete register
+vnoremap <leader>p "_dP
+
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+
+nnoremap <leader>yd y$
+
+"" Sets up a replacement for the word under the cursor
+nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
+
+nnoremap \e :e $HOME/.vimrc<CR>
+nnoremap \b :e $HOME/.bashrc<CR>
+nnoremap \z :e $HOME/.zshrc<CR>
+
+nnoremap <silent> <leader>ep 0f(ci(
+nnoremap <silent> <leader>eb 0f[ci[
+nnoremap <silent> <leader>er 0f{ci{
+nnoremap <silent> <leader>et 0f<ci<
+
+nnoremap <silent> <leader>t :wall<CR>:term<CR>
+
+"" Auto-place C, C++, Arduino, code with curly braces
+nnoremap <silent> <leader>b 0A<space>{<CR>}<Esc><S-o>
+
+"" moves current line to five lines down from top
+nnoremap <leader>a zt
+
+"" Easy move to begin/end of line
+nnoremap B ^
+nnoremap E $
+
+nnoremap <leader>x :wall!<CR>:q<CR>
+nnoremap <leader>q :q!<CR>
+nnoremap <leader>w :wall<CR>
+
+""" Opens vert/horz splits and goes to the new split
+nnoremap <silent> <leader>v :vs<CR><C-w>l
+nnoremap <silent> <leader>s :sp<CR><C-w>j
+
+"" Navigate between open panes
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+"" Resizing of panes
+nnoremap <leader>ll :vertical resize +2<CR>
+nnoremap <leader>rr :vertical resize -2<CR>
+nnoremap <leader>uu :resize +2<CR>
+nnoremap <leader>dd :resize -2<CR>
+
+"###############################################################################
+"##                                OTHERS                                     ##
+"###############################################################################
+"" Trims trailing whitespace on save
+fun! TrimWhitespace()
+let l:save = winsaveview()
+keeppatterns %s/\s\+$//e
+call winrestview(l:save)
+endfun
+
+augroup AE35_UNIT
+autocmd!
+autocmd BufWritePre * :call TrimWhitespace()
+autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+augroup END
+
+"" postion upon re-opening the file.
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+"" UNKNOWN
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview
+
+"" Tutorial on register saving/yanking/putting
+"" Record macro
+""     qa
+"" Stop recording
+""     <Esc>q
+""
+"" On a blank line yank macro form it's register
+""     "ap
+""
+"" Edit macro (if needed)
+""
+"" Save macro to same or another register
+""     "ay$
+""
+"" Write let @{a-z}=""
+"" Write let @{a-z}="<paste-macro-here>" in your .vimrc
+""
+"" source .vimrc
+"" NOTE: The braces are to show that any letter can be used. The braces should
+"" not be in the final let command. example:
+" let @l="080lbhxi"
+"
+autocmd Filetype arduino setlocal tabstop=2 sw=2 sts=2
+autocmd Filetype c setlocal cindent cino
+autocmd Filetype text setlocal wrap textwidth=79
+
+nnoremap ,yp :-1read $HOME/.vim/python.snp<CR>
+
+let @f="meOmai#{{{'eo#}}}ýa'a$"
+
+"####################### Airline################################################
+let g:airline_theme='lessnoise' " serene
+
+"" USABLE THEMES
+"" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
+"" base16_default base16_greyscale base16_monokai
+"" zenburn base16_vim serene
+    "* themes goto line 90
+    "* alduin
+    "* angr
+    "* apprentice
+    "* atomic
+    "* ayu_light
+    "* ayu_mirage
+    "* ayu_dark
+    "* badwolf
+    "* base16 (|airline-theme-base16|)
+    "* base16_vim (|airline-theme-base16_vim|)
+    "* base16_shell (|airline-theme-base16_shell|)
+    "* base16_3024
+    "* base16_adwaita
+    "* base16_apathy
+    "* base16_ashes
+    "* base16_atelierdune
+    "* base16_atelierforest
+    "* base16_atelierheath
+    "* base16_atelierlakeside
+    "* base16_atelierseaside
+    "* base16_bespin
+   "* base16_brewer
+    "* base16_bright
+    "* base16_chalk
+    "* base16_classic
+    "* base16_codeschool
+    "* base16_colors
+    "* base16_default
+    "* base16_eighties
+    "* base16_embers
+    "* base16_flat
+    "* base16_google
+    "* base16_grayscale
+    "* base16_greenscreen
+    "* base16_gruvbox_dark_hard
+    "* base16_harmonic16
+    "* base16_hopscotch
+    "* base16_isotope
+    "* base16_londontube
+    "* base16_marrakesh
+    "* base16_mocha
+    "* base16_monokai
+    "* base16_nord
+    "* base16_ocean
+    "* base16_oceanicnext
+    "* base16_paraiso
+    "* base16_pop
+    "* base16_railscasts
+    "* base16_seti
+    "* base16_shapeshifter
+    "* base16_solarized
+    "* base16_spacemacs
+    "* base16_summerfruit
+    "* base16_tomorrow
+    "* base16_twilight
+    "* base16_vim
+    "* base16color
+    "* behelit
+    "* biogoo
+    "* bubblegum
+    "* cobalt2
+    "* cool
+    "* dark
+    "* dark_minimal
+    "* desertink
+    "* deus
+    "* distinguished LIKEABLE
+    "* durant LIKEABLE ?
+    "* faryfloss
+    "* fruit_punch
+    "* google_dark
+    "* google_light
+    "* hybrid
+    "* hybridline
+    "* jay
+    "* jellybeans
+    "* jet
+    "* kalisi
+    "* kolor
+    "* laederon
+    "* lessnoise
+    "* light
+    "* lighthaus LIKEABLE
+    "* lucius
+    "* luna
+    "* minimalist (|airline-theme-minimalist|)
+    "* molokai LIEKABLE
+    "* monochrome
+    "* murmur
+    "* night_owl
+    "* nord-minimal
+    "* onedark (|airline-theme-onedark|)
+    "* ouo
+    "* owo
+    "* papercolor
+    "* peaksea
+    "* powerlineish
+    "* qwq
+    "* raven
+    "* ravenpower
+    "* seagull
+    "* seoul256
+    "* serene
+    "* sierra
+    "* silver
+    "* simple
+    "* soda
+    "* sol
+    "* solarized (|airline-theme-solarized|)
+    "* solarized_flood
+    "* term
+    "* term_light
+    "* tomorrow
+    "* ubaryd
+    "* understated
+    "* violet
+    "* wombat
+    "* xtermlight
+    "* zenburn
+    "* transparent
