@@ -1,0 +1,36 @@
+[user]
+	name = itsf4llofstars
+	email = irooted4hal@mailfence.com
+[core]
+	editor = vim
+[color]
+	ui = true
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[merge]
+	ff = false
+[init]
+    defaultBranch = main
+[alias]
+	ll = log --oneline --decorate --graph --all
+	ad = add -p
+	ci = commit
+	ss = status -s
+	br = branch
+	lg = log --oneline --decorate --all
+	sw = switch
+	st = status
+[cola]
+	startupmode = folder
+	spellcheck = false
+	tabwidth = 4
+	maxrecent = 5
+	expandtab = true
+	theme = flat-dark-grey
+	icontheme = dark
+	hidpi = 0
+	boldheaders = true
+[gui]
+	editor = vim

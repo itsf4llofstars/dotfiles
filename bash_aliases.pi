@@ -1,0 +1,53 @@
+## Bash aliases file
+
+## Bash
+alias ls='ls --color=auto --group-directories-first'
+alias la='ls -hAF --color=auto --group-directories-first'
+alias lx='ls -lhA --color=auto --group-directories-first'
+alias lg='ls -lhgGAF --color=auto --group-directories-first'
+alias lt='clear && tree --dirsfirst -F'
+alias lf='ls -AF --color=auto --group-directories-first | column -t'
+alias ll='echo l[saxgtf]'
+alias dir='dir --color=auto --group-directories-first'
+alias vdir='vdir --color=auto --group-directories-first'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Linux
+alias ..='cd ..;pwd'
+alias ...='cd ../..;pwd'
+alias ....='cd ../../..;pwd'
+alias tree='tree --dirsfirst -F'
+alias path='echo $PATH | tr -s ":" "\n"'
+alias pw='pwd'
+alias cl='clear'
+
+# alias time='time -p'
+alias ex='exit'
+alias mv='mv -i'
+
+# Editors
+alias ed='ed -v -p ": "'
+alias nano='nano -r 79 -Y tex'
+alias vi='vim'
+alias vit='vim -u ~/.vitext'
+alias viv='vim -u ~/.vivert'
+
+# Git
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
+# Admin
+alias srn='sudo reboot now'
+alias ssn='sudo shutdown now'
+alias sob='exec bash'
+
+# Python
+alias py='python3'
+alias pyy='python3.9'
+alias pyt='python3.10'
+alias mm='python3.9 main.py'
+
+# tmux
+alias tml='tmux ls'
