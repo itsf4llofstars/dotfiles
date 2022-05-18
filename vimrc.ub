@@ -1,0 +1,512 @@
+"###############################################################################
+"##                          VIMRC SETUP FILE                                 ##
+"###############################################################################
+"" ver: 1.0
+"" Apr 01, 2022
+"" ATTENTION: This vimrc file is now under version control see  ~/github/dotfiles
+""
+"" Airline on line 419 or <S-G> 126k
+
+"###############################################################################
+"##                               GENERAL                                     ##
+"###############################################################################
+"" Set VIM not compatable with Vi, but more usefull. Not needed if a .vimrc is
+"" present. May be best if this is the first entry.
+set nocompatible
+syntax enable
+syntax on
+set termguicolors
+set t_Co=256
+set number
+set relativenumber
+
+"" These two not needed if using ariline
+set ruler
+set showmode
+"" laststatus=2 for Airline use
+set laststatus=0
+set showcmd
+
+set shortmess+=a
+set shortmess+=c
+set shortmess+=s
+set shortmess+=w
+set updatetime=300
+set magic
+set belloff=all
+set visualbell
+set t_vb=
+
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set smarttab
+set autoindent
+set smartindent
+
+set ignorecase
+set smartcase
+set clipboard^=unnamed,unnamedplus
+set scrolloff=5
+set backspace=indent,eol,start
+set textwidth=0
+set colorcolumn=80,100,120
+set signcolumn=yes
+set nowrap
+set incsearch
+set hlsearch
+set hidden
+set ttyfast
+set background=dark
+set cursorline
+set cursorlineopt=number,line
+set lazyredraw
+set encoding=utf8
+set splitright
+set showmatch
+set noswapfile
+set wildmenu
+set path+=**
+set nojoinspaces
+
+filetyp indent plugin on
+
+set wildmode=full
+" set wildmode=longest
+" set wildmode=longest:full
+" set wildmode=list
+" set wildmode=list:full
+" set wildmode=list:longest
+" set wildmode=list:lastused
+" set wildmode=full
+" set wildmode=full
+" set wildmode=full
+" set wildmode=list:longest,list:full
+
+"" set completeopt=menu,menuone
+set completeopt=menu,menuone
+
+"" TODO: CAN WE USE A IF FILETYPE C TYPE OF STATEMENT?
+"" C programming language aids
+
+"###############################################################################
+"##                                 FOLDING                                   ##
+"###############################################################################
+set foldmethod=indent
+set foldenable
+"" Sets the fold level: Folds w/ higher lvl will be clsd. 0 closes all, higher
+""   number closes fewer folds. Default = 0.
+set foldlevel=2
+"" Sets fold level when starting to edit other buff. All folds clsd (0),
+""   some folds clsd (1), no folds clsd (99) setting modeline overrules this.
+set foldlevelstart=10
+"" Max nested folds in syntax and indent modes. Default and max is 20
+set foldnestmax=10
+" Fold syntax's indent, manual (d), syntax, expr, marker, diff
+set foldcolumn=1
+"" Fold closes when cursor isn't in it
+" set foldclose=all
+"" Used only with indent. Folds get their lvl form surrounding lines. Good for C
+set foldignore=#
+"" Set min num of lines that can be folded. Default 1
+set foldminlines=0
+"" Specify for which commands open folds
+"" all,block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+set foldopen="block,hor,mark,percent,quickfix,serch,tag,undo"
+"" Text displayed for a closed fold, EXPERIMENTAL
+set foldtext=foldtext()
+
+"###############################################################################
+"##                            BACKUP/UNDO AIDS                               ##
+"###############################################################################
+if !isdirectory($HOME . '/.vim/backups')
+    call mkdir($HOME . '/.vim/backups', 'p')
+endif
+set backup
+set backupdir=~/.vim/backups
+
+if !isdirectory($HOME . '/.vim/swaps')
+    call mkdir($HOME . '/.vim/swaps', 'p')
+endif
+
+if has('persistent_undo')
+    if !isdirectory($HOME . '/.vim/undo')
+        call mkdir($HOME . '/.vim/undodir', 'p')
+    endif
+    set undodir=~/.vim/undodir
+    set undofile
+    set undolevels=1000
+    set undoreload=10000
+endif
+
+"###############################################################################
+"##                              Plugins                                      ##
+"###############################################################################
+"" Run :PlugInstall
+call plug#begin('~/.vim/plugged')
+Plug 'yggdroot/indentline'
+Plug 'nvie/vim-flake8'
+" Plug 'flazz/vim-colorschemes'
+Plug 'gruvbox-community/gruvbox'
+Plug 'scrooloose/nerdtree'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'mattn/emmet-vim'
+Plug 'valloric/youcompleteme'
+call plug#end()
+
+"" Unsure of what Focus does.
+nnoremap ,f :NERDTreeFocus<CR>
+" nnoremap ,f :NERDTree<CR>
+let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeShowHidden=1
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
+
+"" INDENTLINE PLUGIN FORAMT
+let g:indentLine_setColors = 0
+let g:indentLine_char = '|'
+
+colorscheme gruvbox
+" set runtimepath^=~/.vim/color/badwolf-master
+
+""" NETRW FILE BROWSER
+"" Disable banner
+" let g:netrw_banner=0
+"" Open in prior window
+" let g:netrw_browse_split=4
+"" Open splits to the right
+" let g:netrw_altv=1
+"" Tree view
+" let g:netrw_liststyle=3
+" let g:netrw_list_hide=netrw_gitignore#Hide()
+" let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.S\+'
+"" set netrw (file explorer when using :e .) preview view to vertical split
+" let g:netrw_preview=1
+
+"" Sets emmet leader to double comma
+let g:user_emmet_mode='n'
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key=","
+
+"###############################################################################
+"##                              MAPPINGS                                     ##
+"###############################################################################
+"" NOTE TO SELF: USING slash JUST DOES NOT WORK!
+let mapleader=" "
+inoremap kj <esc>
+
+"" Experimental
+"" Creates a C style block comment
+nnoremap <leader>d 0i/*<CR><SPACE>*<CR>*<SPACE>*/<ESC>ka<SPACE>
+nnoremap <silent><CR> :noh<CR>
+
+"" Adds current changed files for commit
+nnoremap <leader>ga :Git add .<CR>
+"" Initiates a git commit
+nnoremap <leader>gc :Git commit<CR>
+"" Initiates a git add . and then a git commit
+nnoremap <leader>gac :Git add .<CR> :git commit<CR>
+
+"" Switches between last open buffer (file)
+nnoremap <silent> <leader><leader> <C-^>
+
+"" Better yanking in visual mode, may not work with macros.
+"" The use of these may cause issues with recording macros.
+" vnoremap y myy`y " Copies full line when in visual mode
+vnoremap Y myY`y " Copies full line when in visual mode
+
+"" Copys to void register then pastes from yank/delete register
+vnoremap <leader>p "_dP
+
+"" Cycle between buffers
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
+
+"" Yanks from cursor to end of line, from anywhere in the line
+nnoremap <leader>yd y$
+
+"" Sets up a replacement for the word under the cursor
+nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
+
+"" Opens the .vimrc file
+nnoremap \e :e $HOME/.vimrc<CR>
+nnoremap \b :e $HOME/.bashrc<CR>
+nnoremap \z :e $HOME/.zshrc<CR>
+
+"" Quick editing of text between (), [], {}, <>
+nnoremap <silent> <leader>ep 0f(ci(
+nnoremap <silent> <leader>eb 0f[ci[
+nnoremap <silent> <leader>er 0f{ci{
+nnoremap <silent> <leader>et 0f<ci<
+
+"" Wraps C, C++, Arduino, code with curly braces
+nnoremap <silent> <leader>b 0$a {<CR>}<Esc><S-o>
+
+"" Moves line the cursor is on up to top of page
+nnoremap <leader>a zt
+
+"" Easy move to begin/end of line
+nnoremap B ^
+nnoremap E $
+
+""" Various saves/exits
+nnoremap <leader>x :wall!<CR>:q<CR>
+nnoremap <leader>q :q!<CR>
+nnoremap <leader>w :wall<CR>
+nnoremap <silent> <leader>t :wall<CR>:term<CR>
+nnoremap <leader>z ZZ
+
+""" Opens vert/horz splits and goes to the new split
+nnoremap <silent> <leader>v :vs<CR><C-w>l
+nnoremap <silent> <leader>s :sp<CR><C-w>j
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <leader>ll :vertical resize +2<CR>
+nnoremap <leader>rr :vertical resize -2<CR>
+nnoremap <leader>uu :resize +2<CR>
+nnoremap <leader>dd :resize -2<CR>
+
+"" Skeletons
+nnoremap ,yp :-1read $HOME/.vim/.skeleton/python.snp<CR>
+nnoremap ,bsh :-1read $HOME/.vim/.skeleton/bashsh.snp<CR>
+
+"###############################################################################
+"##                                MACROS                                     ##
+"###############################################################################
+
+"" Wrappings for folding
+"" Python and bash marker fold from visual block mode
+let @h="meO# {{{€ýama'eo# }}}€ýa'a$"
+let @j="mei# {{{ 'eo# }}}€ýa"
+
+"" Comments out a block from visual mode using hashes
+let @g="mejjjI# kj"
+"" C/C++ slash comment out visual block
+let @c="me'eI// €ýa"
+
+"###############################################################################
+"##                                OTHERS                                     ##
+"###############################################################################
+"" Trims trailing whitespace on save
+fun! TrimWhitespace()
+let l:save = winsaveview()
+keeppatterns %s/\s\+$//e
+call winrestview(l:save)
+endfun
+
+augroup AE35_UNIT
+autocmd!
+autocmd BufWritePre * :call TrimWhitespace()
+autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+augroup END
+
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+"" Tutorial on register saving/yanking/putting
+"" Record macro
+""     qa
+"" Stop recording
+""     <Esc>a
+""
+"" On a blank line yank macro form it's register
+""     "ap
+""
+"" Edit macro
+""
+"" Save macro to same or another register
+""     "ay$
+""
+"" Write let @{a-z}=""
+"" Write let @{a-z}="<Paste-Here>" in your .vimrc
+""
+"" source .vimrc
+"" NOTE: The braces are to show that any letter can be used. The braces should
+"" not be in the final let command. example:
+" let @l="080lbhxi"
+
+"###############################################################################
+"##                              Autocorrect                                  ##
+"###############################################################################
+"" Setup abbreviations here
+"" Abbreviations example
+"" Typing abrv and space changes it to implementatio
+" iabbrev abrv implementation
+abbr ture true
+abbr flase false
+abbr slef self
+abbr sefl self
+abbr pirnt print
+abbr pritn print
+abbr pirntf printf
+abbr pritnf printf
+
+"###############################################################################
+"##                              Autocommands                                 ##
+"###############################################################################
+autocmd Filetype c setlocal expandtab tabstop=4 sw=4 sts=4
+autocmd Filetype c setlocal cin
+autocmd Filetype c setlocal cindent
+autocmd Filetype c setlocal cino=0
+autocmd Filetype c setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
+autocmd Filetype c setlocal cinw=if,else,while,do,for,switch
+autocmd Filetype cpp setlocal cin
+autocmd Filetype cpp setlocal cindent
+autocmd Filetype cpp setlocal cino=0
+autocmd Filetype cpp setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
+autocmd Filetype cpp setlocal cinw=if,else,while,do,for,switch
+" set cino=
+" set cin
+" set cink=0{,0},0),0],:,0#,!^F,o,O,e
+" set cinw=if,else,while,do,for,switch
+
+filetype indent on
+autocmd Filetype vim setlocal expandtab tabstop=4 sw=4 sts=4
+autocmd Filetype text setlocal expandtab tabstop=4 sw=4 sts=4
+autocmd Filetype python setlocal expandtab tabstop=4 sw=4 sts=4
+autocmd Filetype cpp setlocal expandtab tabstop=4 sw=4 sts=4
+autocmd Filetype arduino setlocal expandtab tabstop=2 sw=2 sts=2
+autocmd Filetype html setlocal expandtab tabstop=2 sw=2 sts=2
+autocmd Filetype css setlocal expandtab tabstop=2 sw=2 sts=2
+autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
+
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
+"###############################################################################
+"##                                AIRLINE                                    ##
+"###############################################################################
+
+" let g:airline_theme='zenburn' " serene
+
+"" USABLE THEMES
+"" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
+"" base16_default base16_greyscale base16_monokai
+"" zenburn base16_vim serene
+    "* themes goto line 90
+    "* alduin
+    "* angr
+    "* apprentice
+    "* atomic
+    "* ayu_light
+    "* ayu_mirage
+    "* ayu_dark
+    "* badwolf
+    "* base16 (|airline-theme-base16|)
+    "* base16_vim (|airline-theme-base16_vim|)
+    "* base16_shell (|airline-theme-base16_shell|)
+    "* base16_3024
+    "* base16_adwaita
+    "* base16_apathy
+    "* base16_ashes
+    "* base16_atelierdune
+    "* base16_atelierforest
+    "* base16_atelierheath
+    "* base16_atelierlakeside
+    "* base16_atelierseaside
+    "* base16_bespin
+   "* base16_brewer
+    "* base16_bright
+    "* base16_chalk
+    "* base16_classic
+    "* base16_codeschool
+    "* base16_colors
+    "* base16_default
+    "* base16_eighties
+    "* base16_embers
+    "* base16_flat
+    "* base16_google
+    "* base16_grayscale
+    "* base16_greenscreen
+    "* base16_gruvbox_dark_hard
+    "* base16_harmonic16
+    "* base16_hopscotch
+    "* base16_isotope
+    "* base16_londontube
+    "* base16_marrakesh
+    "* base16_mocha
+    "* base16_monokai
+    "* base16_nord
+    "* base16_ocean
+    "* base16_oceanicnext
+    "* base16_paraiso
+    "* base16_pop
+    "* base16_railscasts
+    "* base16_seti
+    "* base16_shapeshifter
+    "* base16_solarized
+    "* base16_spacemacs
+    "* base16_summerfruit
+    "* base16_tomorrow
+    "* base16_twilight
+    "* base16_vim
+    "* base16color
+    "* behelit
+    "* biogoo
+    "* bubblegum
+    "* cobalt2
+    "* cool
+    "* dark
+    "* dark_minimal
+    "* desertink
+    "* deus
+    "* distinguished LIKEABLE
+    "* durant LIKEABLE ?
+    "* faryfloss
+    "* fruit_punch
+    "* google_dark
+    "* google_light
+    "* hybrid
+    "* hybridline
+    "* jay
+    "* jellybeans
+    "* jet
+    "* kalisi
+    "* kolor
+    "* laederon
+    "* lessnoise
+    "* light
+    "* lighthaus LIKEABLE
+    "* lucius
+    "* luna
+    "* minimalist (|airline-theme-minimalist|)
+    "* molokai LIEKABLE
+    "* monochrome
+    "* murmur
+    "* night_owl
+    "* nord-minimal
+    "* onedark (|airline-theme-onedark|)
+    "* ouo
+    "* owo
+    "* papercolor
+    "* peaksea
+    "* powerlineish
+    "* qwq
+    "* raven
+    "* ravenpower
+    "* seagull
+    "* seoul256
+    "* serene
+    "* sierra
+    "* silver
+    "* simple
+    "* soda
+    "* sol
+    "* solarized (|airline-theme-solarized|)
+    "* solarized_flood
+    "* term
+    "* term_light
+    "* tomorrow
+    "* ubaryd
+    "* understated
+    "* violet
+    "* wombat
+    "* xtermlight
+    "* zenburn
+    "* transparent
