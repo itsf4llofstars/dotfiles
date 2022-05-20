@@ -1,0 +1,62 @@
+## Bash aliases file, sourced from the ~/.bashrc file
+alias lx='ls -ghAGF --group-directories-first --quoting-style=shell --color=auto'
+alias la='ls -AF --group-directories-first --quoting-style=shell  --color=auto'
+alias ls='ls --color=always --group-directories-first --quoting-style=shell --color=auto'
+alias lr='clear && ls -sRF --group-directories-first --quoting-style=shell --color=auto'
+
+#: Date
+alias dat='date +%A\ %B\ %e\ %R:%S\ %p\-%Z\ %g%j-day\ UTC%:z'
+
+# grep
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+#: Safe copy
+alias cp='cp -i'
+
+#: Activate Python Virtual environments
+alias actpip='source venv/bin/activate && python3 -m pip install --upgrade pip'
+alias act='source venv/bin/activate'
+alias deact='deactivate'
+alias de='deact && exit'
+
+#: Run Python scripts
+alias py='python3'
+alias pyy='python3.9'
+alias pyt='python3.10'
+
+#: Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+
+#: sudo shutdown & reboot
+alias ssn='sudo shutdown now'
+alias srn='sudo reboot'
+
+#: Editors
+alias ed="ed -v -p ': '"
+
+# Editors
+alias vi='vim'
+
+#: Bash proper
+alias path='echo $PATH | tr -s ":" "\n"'
+alias df='df -h /'
+alias sob='exec bash'
+
+#: Runs an installed package to set the bash profile to a colorshceme, Gogh
+alias colorz='bash -c "$(wget -qO- https://git.io/vQgMr)"'
+
+alias hist='history 20'
+alias tree='tree --dirsfirst -F'
+alias pw='pwd'
+alias dd='cd ~'
+alias ex='exit'
+
+#: Add an "alert" alias for long running commands.  Use like so:
+# sleep 10; alert
+# alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+#: Notes
+# $ du -sh <path_to_directroy> : Size of directory
