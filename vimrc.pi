@@ -18,9 +18,13 @@
 "###############################################################################
 set nocompatible
 syntax enable
-set termguicolors
-set guioptions="!a"
-set t_Co=256
+
+if $TERM == "xterm-256color"
+    set termguicolors
+    set guioptions="!a"
+    set t_Co=256
+endif
+
 set number
 set relativenumber
 set shortmess+=a
@@ -32,7 +36,8 @@ set belloff=all
 
 set noerrorbells
 " set autochdir
-set undolevels=1000
+set undolevels=100
+set history=100
 
 set expandtab
 set tabstop=4
@@ -61,6 +66,7 @@ set lazyredraw
 set encoding=utf8
 set splitright
 set autoindent
+set copyindent
 set smartindent
 set showmatch
 " set noswapfile
@@ -72,13 +78,15 @@ set t_vb=
 set wildmode=list:longest
 set completeopt=menu,menuone,popup
 
-filetype plugin indent on
+filetype on
+filetype indent on
+filetype plugin on
 
 set wildmenu
 set path+=**
 
 "" Needs to be 2 for airline
-set laststatus=1
+set laststatus=2
 "" Not needed when using airline
 set noruler
 set noshowmode
@@ -144,8 +152,8 @@ Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
@@ -261,6 +269,9 @@ augroup END
 
 "" postion upon re-opening the file.
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"" Format satus line
+set statusline=\ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+
 
 "" UNKNOWN
 " autocmd BufWinLeave *.* mkview

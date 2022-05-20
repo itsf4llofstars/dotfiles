@@ -154,6 +154,7 @@ alias zth='(){ export ZSH_THEME="half-life" && source $ZSH/oh-my-zsh.sh }'
 alias vit='vim -u ~/.vitext'
 alias viz='vim ~/.zshrc'
 alias vih='vim -u ~/.vihtml'
+alias vic='vim -u ~/.vimscr'
 alias mcedit="mcedit --skin=modarin256root"
 alias ed='ed -v -p ": "'
 
