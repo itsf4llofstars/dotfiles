@@ -86,13 +86,13 @@ ZSH_THEME_RANDOM_CANDIDATES=(
     "jaischeema"
     "jbergantine"
     "jispwoso"
-    "jnrowe"
+    # "jnrowe" NO
     # "jonathan" YES
     # "josh"
     "jreese"
     "jtriley"
     "juanghurtado"
-    "junkfood"
+    # "junkfood" NO
     # "kafeitu"
     # "kardan"
     # "kennethreitz"
