@@ -133,7 +133,7 @@ set swapfile
 set directory=~/.vim/swaps
 
 if has('persistent_undo')
-    if !isdirectory($HOME . '/.vim/undo')
+    if !isdirectory($HOME . '/.vim/undodir')
         call mkdir($HOME . '/.vim/undodir', 'p')
     endif
     set undodir=~/.vim/undodir
