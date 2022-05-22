@@ -200,6 +200,8 @@ let g:user_emmet_leader_key=","
 let mapleader=" "
 inoremap kj <esc>
 
+nmap <silent><F2> :set foldmethod=marker<CR>
+
 "" Experimental
 "" Creates a C style block comment
 nnoremap <leader>d 0i/*<CR><SPACE>*<CR>*<SPACE>*/<ESC>ka<SPACE>
