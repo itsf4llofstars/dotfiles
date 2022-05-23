@@ -22,6 +22,7 @@
 	lg = log --oneline --decorate --all
 	sw = switch
 	st = status
+	ac = commit -am
 [cola]
 	startupmode = folder
 	spellcheck = false
