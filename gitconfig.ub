@@ -17,6 +17,7 @@
 	la = log --oneline --decorate --all
     ll = log --oneline --decorate --graph --all
 	lc = log -1 HEAD
+	ac = commit -am
 [cola]
 	spellcheck = false
 	tabwidth = 4
