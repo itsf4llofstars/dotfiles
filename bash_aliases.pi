@@ -33,6 +33,7 @@ alias ed='ed -v -p ": "'
 alias vi='vim'
 alias vit='vim -u ~/.vitext'
 alias viv='vim -u ~/.vivert'
+alias nano='nano -J 120 -r 119'
 
 # Git
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
