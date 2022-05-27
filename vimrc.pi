@@ -4,27 +4,25 @@
 "  \ V /| | | | | | | | | (__
 " (_)_/ |_|_| |_| |_|_|  \___|
 "
-"###############################################################################
-"##                          VIMRC SETUP FILE                                 ##
-"###############################################################################
+"######################
+"## VIMRC SETUP FILE ##
+"######################
 "" ver: 0.4
 "" Apr 6, 2022
 "" ATTENTION: This version is for the Raspberry Pi 4 64 bit OS
-"" Airline on line 322 or <S-G> 127k
+"" Airline on line 319 or <S-G> 128k
 "" NOTE: If changing Airline check: laststatus, ruler, showmode
 
-"###############################################################################
-"##                               GENERAL                                     ##
-"###############################################################################
+"#############
+"## GENERAL ##
+"#############
+
 set nocompatible
 syntax enable
 syntax on
-
-if $TERM == "xterm-256color"
-    set termguicolors
-    set guioptions="!a"
-    set t_Co=256
-endif
+set termguicolors
+set guioptions="!a"
+set t_Co=256
 
 "" Not needed when using airline
 set noruler
@@ -57,7 +55,7 @@ set clipboard^=unnamed,unnamedplus
 set scrolloff=3
 set backspace=indent,eol,start
 set colorcolumn=80,100,120
-set signcolumn=auto
+set signcolumn=yes
 set nowrap
 
 set incsearch
@@ -156,7 +154,7 @@ set foldtext=foldtext()
 call plug#begin('~/.vim/plugged')
 " Plug 'yggdroot/indentline'
 Plug 'nvie/vim-flake8'
-Plug 'flazz/vim-colorschemes'
+" Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
@@ -168,8 +166,10 @@ Plug 'mattn/emmet-vim'
 " Plug 'valloric/youcompleteme'
 call plug#end()
 
-" colorscheme gruvbox
-colorscheme happy_hacking
+colorscheme gruvbox
+" colorscheme happy_hacking
+" Schemes to try: horseradish256 hybrid iceberg impactjs horseradish256
+" colorscheme badwolf
 
 " nnoremap ,f :NERDTreeFocus<CR>
 nnoremap ,f :NERDTree<CR>
@@ -187,12 +187,13 @@ let g:user_emmet_mode='n'
 let g:user_emmet_mode='i'
 let g:user_emmet_leader_key=","
 
-"###############################################################################
-"##                              MAPPINGS                                     ##
-"###############################################################################
+"##############
+"## MAPPINGS ##
+"##############
 let mapleader=" "
 inoremap kj <esc>
 
+nmap <F2> :set foldmethod=marker<CR>
 nmap <leader>c :colorscheme
 
 "" Experimental
@@ -310,17 +311,22 @@ autocmd BufWinEnter *.* silent loadview
 " let @l="080lbhxi"
 "
 autocmd Filetype arduino setlocal tabstop=2 sw=2 sts=2
-autocmd Filetype c setlocal cindent cino
+autocmd Filetype c setlocal cindent
 autocmd Filetype text setlocal wrap textwidth=79
 
 nnoremap ,yp :-1read $HOME/.vim/python.snp<CR>
 
-let @f="meOmai#{{{'eo#}}}ýa'a$"
+"############
+"## MACROS ##
+"############
+let @f="meOmai# {{{'eo# }}}ýa'a$"
+let @o=":vs:e ~/vim/vim-colors.txtgg"
 
 "####################### Airline################################################
-" KEEP AIRLINE ON LINE 322 FOR THEME CHANGE MACRO TO WORK
-let g:airline_theme='apprentice'
-let @t="0w yd322ggf'pldt'"
+" KEEP AIRLINE ON LINE 319 FOR THEME CHANGE MACRO TO WORK
+let g:airline_theme='biogoo'
+
+let @t="0wye320ggf'pldt':w"
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
