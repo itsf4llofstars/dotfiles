@@ -51,7 +51,8 @@ set ignorecase
 set smartcase
 
 set autochdir
-set clipboard^=unnamed,unnamedplus
+" set clipboard^=unnamed,unnamedplus
+set clipboard^=unnamed
 set scrolloff=3
 set backspace=indent,eol,start
 set colorcolumn=80,100,120
@@ -113,7 +114,8 @@ set wildmode=list,full
 
 "" wildmode=list:lastused
 
-set completeopt=menuone,preview,popup
+" set completeopt=menuone,preview,popup
+set completeopt=longest,menuone
 "" menu,menuone,longest,preview,popup,popuphidden,noinsert,noselect
 
 filetype on
@@ -201,6 +203,16 @@ nmap <leader>c :colorscheme
 nnoremap ,d i/*<CR><ESC>0i<SPACE>*<CR>*<CR>* */<ESC>ka<SPACE>
 nnoremap w W
 nnoremap e E
+map <F6> :'a,'bw! markfile.txt<CR>
+
+"" Used with completeopt lets enter key select highlighted menu item
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+" inoremap [ []<Left>
+" inoremap { {}<Left>
+" inoremap ( ()<Left>
 
 nnoremap <silent><CR> :noh<CR>
 

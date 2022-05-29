@@ -48,6 +48,9 @@ alias py='python3'
 alias pyy='python3.9'
 alias pyt='python3.10'
 alias mm='python3.9 main.py'
+alias envs='source $PWD/venv/bin/activate'
+alias envd='deactivate'
+alias envc='python3 -m venv venv && source $PWD/venv/bin/activate && python3 -m pip install --upgrade pip'
 
 # tmux
 alias tml='tmux ls'
