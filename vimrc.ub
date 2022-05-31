@@ -1,11 +1,11 @@
 "###############################################################################
 "##                          VIMRC SETUP FILE                                 ##
 "###############################################################################
-"" ver: 1.0
-"" Apr 01, 2022
+"" ver: 1.1
+"" May 31, 2022
 "" ATTENTION: This vimrc file is now under version control see  ~/github/dotfiles
 ""
-"" Airline on line 419 or <S-G> 126k
+"" Airline on line 343 or <S-G> 126k
 
 "###############################################################################
 "##                               GENERAL                                     ##
@@ -13,6 +13,7 @@
 "" Set VIM not compatable with Vi, but more usefull. Not needed if a .vimrc is
 "" present. May be best if this is the first entry.
 set nocompatible
+"" What is the diff between these two: enable & on
 syntax enable
 syntax on
 set termguicolors
@@ -20,20 +21,13 @@ set t_Co=256
 set number
 set relativenumber
 set encoding=utf-8
-
-"" These two not needed if using airline
-" set ruler
-" set showmode
-"" laststatus=2 for Airline use
-set laststatus=2
-set showcmd
+set ruler
+set laststatus=1
 
 set shortmess+=a
 set shortmess+=c
 set shortmess+=s
 set shortmess+=w
-set updatetime=300
-set magic
 set belloff=all
 set visualbell
 set t_vb=
@@ -51,12 +45,10 @@ set smartcase
 set clipboard^=unnamed,unnamedplus
 set scrolloff=3
 set backspace=indent,eol,start
-set textwidth=0
 set colorcolumn=80,100,120
 set signcolumn=yes
 set nowrap
 set incsearch
-set hlsearch
 set hidden
 set ttyfast
 set background=dark
@@ -64,9 +56,7 @@ set cursorline
 set cursorlineopt=number,line
 set lazyredraw
 set encoding=utf8
-set splitright
 set showmatch
-set noswapfile
 set wildmenu
 set path+=**
 set nojoinspaces
@@ -88,9 +78,6 @@ set wildmode=full
 
 "" set completeopt=menu,menuone
 set completeopt=menu,menuone
-
-"" TODO: CAN WE USE A IF FILETYPE C TYPE OF STATEMENT?
-"" C programming language aids
 
 "###############################################################################
 "##                                 FOLDING                                   ##
@@ -122,23 +109,10 @@ set foldtext=foldtext()
 "###############################################################################
 "##                            BACKUP/UNDO AIDS                               ##
 "###############################################################################
-if !isdirectory($HOME . '/.vim/backups')
-    call mkdir($HOME . '/.vim/backups', 'p')
-endif
-set backupdir=~/.vim/backups
 set backup
-
-if !isdirectory($HOME . '/.vim/swaps')
-    call mkdir($HOME . '/.vim/swaps', 'p')
-endif
-
-if has('persistent_undo')
-    if !isdirectory($HOME . '/.vim/undo')
-        call mkdir($HOME . '/.vim/undodir', 'p')
-    endif
-    set undodir=~/.vim/undodir
-    set undofile
-endif
+set undofile
+set backupdir=~/.vim/backups
+set undodir=~/.vim/undodir
 
 "###############################################################################
 "##                              Plugins                                      ##
@@ -150,8 +124,8 @@ Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
@@ -172,7 +146,6 @@ let g:indentLine_setColors = 0
 let g:indentLine_char = '|'
 
 colorscheme gruvbox
-" set runtimepath^=~/.vim/color/badwolf-master
 
 """ NETRW FILE BROWSER
 "" Disable banner
@@ -205,19 +178,12 @@ nmap <silent><F2> :set foldmethod=marker<CR>
 "" Experimental
 "" Creates a C style block comment
 nnoremap <leader>d 0i/*<CR><SPACE>*<CR>*<SPACE>*/<ESC>ka<SPACE>
-nnoremap <silent><CR> :noh<CR>
 
 nnoremap <leader>ga :Git add .<CR>
 nnoremap <leader>gc :Git commit<CR>
-nnoremap <leader>gac :Git add .<CR> :git commit<CR>
 
 "" Switches between last open buffer (file)
 nnoremap <silent> <leader><leader> <C-^>
-
-"" Better yanking in visual mode, may not work with macros.
-"" The use of these may cause issues with recording macros.
-" vnoremap y myy`y " Copies full line when in visual mode
-" vnoremap Y myY`y " Copies full line when in visual mode
 
 "" Copys to void register then pastes from yank/delete register
 vnoremap <leader>p "_dP
@@ -254,10 +220,10 @@ nnoremap B ^
 nnoremap E $
 
 """ Various saves/exits
-nnoremap <leader>x :wall!<CR>:q<CR>
+nnoremap <leader>x :USE LEADER z
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>w :wall<CR>
-nnoremap <silent> <leader>t :wall<CR>:term<CR>
+nnoremap <silent><leader>t :wall<CR>:term<CR>
 nnoremap <leader>z ZZ
 
 """ Opens vert/horz splits and goes to the new split
@@ -278,6 +244,7 @@ nnoremap <leader>dd :resize -2<CR>
 
 "" Wrappings for folding
 "" Python and bash marker fold from visual block mode
+"" WARNING! This may add 1 to each first number per-blocked line!
 let @h="meO# {{{€ýama'eo# }}}€ýa'a$"
 let @j="mei# {{{ 'eo# }}}€ýa"
 
@@ -357,28 +324,20 @@ autocmd Filetype cpp setlocal cindent
 autocmd Filetype cpp setlocal cino=0
 autocmd Filetype cpp setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
 autocmd Filetype cpp setlocal cinw=if,else,while,do,for,switch
-" set cino=
-" set cin
-" set cink=0{,0},0),0],:,0#,!^F,o,O,e
-" set cinw=if,else,while,do,for,switch
-
-autocmd Filetype vim setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype text setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype python setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype cpp setlocal expandtab tabstop=4 sw=4 sts=4
 autocmd Filetype arduino setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype html setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype css setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
 
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+"" UNKNOWN
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview
 
 "###############################################################################
 "##                                AIRLINE                                    ##
 "###############################################################################
 
-let g:airline_theme='zenburn' " serene
+" let g:airline_theme='zenburn' " serene
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
