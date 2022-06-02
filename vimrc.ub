@@ -1,11 +1,11 @@
 "###############################################################################
 "##                          VIMRC SETUP FILE                                 ##
 "###############################################################################
-"" ver: 1.0
-"" Apr 01, 2022
+"" ver: 1.1
+"" May 31, 2022
 "" ATTENTION: This vimrc file is now under version control see  ~/github/dotfiles
 ""
-"" Airline on line 419 or <S-G> 126k
+"" Airline on line 343 or <S-G> 126k
 
 "###############################################################################
 "##                               GENERAL                                     ##
@@ -13,26 +13,21 @@
 "" Set VIM not compatable with Vi, but more usefull. Not needed if a .vimrc is
 "" present. May be best if this is the first entry.
 set nocompatible
+"" What is the diff between these two: enable & on
 syntax enable
 syntax on
 set termguicolors
 set t_Co=256
 set number
 set relativenumber
-
-"" These two not needed if using ariline
+set encoding=utf-8
 set ruler
-set showmode
-"" laststatus=2 for Airline use
-set laststatus=0
-set showcmd
+set laststatus=1
 
 set shortmess+=a
 set shortmess+=c
 set shortmess+=s
 set shortmess+=w
-set updatetime=300
-set magic
 set belloff=all
 set visualbell
 set t_vb=
@@ -48,14 +43,12 @@ set smartindent
 set ignorecase
 set smartcase
 set clipboard^=unnamed,unnamedplus
-set scrolloff=5
+set scrolloff=3
 set backspace=indent,eol,start
-set textwidth=0
 set colorcolumn=80,100,120
 set signcolumn=yes
 set nowrap
 set incsearch
-set hlsearch
 set hidden
 set ttyfast
 set background=dark
@@ -63,14 +56,13 @@ set cursorline
 set cursorlineopt=number,line
 set lazyredraw
 set encoding=utf8
-set splitright
 set showmatch
-set noswapfile
 set wildmenu
 set path+=**
 set nojoinspaces
 
-filetyp indent plugin on
+filetype indent on
+filetype plugin on
 
 set wildmode=full
 " set wildmode=longest
@@ -86,9 +78,6 @@ set wildmode=full
 
 "" set completeopt=menu,menuone
 set completeopt=menu,menuone
-
-"" TODO: CAN WE USE A IF FILETYPE C TYPE OF STATEMENT?
-"" C programming language aids
 
 "###############################################################################
 "##                                 FOLDING                                   ##
@@ -120,25 +109,10 @@ set foldtext=foldtext()
 "###############################################################################
 "##                            BACKUP/UNDO AIDS                               ##
 "###############################################################################
-if !isdirectory($HOME . '/.vim/backups')
-    call mkdir($HOME . '/.vim/backups', 'p')
-endif
 set backup
+set undofile
 set backupdir=~/.vim/backups
-
-if !isdirectory($HOME . '/.vim/swaps')
-    call mkdir($HOME . '/.vim/swaps', 'p')
-endif
-
-if has('persistent_undo')
-    if !isdirectory($HOME . '/.vim/undo')
-        call mkdir($HOME . '/.vim/undodir', 'p')
-    endif
-    set undodir=~/.vim/undodir
-    set undofile
-    set undolevels=1000
-    set undoreload=10000
-endif
+set undodir=~/.vim/undodir
 
 "###############################################################################
 "##                              Plugins                                      ##
@@ -172,7 +146,6 @@ let g:indentLine_setColors = 0
 let g:indentLine_char = '|'
 
 colorscheme gruvbox
-" set runtimepath^=~/.vim/color/badwolf-master
 
 """ NETRW FILE BROWSER
 "" Disable banner
@@ -196,29 +169,21 @@ let g:user_emmet_leader_key=","
 "###############################################################################
 "##                              MAPPINGS                                     ##
 "###############################################################################
-"" NOTE TO SELF: USING slash JUST DOES NOT WORK!
+"" NOTE TO SELF: USING forward slash JUST DOES NOT WORK!
 let mapleader=" "
 inoremap kj <esc>
+
+nmap <silent><F2> :set foldmethod=marker<CR>
 
 "" Experimental
 "" Creates a C style block comment
 nnoremap <leader>d 0i/*<CR><SPACE>*<CR>*<SPACE>*/<ESC>ka<SPACE>
-nnoremap <silent><CR> :noh<CR>
 
-"" Adds current changed files for commit
 nnoremap <leader>ga :Git add .<CR>
-"" Initiates a git commit
 nnoremap <leader>gc :Git commit<CR>
-"" Initiates a git add . and then a git commit
-nnoremap <leader>gac :Git add .<CR> :git commit<CR>
 
 "" Switches between last open buffer (file)
 nnoremap <silent> <leader><leader> <C-^>
-
-"" Better yanking in visual mode, may not work with macros.
-"" The use of these may cause issues with recording macros.
-" vnoremap y myy`y " Copies full line when in visual mode
-vnoremap Y myY`y " Copies full line when in visual mode
 
 "" Copys to void register then pastes from yank/delete register
 vnoremap <leader>p "_dP
@@ -255,10 +220,10 @@ nnoremap B ^
 nnoremap E $
 
 """ Various saves/exits
-nnoremap <leader>x :wall!<CR>:q<CR>
+nnoremap <leader>x :USE LEADER z
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>w :wall<CR>
-nnoremap <silent> <leader>t :wall<CR>:term<CR>
+nnoremap <silent><leader>t :wall<CR>:term<CR>
 nnoremap <leader>z ZZ
 
 """ Opens vert/horz splits and goes to the new split
@@ -273,17 +238,14 @@ nnoremap <leader>rr :vertical resize -2<CR>
 nnoremap <leader>uu :resize +2<CR>
 nnoremap <leader>dd :resize -2<CR>
 
-"" Skeletons
-nnoremap ,yp :-1read $HOME/.vim/.skeleton/python.snp<CR>
-nnoremap ,bsh :-1read $HOME/.vim/.skeleton/bashsh.snp<CR>
-
 "###############################################################################
 "##                                MACROS                                     ##
 "###############################################################################
 
 "" Wrappings for folding
 "" Python and bash marker fold from visual block mode
-let @h="meO# {{{€ýama'eo# }}}€ýa'a$"
+"" WARNING! This may add 1 to each first number per-blocked line!
+let @h="mamsV'aO# {{{€ýa'ao# }}}€ýa'sk"
 let @j="mei# {{{ 'eo# }}}€ýa"
 
 "" Comments out a block from visual mode using hashes
@@ -356,28 +318,20 @@ autocmd Filetype c setlocal cindent
 autocmd Filetype c setlocal cino=0
 autocmd Filetype c setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
 autocmd Filetype c setlocal cinw=if,else,while,do,for,switch
+autocmd Filetype cpp setlocal expandtab tabstop=4 sw=4 sts=4
 autocmd Filetype cpp setlocal cin
 autocmd Filetype cpp setlocal cindent
 autocmd Filetype cpp setlocal cino=0
 autocmd Filetype cpp setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
 autocmd Filetype cpp setlocal cinw=if,else,while,do,for,switch
-" set cino=
-" set cin
-" set cink=0{,0},0),0],:,0#,!^F,o,O,e
-" set cinw=if,else,while,do,for,switch
-
-filetype indent on
-autocmd Filetype vim setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype text setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype python setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype cpp setlocal expandtab tabstop=4 sw=4 sts=4
 autocmd Filetype arduino setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype html setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype css setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
 
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+"" UNKNOWN
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview
 
 "###############################################################################
 "##                                AIRLINE                                    ##
