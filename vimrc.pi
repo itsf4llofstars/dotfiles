@@ -21,14 +21,13 @@ set nocompatible
 syntax enable
 syntax on
 set termguicolors
-set guioptions="!a"
 set t_Co=256
 
 "" Not needed when using airline
-set noruler
-set noshowmode
+set ruler
+set showmode
 "" Needs to be 2 for airline
-set laststatus=2
+set laststatus=0
 
 set number
 set relativenumber
@@ -89,7 +88,7 @@ set directory=~/.vim/swaps
 set undodir=~/.vim/undodir
 set undofile
 
-set wildmode=list,full
+set wildmode=longest,full
 "" wildmode=full
 ""Complete first full match (default)
 
@@ -114,8 +113,8 @@ set wildmode=list,full
 
 "" wildmode=list:lastused
 
-" set completeopt=menuone,preview,popup
-set completeopt=longest,menuone
+set completeopt=menuone,preview,popup
+" set completeopt=longest,menuone
 "" menu,menuone,longest,preview,popup,popuphidden,noinsert,noselect
 
 filetype on
@@ -159,8 +158,8 @@ Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
@@ -200,25 +199,17 @@ nmap <leader>c :colorscheme
 
 "" Experimental
 "" Creates a C/C++ block comment space
-nnoremap ,d i/*<CR><ESC>0i<SPACE>*<CR>*<CR>* */<ESC>ka<SPACE>
 nnoremap w W
 nnoremap e E
 map <F6> :'a,'bw! markfile.txt<CR>
 
-"" Used with completeopt lets enter key select highlighted menu item
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-
-" inoremap [ []<Left>
-" inoremap { {}<Left>
-" inoremap ( ()<Left>
+"" Auto closes tags
+inoremap < <><Left>
 
 nnoremap <silent><CR> :noh<CR>
 
 nnoremap <leader>ga :Git add .<CR>
 nnoremap <leader>gc :Git commit<CR>
-nnoremap <leader>gac :Git add .<CR> :git commit<CR>
 
 "" Copys hightlighted text to void register then, pastes from
 "" yank/delete register. ie. What was last deleted with d or dd.
@@ -252,9 +243,10 @@ nnoremap <leader>a zt
 nnoremap B ^
 nnoremap E $
 
-nnoremap <leader>x :wall!<CR>:q<CR>
+" nnoremap <leader>x :wall!<CR>:q<CR>
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>w :wall<CR>
+nnoremap <leader>z ZZ
 nnoremap <silent> <leader>t :wall<CR>:term<CR>
 
 
@@ -297,8 +289,8 @@ set statusline=\ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 
 "" UNKNOWN
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+" autocmd BufWinLeave *.* mkview
+" autocmd BufWinEnter *.* silent loadview
 
 "" Tutorial on register saving/yanking/putting
 "" Record macro
@@ -336,7 +328,7 @@ let @o=":vs:e ~/vim/vim-colors.txtgg"
 
 "####################### Airline################################################
 " KEEP AIRLINE ON LINE 319 FOR THEME CHANGE MACRO TO WORK
-let g:airline_theme='biogoo'
+" let g:airline_theme='biogoo'
 
 let @t="0wye320ggf'pldt':w"
 
