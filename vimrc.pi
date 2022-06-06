@@ -11,7 +11,7 @@
 "" NOTE: If changing Airline check: laststatus, ruler, showmode
 
 set nocompatible
-syntax enable
+
 syntax on
 set termguicolors
 set t_Co=256
@@ -293,7 +293,7 @@ nnoremap ,yp :-1read $HOME/.vim/python.snp<CR>
 "############
 "## MACROS ##
 "############
-let @f="meOmai# {{{'eo# }}}Â€Ã½a'a$"
+let @f="maO€ýaO# {{{ms'ao# }}}'s$"
 let @o=":vs:e ~/vim/vim-colors.txtgg"
 
 "############################## Airline ########################################
@@ -427,3 +427,5 @@ let @t="0wye320ggf'pldt':w"
 " xtermlight
 " zenburn
 " transparent
+
+" vim: set syntax=vim
