@@ -77,7 +77,9 @@ set wildmode=full
 " set wildmode=list:longest,list:full
 
 "" set completeopt=menu,menuone
-set completeopt=menu,menuone
+set completeopt=menuone,longest,preview
+
+" menu, menuone, longest, preview, popup, popuphidden, noinsert, noselect
 
 "###############################################################################
 "##                                 FOLDING                                   ##
@@ -178,6 +180,9 @@ nmap <silent><F2> :set foldmethod=marker<CR>
 "" Experimental
 "" Creates a C style block comment
 nnoremap <leader>d 0i/*<CR><SPACE>*<CR>*<SPACE>*/<ESC>ka<SPACE>
+
+"" This will close the preview box
+nnoremap <silent> <leader>x <C-k>:q!<CR>
 
 nnoremap <leader>ga :Git add .<CR>
 nnoremap <leader>gc :Git commit<CR>

@@ -34,9 +34,6 @@ alias ...='cd ../..'
 alias ssn='sudo shutdown now'
 alias srn='sudo reboot'
 
-#: Editors
-alias ed="ed -v -p ': '"
-
 # Editors
 alias vi='vim'
 
