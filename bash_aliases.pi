@@ -29,7 +29,7 @@ alias ex='exit'
 alias mv='mv -i'
 
 # Editors
-alias ed='ed -v -p "ed: "'
+# alias ed='ed -v -p "ed: "'
 alias vi='vim'
 alias vit='vim -u ~/.vitext'
 alias viv='vim -u ~/.vivert'
