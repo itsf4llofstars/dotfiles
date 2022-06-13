@@ -77,25 +77,26 @@ set wildmode=full
 " set wildmode=list:longest,list:full
 
 "" set completeopt=menu,menuone
-set completeopt=menuone,longest,preview
+" set completeopt=menuone,longest,preview
+set completeopt=menuone,longest,popuphidden
 
 " menu, menuone, longest, preview, popup, popuphidden, noinsert, noselect
 
 "###############################################################################
 "##                                 FOLDING                                   ##
 "###############################################################################
-set foldmethod=indent
+set foldmethod=manual
 set foldenable
 "" Sets the fold level: Folds w/ higher lvl will be clsd. 0 closes all, higher
 ""   number closes fewer folds. Default = 0.
-set foldlevel=2
+set foldlevel=0
 "" Sets fold level when starting to edit other buff. All folds clsd (0),
 ""   some folds clsd (1), no folds clsd (99) setting modeline overrules this.
 set foldlevelstart=10
 "" Max nested folds in syntax and indent modes. Default and max is 20
 set foldnestmax=10
 " Fold syntax's indent, manual (d), syntax, expr, marker, diff
-set foldcolumn=1
+set foldcolumn=4
 "" Fold closes when cursor isn't in it
 " set foldclose=all
 "" Used only with indent. Folds get their lvl form surrounding lines. Good for C
@@ -249,9 +250,12 @@ nnoremap <leader>dd :resize -2<CR>
 
 "" Wrappings for folding
 "" Python and bash marker fold from visual block mode
-"" WARNING! This may add 1 to each first number per-blocked line!
+
+"" Set markers for Python code
 let @h="mamsV'aO# {{{€ýa'ao# }}}€ýa'sk"
-let @j="mei# {{{ 'eo# }}}€ýa"
+
+"" Erase markers for Python code
+let @o="0ggzR/# {{{ddgg/# }}}ddgg"
 
 "" Comments out a block from visual mode using hashes
 let @g="mejjjI# kj"
@@ -334,9 +338,9 @@ autocmd Filetype html setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype css setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
 
-"" UNKNOWN
-" autocmd BufWinLeave *.* mkview
-" autocmd BufWinEnter *.* silent loadview
+"" Believed to save manually set folds, et. al.
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
 
 "###############################################################################
 "##                                AIRLINE                                    ##
@@ -469,3 +473,5 @@ autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
     "* xtermlight
     "* zenburn
     "* transparent
+
+set foldmethod=manual
