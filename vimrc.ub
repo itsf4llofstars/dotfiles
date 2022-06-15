@@ -54,7 +54,7 @@ set ttyfast
 set background=dark
 set cursorline
 set cursorlineopt=number,line
-set lazyredraw
+" set lazyredraw
 set encoding=utf8
 set showmatch
 set wildmenu
@@ -112,6 +112,7 @@ set foldtext=foldtext()
 "###############################################################################
 "##                            BACKUP/UNDO AIDS                               ##
 "###############################################################################
+set noswapfile
 set backup
 set undofile
 set backupdir=~/.vim/backups
