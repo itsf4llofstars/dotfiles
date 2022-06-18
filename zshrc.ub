@@ -1,4 +1,4 @@
-# Set theme on line 35
+# Last line has line data for themes
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -39,45 +39,45 @@ ZSH_THEME="random"
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 ZSH_THEME_RANDOM_CANDIDATES=(
-    # "blinks"
+    # "blinks" NO
     # "bureau" YES
     # "candy-kingdom"
     # "candy" YES
-    # "clean"
-    # "cloud"
+    # "clean" NO
+    # "cloud" NO
     # "crcandy" YES
-    # "crunch"
-    # "cypher"
-    # "dallas"
-    # "darkblood"
-    # "daveverwer"
-    # "dieter"
-    # "dogenpunk"
-    # "dpoggi"
-    # "dstufft"
-    # "dst"
+    # "crunch" NO
+    # "cypher" NO
+    # "dallas" NO
+    # "darkblood" NO
+    # "daveverwer" NO
+    # "dieter" NO
+    # "dogenpunk" NO
+    # "dpoggi" NO
+    # "dstufft" NO
+    # "dst" NO
     # "duellj" YES
-    # "eastwood"
-    # "emotty"
-    # "essembeh"
-    # "evan"
+    # "eastwood" NO
+    # "emotty" NO
+    # "essembeh" NO
+    # "evan" NO
     # "fino-time" YES
     # "fino" YES
-    # "fishy"
-    # "flazz"
-    # "fletcherm"
-    # "fox"
-    # "frisk"
+    # "fishy" NO
+    # "flazz" NO
+    # "fletcherm" NO
+    # "fox" NO
+    # "frisk" NO
     # "frontcube" YES
     # "funky" YES
     # "fwalch" YES
     # "START BELOW",
-    # "gallifrey"
+    # "gallifrey" NO
     # "gallois" YES
     # "garyblessington" YES
-    # "gentoo"
-    # "geoffgarside"
-    # "gianu"
+    # "gentoo" NO
+    # "geoffgarside" NO
+    # "gianu" NO
     # "gnzh" YES
     # "gozilla" YES
     # "humza" NO
@@ -89,7 +89,7 @@ ZSH_THEME_RANDOM_CANDIDATES=(
     # "jispwoso" NO
     # "jnrowe" NO
     # "jonathan" YES
-    # "josh"
+    # "josh" NO
     # "jreese" NO
     # "jtriley" NO
     # "juanghurtado" NO
@@ -100,33 +100,33 @@ ZSH_THEME_RANDOM_CANDIDATES=(
     # "kiwi" YES
     # "kolo" YES
     # "kphoen" NO
-    "lambda"
-    "linuxonly"
-    "lukerandall"
-    "macovsky"
-    "maran"
-    "mgutz"
-    "mh"
-    "michelebologna"
-    "mikeh"
-    "miloshadzic"
-    "minimal"
-    "mira"
-    "mlh"
-    "mortalscumbag"
-    "mrtazz"
-    "murilasso"
-    "muse"
-    # "nanotech"
-    # "nebirhos"
-    # "nicoulaj"
-    # "norm"
-    # "obraun"
-    # "peepcode"
-    # "philips"
-    # "pmcgee"
-    # "pygmalion-virtualenv"
-    # "pygmalion"
+    # "lambda" YES
+    # "linuxonly" NO
+    # "lukerandall" NO
+    # "macovsky" YES
+    # "maran" NO
+    # "mgutz" YES
+    # "mh" NO
+    # "michelebologna" NO
+    # "mikeh" NO
+    # "miloshadzic" YES
+    # "minimal" YES
+    # "mira" NO
+    # "mlh" NO
+    # "mortalscumbag" NO
+    # "mrtazz" NO
+    # "murilasso" NO
+    # "muse" YES
+    # "nanotech" NO
+    "nebirhos"
+    "nicoulaj"
+    "norm"
+    "obraun"
+    "peepcode"
+    "philips"
+    # "pmcgee" NO
+    # "pygmalion-virtualenv" NO
+    # "pygmalion" NO
     # "random"
     # "re5et"
     # "refined"
@@ -284,3 +284,7 @@ alias ll="echo l[haxt[dot][size]]"
 alias pw="pwd"
 
 # Change theme on line 35
+# Themes listed on lines 41-169
+# $ cat -n .zshrc | sed -n 'n,m'p .zshrc
+# $ sed -i '35s/".+"/"new"/' .zshrc
+# $ soz

@@ -200,7 +200,7 @@ set zap
 # set titlecolor brightwhite,blue
 # set statuscolor brightwhite,green
 # set errorcolor brightwhite,red
-# set selectedcolor brightwhite,magenta
+set selectedcolor brightwhite,green
 # set stripecolor ,yellow
 # set numbercolor cyan
 # set keycolor cyan

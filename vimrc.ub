@@ -21,7 +21,7 @@ set t_Co=256
 set number
 set relativenumber
 set encoding=utf-8
-set ruler
+" set ruler
 set laststatus=1
 
 set shortmess+=a
@@ -54,7 +54,7 @@ set ttyfast
 set background=dark
 set cursorline
 set cursorlineopt=number,line
-" set lazyredraw
+set lazyredraw
 set encoding=utf8
 set showmatch
 set wildmenu
@@ -85,7 +85,7 @@ set completeopt=menuone,longest,popuphidden
 "###############################################################################
 "##                                 FOLDING                                   ##
 "###############################################################################
-set foldmethod=manual
+set foldmethod=indent
 set foldenable
 "" Sets the fold level: Folds w/ higher lvl will be clsd. 0 closes all, higher
 ""   number closes fewer folds. Default = 0.
@@ -123,13 +123,13 @@ set undodir=~/.vim/undodir
 "###############################################################################
 "" Run :PlugInstall
 call plug#begin('~/.vim/plugged')
-Plug 'yggdroot/indentline'
+" Plug 'yggdroot/indentline'
 Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
@@ -146,8 +146,8 @@ let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
 
 "" INDENTLINE PLUGIN FORAMT
-let g:indentLine_setColors = 0
-let g:indentLine_char = '|'
+" let g:indentLine_setColors = 0
+" let g:indentLine_char = '|'
 
 colorscheme gruvbox
 
@@ -177,7 +177,8 @@ let g:user_emmet_leader_key=","
 let mapleader=" "
 inoremap kj <esc>
 
-nmap <silent><F2> :set foldmethod=marker<CR>
+nmap <F2> :set foldmethod=marker<CR>
+nmap <F3> :set foldmethod=indent<CR>
 
 "" Experimental
 "" Creates a C style block comment
@@ -347,13 +348,12 @@ autocmd BufWinEnter *.* silent loadview
 "##                                AIRLINE                                    ##
 "###############################################################################
 
-" let g:airline_theme='zenburn' " serene
+let g:airline_theme='badwolf' " serene
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
 "" base16_default base16_greyscale base16_monokai
 "" zenburn base16_vim serene
-    "* themes goto line 90
     "* alduin
     "* angr
     "* apprentice
@@ -375,7 +375,7 @@ autocmd BufWinEnter *.* silent loadview
     "* base16_atelierlakeside
     "* base16_atelierseaside
     "* base16_bespin
-   "* base16_brewer
+    "* base16_brewer
     "* base16_bright
     "* base16_chalk
     "* base16_classic
@@ -475,4 +475,3 @@ autocmd BufWinEnter *.* silent loadview
     "* zenburn
     "* transparent
 
-set foldmethod=manual
