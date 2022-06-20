@@ -118,12 +118,12 @@ ZSH_THEME_RANDOM_CANDIDATES=(
     # "murilasso" NO
     # "muse" YES
     # "nanotech" NO
-    "nebirhos"
-    "nicoulaj"
+    # "nebirhos" NO
+    # "nicoulaj" NO
     "norm"
     "obraun"
     "peepcode"
-    "philips"
+    # "philips" NO
     # "pmcgee" NO
     # "pygmalion-virtualenv" NO
     # "pygmalion" NO

@@ -230,7 +230,7 @@ nnoremap E $
 """ Various saves/exits
 nnoremap <leader>x :USE LEADER z
 nnoremap <leader>q :q!<CR>
-nnoremap <leader>w :wall<CR>
+nnoremap <leader>w :wall!<CR>
 nnoremap <silent><leader>t :wall<CR>:term<CR>
 nnoremap <leader>z ZZ
 
