@@ -45,27 +45,28 @@ set -g default-terminal "xterm-256color" # This line used from internet
 ## black, red, green, yellow, blue, magenta, cyan, white
 
 ## less colorful status
-set -g status-bg black
-set -g status-fg white
+# set -g status-bg black
+# set -g status-fg white
 
 ## status lines color
-set -g status-style fg=colour172,bg=colour0
+set -g status-style fg=blue,bg=colour235
 
 ## window names color
-setw -g window-status-current-style fg=colour172,bold,bg=black
-setw -g window-status-style fg=colour172,dim,bg=black
+setw -g window-status-current-style fg=green,bg=colour235
+setw -g window-status-style fg=colour243,bg=colour235
 
 ## Colors for pane borders
 ## active border stype bg=235 I believe for gruvbox, and works with vim
-setw -g pane-active-border-style fg=colour22,bg=colour0
-setw -g pane-border-style fg=colour240,bg=colour0
+setw -g pane-active-border-style fg=colour236,bg=colour235
+setw -g pane-border-style fg=colour238,bg=colour235
 
 ## active pane normal, other shaded out
-setw -g window-active-style fg=colour245,bg=colour0
-setw -g window-style fg=colour245,bg=colour0
+## BELIEVED TO BE TERMINAL TEXT
+setw -g window-active-style fg=white,bg=colour235
+setw -g window-style fg=white,bg=colour235
 
 ## command / maesage line
-set -g message-style fg=red,bold,bg=black
+set -g message-style fg=red,bold,bg=colour235
 
 ## status line
 set -g status-left-length 40
