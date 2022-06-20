@@ -18,7 +18,7 @@ set backupdir "/home/pi/tmp"
 set boldtext
 # set bookstyle
 # set brackets ""')>]}"
-set breaklonglines
+# set breaklonglines
 # set casesensitive
 set constantshow
 set cutfromcursor
@@ -165,4 +165,3 @@ include "/usr/share/nano/*.nanorc"
 #bind ^U undo main
 #bind ^E redo main
 #set multibuffer
-

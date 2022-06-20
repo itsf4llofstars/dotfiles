@@ -29,15 +29,9 @@ alias ex='exit'
 alias mv='mv -i'
 
 # Editors
-# alias ed='ed -v -p "ed: "'
+alias ed='ed -p "ed: "'
 alias vi='vim'
-alias vit='vim -u ~/.vitext'
-alias viv='vim -u ~/.vivert'
-alias vip='vim -u ~/.vipy'
-alias nano='nano -J 120 -r 119'
-
-# Git
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias nano='nano -J 120'
 
 # Admin
 alias srn='sudo reboot now'
@@ -52,6 +46,3 @@ alias mm='python3.9 main.py'
 alias envs='source $PWD/venv/bin/activate'
 alias envd='deactivate'
 alias envc='python3 -m venv venv && source $PWD/venv/bin/activate && python3 -m pip install --upgrade pip'
-
-# tmux
-alias tml='tmux ls'
