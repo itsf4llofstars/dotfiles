@@ -11,27 +11,18 @@
 "" NOTE: If changing Airline check: laststatus, ruler, showmode
 
 set nocompatible
-
 syntax enable
 set termguicolors
 set t_Co=256
-
-set ruler
-set showmode
-set laststatus=0
-
+" set ruler
+" set showmode
+set laststatus=1
 set number
 set relativenumber
-
 set shortmess+=a
 set shortmess+=c
 set shortmess+=s
 set shortmess+=w
-
-set belloff=all
-set noerrorbells
-set visualbell
-set t_vb=
 
 set expandtab
 set tabstop=4
@@ -39,11 +30,15 @@ set softtabstop=4
 set shiftwidth=4
 set smarttab
 
+set belloff=all
+set noerrorbells
+set visualbell
+set t_vb=
+
 set ignorecase
 set smartcase
 set autochdir
 set clipboard^=unnamed
-set scrolloff=3
 set backspace=indent,eol,start
 set colorcolumn=80,100,120
 set signcolumn=yes
@@ -55,7 +50,6 @@ set ttyfast
 set background=dark
 set cursorline
 set cursorlineopt=number
-set lazyredraw
 set encoding=utf8
 set splitright
 set autoindent
@@ -67,13 +61,14 @@ set wildmenu
 set path+=**
 
 set backup
-set noundofile
-set noswapfile
+set writebackup
+set undofile
+set swapfile
 set backupdir=~/.vim/backups
-" set undodir=~/.vim/undodir
-" set directory=~/.vim/swaps
+set undodir=~/.vim/undodir
+set directory=~/.vim/swaps
 
-set wildmode=longest,full
+set wildmode=list:longest
 "" wildmode=full
 ""Complete first full match (default)
 
@@ -120,7 +115,7 @@ set foldlevelstart=99
 "" Max nested folds in syntax and indent modes. Default and max is 20
 set foldnestmax=10
 " Fold syntax's indent, manual (d), syntax, expr, marker, diff
-set foldcolumn=1
+set foldcolumn=3
 "" Fold closes when cursor isn't in it
 " set foldclose=all
 "" Used only with indent. Folds get their lvl form surrounding lines. Good for C
@@ -143,8 +138,8 @@ Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
@@ -153,9 +148,6 @@ Plug 'mattn/emmet-vim'
 call plug#end()
 
 colorscheme gruvbox
-" colorscheme happy_hacking
-" Schemes to try: horseradish256 hybrid iceberg impactjs horseradish256
-" colorscheme badwolf
 
 " nnoremap ,f :NERDTreeFocus<CR>
 nnoremap ,f :NERDTree<CR>
@@ -180,17 +172,13 @@ let mapleader=" "
 inoremap kj <esc>
 
 nmap <F2> :set foldmethod=marker<CR>
+nmap <F3> :set foldmethod=indent<CR>
 
-nnoremap w W
-nnoremap e E
 map <F6> :'a,'bw! markfile.txt<CR>
-
-nnoremap <silent><CR> :noh<CR>
 
 nnoremap <leader>ga :Git add .<CR>
 nnoremap <leader>gc :Git commit<CR>
 
-"" Copys hightlighted text to void register then, pastes from
 "" yank/delete register. ie. What was last deleted with d or dd.
 vnoremap <leader>p "_dP
 
@@ -199,8 +187,6 @@ nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> <leader><leader> <C-^>
 
 nnoremap <leader>yd y$
-
-"" Sets up a replacement for the word under the cursor
 nnoremap <leader>r :%s/\<<c-r><c-w>\>//g<left><left>
 
 nnoremap \e :e $HOME/.vimrc<CR>
@@ -212,22 +198,18 @@ nnoremap <silent> <leader>eb 0f[ci[
 nnoremap <silent> <leader>er 0f{ci{
 nnoremap <silent> <leader>et 0f<ci<
 
-"" Auto-place curly braces in C, C++, Arduino code, good for functions.
-nnoremap <silent> <leader>b 0A<space>{<CR>}<Esc><S-o>
+nnoremap <silent> <leader>b 0A<space>{<CR><backspace>}<Esc><S-o>
 
-"" moves current line to scrolloffset number of lines from top
 nnoremap <leader>a zt
 
-"" Easy move to begin/end of line
 nnoremap B ^
 nnoremap E $
 
-" nnoremap <leader>x :wall!<CR>:q<CR>
 nnoremap <leader>q :q!<CR>
-nnoremap <leader>w :wall<CR>
+nnoremap <leader>w :wall!<CR>
 nnoremap <leader>x :USE LEADER Z
 nnoremap <leader>z ZZ
-nnoremap <silent> <leader>t :wall<CR>:term<CR>
+nnoremap <silent> <leader>t :wall!<CR>:term<CR>
 
 nnoremap <silent> <leader>v :vs<CR><C-w>l
 nnoremap <silent> <leader>s :sp<CR><C-w>j
@@ -284,23 +266,20 @@ set statusline=\ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 " let @l="080lbhxi"
 "
 autocmd Filetype arduino setlocal tabstop=2 sw=2 sts=2
+autocmd Filetype html setlocal tabstop=2 sw=2 sts=2
 autocmd Filetype c setlocal cindent
 autocmd Filetype text setlocal wrap textwidth=79
-autocmd Filetype vim setlocal nowrap
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
 
-nnoremap ,yp :-1read $HOME/.vim/python.snp<CR>
-
-"############
-"## MACROS ##
-"############
-let @f="maO€ýaO# {{{ms'ao# }}}'s$"
+"" Opens a text file verticaly with a list of colorschemes
 let @o=":vs:e ~/vim/vim-colors.txtgg"
 
 "############################## Airline ########################################
-" KEEP AIRLINE ON LINE 319 FOR THEME CHANGE MACRO TO WORK
-" let g:airline_theme='biogoo'
+"" KEEP AIRLINE ON LINE 319 FOR THEME CHANGE MACRO TO WORK
+let g:airline_theme='murmur'
 
-let @t="0wye320ggf'pldt':w"
+let @t="0wye280ggf'pldt':w"
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
@@ -428,4 +407,3 @@ let @t="0wye320ggf'pldt':w"
 " zenburn
 " transparent
 
-" vim: set syntax=vim
