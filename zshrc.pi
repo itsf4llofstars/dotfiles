@@ -1,6 +1,24 @@
+# Last line has line data for themes
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt autocd extendedglob notify
+unsetopt beep nomatch
+bindkey -v
+# End of lines configured by zsh-newuser-install
+#
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/bumper/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=~/b:$PATH
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=~/bin:$PATH
+#
 #: Do not change these to export PATH=~/.local/bin etc...
 PATH=$PATH:~/.local/bin
 PATH=$PATH:~/.pybin
@@ -8,46 +26,58 @@ PATH=$PATH:~/.pybin
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set namef the theme to load --- if set to "random", it will
+## THEMES
+# Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# Line 16 below
+# LINE 33 below
 ZSH_THEME="random"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
-# NOTE: Two hash's means do not use, single hash means usefull.
 ZSH_THEME_RANDOM_CANDIDATES=(
+    "bureau"
+    "candy-kingdom"
+    "candy"
+    "crcandy"
     "duellj"
-    "eastwood"
+    "fino-time"
+    "fino"
     "frontcube"
     "funky"
     "fwalch"
+    "START BELOW",
     "gallois"
     "garyblessington"
+    "gnzh"
     "gozilla"
-    "jbergantine"
-    "jnrowe"
+    "imajes"
+    "intheloop"
+    "jonathan"
+    "kardan"
+    "kennethreitz"
+    "kiwi"
     "kolo"
+    "lambda"
     "macovsky"
     "mgutz"
     "miloshadzic"
     "minimal"
     "muse"
-    "simple"
-    "nicoulaj"
-    "philips"
-    "pmcgee"
+    "norm"
+    # "random"
     "refined"
-    "rkj-repos"
-    "robbyrussell"
-    "sammy"
-    "skaro"
+    "simple"
+    "sonicradish"
+    "sorin"
+    "strug"
     "sunaku"
-    "wezm"
+    "tonotdo"
+    "xiong-chiamiov"
+    "zhann"
 )
 
 # Uncomment the following line to use case-sensitive completion.
@@ -63,7 +93,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 # zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-zstyle ':omz:update' frequency 7
+zstyle ':omz:update' frequency 3
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -72,16 +102,16 @@ zstyle ':omz:update' frequency 7
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
 # e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -119,7 +149,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-export LANG=en_US.UTF-8
+# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -129,42 +159,43 @@ export LANG=en_US.UTF-8
 # fi
 
 # Compilation flags
-export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch x86_64"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
+
+# Oh My ZSH
+# source zsh
+alias soz="exec zsh"
 #
+# change theme: may require a cmd input ie. zt bira
+alias zt='(){ export ZSH_THEME="$@" && source $ZSH/oh-my-zsh.sh }'
 
 # Python
-alias python="python3"
 alias py="python3"
 alias pyy="python3.9"
 alias pyt="python3.10"
 alias mm="python3 main.py"
 
-# ZSH
-alias soz="exec zsh"
-alias zt='(){ export ZSH_THEME="$@" && source $ZSH/oh-my-zsh.sh }'
-alias ztb='(){ export ZSH_THEME="half-life" && source $ZSH/oh-my-zsh.sh }'
-alias zth='(){ export ZSH_THEME="half-life" && source $ZSH/oh-my-zsh.sh }'
-
 # Editors
-alias vit='vim -u ~/.vitext'
-alias viz='vim ~/.zshrc'
-alias vih='vim -u ~/.vihtml'
-alias vic='vim -u ~/.vimscr'
+alias vi="vim"
 alias mcedit="mcedit --skin=modarin256root"
-alias ed='ed -v -p ": "'
+alias ed='ed -p ": "'
 
 # Linux
 alias lh="ls -lh --hyperlink=auto --group-directories-first --quoting-style=shell --color=auto"
-alias ls='ls --color=auto --group-directories-first --quoting-style=shell'
-alias la='ls -hAF --color=auto --group-directories-first'
-alias lx='ls -lhA --color=auto --group-directories-first'
-alias lg='ls -lhgGAF --color=auto --group-directories-first'
-alias lt='clear && tree --dirsfirst -F'
-alias lf='ls -AF --color=auto --group-directories-first | column -t'
-alias ll='echo l[saxgtf]'
-# alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias la="ls -A --hyperlink=auto --group-directories-first --quoting-style=shell --color=auto"
+alias lx="ls -lhA --hyperlink=auto --group-directories-first --quoting-style=shell --color=auto"
+alias lt="clear && tree --dirsfirst -F"
+alias ldot="ls -ld .* --group-directories-first --quoting-style=shell --color=auto"
+alias lsize="ls -1FSsh --group-directories-first --quoting-style=shell --color=auto"
+alias ll="echo l[haxt[dot][size]]"
+alias pw="pwd"
+
+# Change theme on line 35
+# Themes listed on lines 41-169
+# $ cat -n .zshrc | sed -n 'n,m'p .zshrc
+# $ sed -i '35s/".+"/"new"/' .zshrc
+# $ soz
