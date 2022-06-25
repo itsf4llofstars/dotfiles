@@ -20,15 +20,14 @@ function get_branch() {
 
 function bash_prompt() {
     ## Original from freecodecamp
-    PS1='${debian_chroot:+($debian_chroot)}'${grn}'$(git_branch)'${blu}' \W \$ '${clr}
-    echo "ONE"
+    PS1='${debian_chroot:+($debian_chroot)}'${grn}'$(get_branch)'${blu}'\W \$ '${clr}
 }
 
 function hg() {
     history | grep "$1";
 }
 
-function getinfo() {
+function get_info() {
     printf "\n"
     printf "\t%s\n" "IP ADDR: $(curl ifconfig.me)"
     printf "\t%s\n" "DATE: $(date)"
@@ -165,7 +164,7 @@ export PATH="$HOME"/bin:$PATH
 PATH=$PATH:"$HOME"/.local/bin
 
 . /usr/lib/mc/mc.sh
-# bash_prompt
+bash_prompt
 
 # PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\w\a\]$PS1"
 # PS1="pi: "

@@ -4,35 +4,25 @@
 "  \ V /| | | | | | | | | (__
 " (_)_/ |_|_| |_| |_|_|  \___|
 "
-"###############################################################################
-"##                          VIMRC SETUP FILE                                 ##
-"###############################################################################
 "" ver: 0.4
 "" Apr 6, 2022
 "" ATTENTION: This version is for the Raspberry Pi 4 64 bit OS
-"" Airline on line 415 or <S-G> 126k
+"" Airline on line 319 or <S-G> 128k
 "" NOTE: If changing Airline check: laststatus, ruler, showmode
 
-"###############################################################################
-"##                               GENERAL                                     ##
-"###############################################################################
 set nocompatible
 syntax enable
 set termguicolors
-set guioptions="!a"
 set t_Co=256
+" set ruler
+" set showmode
+set laststatus=1
 set number
 set relativenumber
 set shortmess+=a
 set shortmess+=c
 set shortmess+=s
 set shortmess+=w
-" set updatetime=300
-set belloff=all
-
-set noerrorbells
-" set autochdir
-set undolevels=1000
 
 set expandtab
 set tabstop=4
@@ -40,48 +30,76 @@ set softtabstop=4
 set shiftwidth=4
 set smarttab
 
+set belloff=all
+set noerrorbells
+set visualbell
+set t_vb=
+
 set ignorecase
 set smartcase
-set clipboard^=unnamed,unnamedplus
-set scrolloff=3
+set autochdir
+set clipboard^=unnamed
 set backspace=indent,eol,start
 set colorcolumn=80,100,120
-" set signcolumn=yes
+set signcolumn=yes
 set nowrap
 set incsearch
-set hlsearch
 set hidden
 set showcmd
 set ttyfast
 set background=dark
 set cursorline
 set cursorlineopt=number
-set lazyredraw
-
 set encoding=utf8
 set splitright
 set autoindent
+set copyindent
 set smartindent
 set showmatch
-" set noswapfile
 set nojoinspaces
-
-set visualbell
-set t_vb=
-
-set wildmode=list:longest
-set completeopt=menu,menuone,popup
-
-filetype plugin indent on
-
 set wildmenu
 set path+=**
 
-"" Needs to be 2 for airline
-set laststatus=1
-"" Not needed when using airline
-set noruler
-set noshowmode
+set backup
+set writebackup
+set undofile
+set swapfile
+set backupdir=~/.vim/backups
+set undodir=~/.vim/undodir
+set directory=~/.vim/swaps
+
+set wildmode=list:longest
+"" wildmode=full
+""Complete first full match (default)
+
+"" wildmode=longest
+
+"" wildmode=longest,full *
+"" Complete longest common string, then each full match
+
+"" wildmode=longest:full
+"" wildmode=list
+
+"" wildmode=list:full
+""List all matches and complete each full match
+
+"" wildmode=list,full
+"" List all matches without completing, then each full match
+
+"" wildmode=list:longest *
+
+"" wildmode=list:longest,list
+"" Complete longest common string, then list alternatives
+
+"" wildmode=list:lastused
+
+set completeopt=menuone,preview,popup
+" set completeopt=longest,menuone
+"" menu,menuone,longest,preview,popup,popuphidden,noinsert,noselect
+
+filetype on
+filetype indent on
+filetype plugin on
 
 "###############################################################################
 "##                                 FOLDING                                   ##
@@ -90,14 +108,14 @@ set foldmethod=indent
 set foldenable
 "" Sets the fold level: Folds w/ higher lvl will be clsd. 0 closes all, higher
 ""   number closes fewer folds. Default = 0.
-set foldlevel=2
+set foldlevel=99
 "" Sets fold level when starting to edit other buff. All folds clsd (0),
 ""   some folds clsd (1), no folds clsd (99) setting modeline overrules this.
-set foldlevelstart=10
+set foldlevelstart=99
 "" Max nested folds in syntax and indent modes. Default and max is 20
 set foldnestmax=10
 " Fold syntax's indent, manual (d), syntax, expr, marker, diff
-set foldcolumn=1
+set foldcolumn=3
 "" Fold closes when cursor isn't in it
 " set foldclose=all
 "" Used only with indent. Folds get their lvl form surrounding lines. Good for C
@@ -111,33 +129,9 @@ set foldopen="block,hor,mark,percent,quickfix,serch,tag,undo"
 set foldtext=foldtext()
 
 "###############################################################################
-"##                            BACKUP/UNDO AIDS                               ##
-"###############################################################################
-if !isdirectory($HOME . '/.vim/backups')
-    call mkdir($HOME . '/.vim/backups', 'p')
-endif
-set backup
-set backupdir=~/.vim/backups
-if !isdirectory($HOME . '/.vim/swaps')
-    call mkdir($HOME . '/.vim/swaps', 'p')
-endif
-set swapfile
-set directory=~/.vim/swaps
-
-if has('persistent_undo')
-    if !isdirectory($HOME . '/.vim/undo')
-        call mkdir($HOME . '/.vim/undodir', 'p')
-    endif
-    set undodir=~/.vim/undodir
-    set undofile
-    set undolevels=1000
-    set undoreload=10000
-endif
-
-"###############################################################################
 "##                              Plugins                                      ##
 "###############################################################################
-""" "" Run :PlugInstall
+"" Run :PlugInstall
 call plug#begin('~/.vim/plugged')
 " Plug 'yggdroot/indentline'
 Plug 'nvie/vim-flake8'
@@ -172,35 +166,28 @@ let g:user_emmet_mode='i'
 let g:user_emmet_leader_key=","
 
 "###############################################################################
-"##                              MAPPINGS                                     ##
+"##                                MAPPINGS                                   ##
 "###############################################################################
 let mapleader=" "
 inoremap kj <esc>
 
-"" Experimental
-"" Creates a C/C++ block comment space
-nnoremap ,d i/*<CR><ESC>0i<SPACE>*<CR>*<CR>* */<ESC>ka<SPACE>
-nnoremap w W
-nnoremap e E
+nmap <F2> :set foldmethod=marker<CR>
+nmap <F3> :set foldmethod=indent<CR>
 
-nnoremap <silent><CR> :noh<CR>
+map <F6> :'a,'bw! markfile.txt<CR>
 
 nnoremap <leader>ga :Git add .<CR>
 nnoremap <leader>gc :Git commit<CR>
-nnoremap <leader>gac :Git add .<CR> :git commit<CR>
 
-nnoremap <silent> <leader><leader> <C-^>
-
-"" Copys to void register then pastes from yank/delete register
+"" yank/delete register. ie. What was last deleted with d or dd.
 vnoremap <leader>p "_dP
 
 nnoremap <silent> [b :bprevious<CR>
 nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> <leader><leader> <C-^>
 
 nnoremap <leader>yd y$
-
-"" Sets up a replacement for the word under the cursor
-nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
+nnoremap <leader>r :%s/\<<c-r><c-w>\>//g<left><left>
 
 nnoremap \e :e $HOME/.vimrc<CR>
 nnoremap \b :e $HOME/.bashrc<CR>
@@ -211,33 +198,25 @@ nnoremap <silent> <leader>eb 0f[ci[
 nnoremap <silent> <leader>er 0f{ci{
 nnoremap <silent> <leader>et 0f<ci<
 
-nnoremap <silent> <leader>t :wall<CR>:term<CR>
+nnoremap <silent> <leader>b 0A<space>{<CR><backspace>}<Esc><S-o>
 
-"" Auto-place C, C++, Arduino, code with curly braces
-nnoremap <silent> <leader>b 0A<space>{<CR>}<Esc><S-o>
-
-"" moves current line to five lines down from top
 nnoremap <leader>a zt
 
-"" Easy move to begin/end of line
 nnoremap B ^
 nnoremap E $
 
-nnoremap <leader>x :wall!<CR>:q<CR>
 nnoremap <leader>q :q!<CR>
-nnoremap <leader>w :wall<CR>
+nnoremap <leader>w :wall!<CR>
+nnoremap <leader>x :USE LEADER Z
+nnoremap <leader>z ZZ
+nnoremap <silent> <leader>t :wall!<CR>:term<CR>
 
-""" Opens vert/horz splits and goes to the new split
 nnoremap <silent> <leader>v :vs<CR><C-w>l
 nnoremap <silent> <leader>s :sp<CR><C-w>j
-
-"" Navigate between open panes
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-
-"" Resizing of panes
 nnoremap <leader>ll :vertical resize +2<CR>
 nnoremap <leader>rr :vertical resize -2<CR>
 nnoremap <leader>uu :resize +2<CR>
@@ -261,10 +240,8 @@ augroup END
 
 "" postion upon re-opening the file.
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-"" UNKNOWN
-" autocmd BufWinLeave *.* mkview
-" autocmd BufWinEnter *.* silent loadview
+"" Format satus line
+set statusline=\ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 "" Tutorial on register saving/yanking/putting
 "" Record macro
@@ -289,138 +266,144 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " let @l="080lbhxi"
 "
 autocmd Filetype arduino setlocal tabstop=2 sw=2 sts=2
-autocmd Filetype c setlocal cindent cino
+autocmd Filetype html setlocal tabstop=2 sw=2 sts=2
+autocmd Filetype c setlocal cindent
 autocmd Filetype text setlocal wrap textwidth=79
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
 
-nnoremap ,yp :-1read $HOME/.vim/python.snp<CR>
+"" Opens a text file verticaly with a list of colorschemes
+let @o=":vs:e ~/vim/vim-colors.txtgg"
 
-let @f="meOmai#{{{'eo#}}}ýa'a$"
+"############################## Airline ########################################
+"" KEEP AIRLINE ON LINE 319 FOR THEME CHANGE MACRO TO WORK
+let g:airline_theme='murmur'
 
-"####################### Airline################################################
-let g:airline_theme='lessnoise' " serene
+let @t="0wye280ggf'pldt':w"
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
 "" base16_default base16_greyscale base16_monokai
 "" zenburn base16_vim serene
-    "* themes goto line 90
-    "* alduin
-    "* angr
-    "* apprentice
-    "* atomic
-    "* ayu_light
-    "* ayu_mirage
-    "* ayu_dark
-    "* badwolf
-    "* base16 (|airline-theme-base16|)
-    "* base16_vim (|airline-theme-base16_vim|)
-    "* base16_shell (|airline-theme-base16_shell|)
-    "* base16_3024
-    "* base16_adwaita
-    "* base16_apathy
-    "* base16_ashes
-    "* base16_atelierdune
-    "* base16_atelierforest
-    "* base16_atelierheath
-    "* base16_atelierlakeside
-    "* base16_atelierseaside
-    "* base16_bespin
-   "* base16_brewer
-    "* base16_bright
-    "* base16_chalk
-    "* base16_classic
-    "* base16_codeschool
-    "* base16_colors
-    "* base16_default
-    "* base16_eighties
-    "* base16_embers
-    "* base16_flat
-    "* base16_google
-    "* base16_grayscale
-    "* base16_greenscreen
-    "* base16_gruvbox_dark_hard
-    "* base16_harmonic16
-    "* base16_hopscotch
-    "* base16_isotope
-    "* base16_londontube
-    "* base16_marrakesh
-    "* base16_mocha
-    "* base16_monokai
-    "* base16_nord
-    "* base16_ocean
-    "* base16_oceanicnext
-    "* base16_paraiso
-    "* base16_pop
-    "* base16_railscasts
-    "* base16_seti
-    "* base16_shapeshifter
-    "* base16_solarized
-    "* base16_spacemacs
-    "* base16_summerfruit
-    "* base16_tomorrow
-    "* base16_twilight
-    "* base16_vim
-    "* base16color
-    "* behelit
-    "* biogoo
-    "* bubblegum
-    "* cobalt2
-    "* cool
-    "* dark
-    "* dark_minimal
-    "* desertink
-    "* deus
-    "* distinguished LIKEABLE
-    "* durant LIKEABLE ?
-    "* faryfloss
-    "* fruit_punch
-    "* google_dark
-    "* google_light
-    "* hybrid
-    "* hybridline
-    "* jay
-    "* jellybeans
-    "* jet
-    "* kalisi
-    "* kolor
-    "* laederon
-    "* lessnoise
-    "* light
-    "* lighthaus LIKEABLE
-    "* lucius
-    "* luna
-    "* minimalist (|airline-theme-minimalist|)
-    "* molokai LIEKABLE
-    "* monochrome
-    "* murmur
-    "* night_owl
-    "* nord-minimal
-    "* onedark (|airline-theme-onedark|)
-    "* ouo
-    "* owo
-    "* papercolor
-    "* peaksea
-    "* powerlineish
-    "* qwq
-    "* raven
-    "* ravenpower
-    "* seagull
-    "* seoul256
-    "* serene
-    "* sierra
-    "* silver
-    "* simple
-    "* soda
-    "* sol
-    "* solarized (|airline-theme-solarized|)
-    "* solarized_flood
-    "* term
-    "* term_light
-    "* tomorrow
-    "* ubaryd
-    "* understated
-    "* violet
-    "* wombat
-    "* xtermlight
-    "* zenburn
-    "* transparent
+
+" alduin
+" angr
+" apprentice
+" atomic NO
+" ayu_light
+" ayu_mirage
+" ayu_dark
+" badwolf
+" base16 (|airline-theme-base16|)
+" base16_vim (|airline-theme-base16_vim|)
+" base16_shell (|airline-theme-base16_shell|)
+" base16_3024
+" base16_adwaita
+" base16_apathy
+" base16_ashes
+" base16_atelierdune
+" base16_atelierforest
+" base16_atelierheath
+" base16_atelierlakeside
+" base16_atelierseaside
+" base16_bespin
+" base16_brewer
+" base16_bright
+" base16_chalk
+" base16_classic
+" base16_codeschool
+" base16_colors
+" base16_default
+" base16_eighties
+" base16_embers
+" base16_flat
+" base16_google
+" base16_grayscale
+" base16_greenscreen
+" base16_gruvbox_dark_hard
+" base16_harmonic16
+" base16_hopscotch
+" base16_isotope
+" base16_londontube
+" base16_marrakesh
+" base16_mocha
+" base16_monokai
+" base16_nord
+" base16_ocean
+" base16_oceanicnext
+" base16_paraiso
+" base16_pop
+" base16_railscasts
+" base16_seti
+" base16_shapeshifter
+" base16_solarized
+" base16_spacemacs
+" base16_summerfruit
+" base16_tomorrow
+" base16_twilight
+" base16_vim
+" base16color
+" behelit
+" biogoo
+" bubblegum
+" cobalt2
+" cool
+" dark
+" dark_minimal
+" desertink
+" deus
+" distinguished LIKEABLE
+" durant LIKEABLE ?
+" faryfloss
+" fruit_punch
+" google_dark
+" google_light
+" hybrid
+" hybridline
+" jay
+" jellybeans
+" jet
+" kalisi ?
+" kolor
+" laederon
+" lessnoise
+" light
+" lighthaus LIKEABLE
+" lucius
+" luna
+" minimalist (|airline-theme-minimalist|)
+" molokai LIEKABLE
+" monochrome
+" murmur
+" night_owl
+" nord-minimal
+" onedark (|airline-theme-onedark|)
+" ouo
+" owo
+" papercolor
+" peaksea
+" powerlineish
+" qwq
+" raven
+" ravenpower
+" seagull
+" seoul256
+" serene
+" sierra
+" silver
+" simple
+" soda
+" sol
+" solarized (|airline-theme-solarized|)
+" solarized_flood
+" term
+" term_light
+" tomorrow
+" ubaryd
+" understated
+" violet
+" wombat
+" xtermlight
+" zenburn
+" transparent
+

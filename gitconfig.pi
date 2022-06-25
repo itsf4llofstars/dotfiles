@@ -22,6 +22,7 @@
 	lg = log --oneline --decorate --all
 	sw = switch
 	st = status
+	ac = commit -am
 [cola]
 	startupmode = folder
 	spellcheck = false
@@ -34,3 +35,7 @@
 	boldheaders = true
 [gui]
 	editor = vim
+	recentrepo = /home/pi/python/game
+	recentrepo = /home/pi/python/sandbox
+	maxrecentrepo = 5
+	tabsize = 4
