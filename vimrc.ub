@@ -21,7 +21,7 @@ set t_Co=256
 set number
 set relativenumber
 set encoding=utf-8
-set ruler
+" set ruler
 set laststatus=1
 
 set shortmess+=a
@@ -77,7 +77,10 @@ set wildmode=full
 " set wildmode=list:longest,list:full
 
 "" set completeopt=menu,menuone
-set completeopt=menu,menuone
+" set completeopt=menuone,longest,preview
+set completeopt=menuone,longest,popuphidden
+
+" menu, menuone, longest, preview, popup, popuphidden, noinsert, noselect
 
 "###############################################################################
 "##                                 FOLDING                                   ##
@@ -86,14 +89,14 @@ set foldmethod=indent
 set foldenable
 "" Sets the fold level: Folds w/ higher lvl will be clsd. 0 closes all, higher
 ""   number closes fewer folds. Default = 0.
-set foldlevel=2
+set foldlevel=0
 "" Sets fold level when starting to edit other buff. All folds clsd (0),
 ""   some folds clsd (1), no folds clsd (99) setting modeline overrules this.
 set foldlevelstart=10
 "" Max nested folds in syntax and indent modes. Default and max is 20
 set foldnestmax=10
 " Fold syntax's indent, manual (d), syntax, expr, marker, diff
-set foldcolumn=1
+set foldcolumn=4
 "" Fold closes when cursor isn't in it
 " set foldclose=all
 "" Used only with indent. Folds get their lvl form surrounding lines. Good for C
@@ -109,6 +112,7 @@ set foldtext=foldtext()
 "###############################################################################
 "##                            BACKUP/UNDO AIDS                               ##
 "###############################################################################
+set noswapfile
 set backup
 set undofile
 set backupdir=~/.vim/backups
@@ -119,13 +123,13 @@ set undodir=~/.vim/undodir
 "###############################################################################
 "" Run :PlugInstall
 call plug#begin('~/.vim/plugged')
-Plug 'yggdroot/indentline'
+" Plug 'yggdroot/indentline'
 Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
@@ -142,8 +146,8 @@ let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
 
 "" INDENTLINE PLUGIN FORAMT
-let g:indentLine_setColors = 0
-let g:indentLine_char = '|'
+" let g:indentLine_setColors = 0
+" let g:indentLine_char = '|'
 
 colorscheme gruvbox
 
@@ -173,11 +177,15 @@ let g:user_emmet_leader_key=","
 let mapleader=" "
 inoremap kj <esc>
 
-nmap <silent><F2> :set foldmethod=marker<CR>
+nmap <F2> :set foldmethod=marker<CR>
+nmap <F3> :set foldmethod=indent<CR>
 
 "" Experimental
 "" Creates a C style block comment
 nnoremap <leader>d 0i/*<CR><SPACE>*<CR>*<SPACE>*/<ESC>ka<SPACE>
+
+"" This will close the preview box
+nnoremap <silent> <leader>x <C-k>:q!<CR>
 
 nnoremap <leader>ga :Git add .<CR>
 nnoremap <leader>gc :Git commit<CR>
@@ -222,7 +230,7 @@ nnoremap E $
 """ Various saves/exits
 nnoremap <leader>x :USE LEADER z
 nnoremap <leader>q :q!<CR>
-nnoremap <leader>w :wall<CR>
+nnoremap <leader>w :wall!<CR>
 nnoremap <silent><leader>t :wall<CR>:term<CR>
 nnoremap <leader>z ZZ
 
@@ -244,9 +252,12 @@ nnoremap <leader>dd :resize -2<CR>
 
 "" Wrappings for folding
 "" Python and bash marker fold from visual block mode
-"" WARNING! This may add 1 to each first number per-blocked line!
+
+"" Set markers for Python code
 let @h="mamsV'aO# {{{€ýa'ao# }}}€ýa'sk"
-let @j="mei# {{{ 'eo# }}}€ýa"
+
+"" Erase markers for Python code
+let @o="0ggzR/# {{{ddgg/# }}}ddgg"
 
 "" Comments out a block from visual mode using hashes
 let @g="mejjjI# kj"
@@ -329,21 +340,20 @@ autocmd Filetype html setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype css setlocal expandtab tabstop=2 sw=2 sts=2
 autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
 
-"" UNKNOWN
-" autocmd BufWinLeave *.* mkview
-" autocmd BufWinEnter *.* silent loadview
+"" Believed to save manually set folds, et. al.
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
 
 "###############################################################################
 "##                                AIRLINE                                    ##
 "###############################################################################
 
-" let g:airline_theme='zenburn' " serene
+let g:airline_theme='badwolf' " serene
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
 "" base16_default base16_greyscale base16_monokai
 "" zenburn base16_vim serene
-    "* themes goto line 90
     "* alduin
     "* angr
     "* apprentice
@@ -365,7 +375,7 @@ autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
     "* base16_atelierlakeside
     "* base16_atelierseaside
     "* base16_bespin
-   "* base16_brewer
+    "* base16_brewer
     "* base16_bright
     "* base16_chalk
     "* base16_classic
@@ -464,3 +474,4 @@ autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
     "* xtermlight
     "* zenburn
     "* transparent
+

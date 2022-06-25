@@ -1,4 +1,4 @@
-# 83 - 94
+# Last line has line data for themes
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -7,6 +7,7 @@ setopt autocd extendedglob notify
 unsetopt beep nomatch
 bindkey -v
 # End of lines configured by zsh-newuser-install
+#
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/bumper/.zshrc'
 
@@ -38,94 +39,94 @@ ZSH_THEME="random"
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 ZSH_THEME_RANDOM_CANDIDATES=(
-    # "blinks"
+    # "blinks" NO
     # "bureau" YES
     # "candy-kingdom"
     # "candy" YES
-    # "clean"
-    # "cloud"
+    # "clean" NO
+    # "cloud" NO
     # "crcandy" YES
-    # "crunch"
-    # "cypher"
-    # "dallas"
-    # "darkblood"
-    # "daveverwer"
-    # "dieter"
-    # "dogenpunk"
-    # "dpoggi"
-    # "dstufft"
-    # "dst"
+    # "crunch" NO
+    # "cypher" NO
+    # "dallas" NO
+    # "darkblood" NO
+    # "daveverwer" NO
+    # "dieter" NO
+    # "dogenpunk" NO
+    # "dpoggi" NO
+    # "dstufft" NO
+    # "dst" NO
     # "duellj" YES
-    # "eastwood"
-    # "emotty"
-    # "essembeh"
-    # "evan"
+    # "eastwood" NO
+    # "emotty" NO
+    # "essembeh" NO
+    # "evan" NO
     # "fino-time" YES
     # "fino" YES
-    # "fishy"
-    # "flazz"
-    # "fletcherm"
-    # "fox"
-    # "frisk"
+    # "fishy" NO
+    # "flazz" NO
+    # "fletcherm" NO
+    # "fox" NO
+    # "frisk" NO
     # "frontcube" YES
     # "funky" YES
     # "fwalch" YES
     # "START BELOW",
-    # "gallifrey"
+    # "gallifrey" NO
     # "gallois" YES
     # "garyblessington" YES
-    # "gentoo"
-    # "geoffgarside"
-    # "gianu"
+    # "gentoo" NO
+    # "geoffgarside" NO
+    # "gianu" NO
     # "gnzh" YES
     # "gozilla" YES
-    # "humza"
+    # "humza" NO
     # "imajes" YES
     # "intheloop" YES
-    "itchy"
-    "jaischeema"
-    "jbergantine"
-    "jispwoso"
+    # "itchy" NO
+    # "jaischeema" NO
+    # "jbergantine" NO
+    # "jispwoso" NO
     # "jnrowe" NO
     # "jonathan" YES
-    # "josh"
-    "jreese"
-    "jtriley"
-    "juanghurtado"
+    # "josh" NO
+    # "jreese" NO
+    # "jtriley" NO
+    # "juanghurtado" NO
     # "junkfood" NO
-    # "kafeitu"
-    # "kardan"
-    # "kennethreitz"
-    # "kiwi"
-    # "kolo"
-    # "kphoen"
-    # "lambda"
-    # "linuxonly"
-    # "lukerandall"
-    # "macovsky"
-    # "maran"
-    # "mgutz"
-    # "mh"
-    # "michelebologna"
-    # "mikeh"
-    # "miloshadzic"
-    # "minimal"
-    # "mira"
-    # "mlh"
-    # "mortalscumbag"
-    # "mrtazz"
-    # "murilasso"
-    # "muse"
-    # "nanotech"
-    # "nebirhos"
-    # "nicoulaj"
-    # "norm"
-    # "obraun"
-    # "peepcode"
-    # "philips"
-    # "pmcgee"
-    # "pygmalion-virtualenv"
-    # "pygmalion"
+    # "kafeitu" NO
+    # "kardan" YES
+    # "kennethreitz" YES
+    # "kiwi" YES
+    # "kolo" YES
+    # "kphoen" NO
+    # "lambda" YES
+    # "linuxonly" NO
+    # "lukerandall" NO
+    # "macovsky" YES
+    # "maran" NO
+    # "mgutz" YES
+    # "mh" NO
+    # "michelebologna" NO
+    # "mikeh" NO
+    # "miloshadzic" YES
+    # "minimal" YES
+    # "mira" NO
+    # "mlh" NO
+    # "mortalscumbag" NO
+    # "mrtazz" NO
+    # "murilasso" NO
+    # "muse" YES
+    # "nanotech" NO
+    # "nebirhos" NO
+    # "nicoulaj" NO
+    "norm"
+    "obraun"
+    "peepcode"
+    # "philips" NO
+    # "pmcgee" NO
+    # "pygmalion-virtualenv" NO
+    # "pygmalion" NO
     # "random"
     # "re5et"
     # "refined"
@@ -156,23 +157,16 @@ ZSH_THEME_RANDOM_CANDIDATES=(
     # "tjkirch_mod"
     # "tjkirch"
     # "tonotdo"
-    ## "trapd00r"
-    ## "wedisagree"
-    ## "wezm+"
-    ## "wezm"
-    ## "wuffers"
+    # "trapd00r"
+    # "wedisagree"
+    # "wezm+"
+    # "wezm"
+    # "wuffers"
     # "xiong-chiamiov-plus"
     # "xiong-chiamiov"
     # "ys"
     # "zhann"
 )
-
-# ZSH_THEME_RANDOM_CANDIDATES=(
-#     af-magic
-#     arrow
-#     awesomepanda
-# )
-
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -196,21 +190,21 @@ zstyle ':omz:update' frequency 3
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
 # e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -262,7 +256,10 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 
 # Oh My ZSH
+# source zsh
 alias soz="exec zsh"
+#
+# change theme: may require a cmd input ie. zt bira
 alias zt='(){ export ZSH_THEME="$@" && source $ZSH/oh-my-zsh.sh }'
 
 # Python
@@ -273,15 +270,8 @@ alias mm="python3 main.py"
 
 # Editors
 alias vi="vim"
-alias via="vim -u ~/.viard"
-alias vit="vim -u ~/.vitext"
-alias viz="vim ~/.zshrc"
 alias mcedit="mcedit --skin=modarin256root"
-alias ed='ed -v -p ": "'
-
-# Git
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
+alias ed='ed -p ": "'
 
 # Linux
 alias lh="ls -lh --hyperlink=auto --group-directories-first --quoting-style=shell --color=auto"
@@ -293,5 +283,8 @@ alias lsize="ls -1FSsh --group-directories-first --quoting-style=shell --color=a
 alias ll="echo l[haxt[dot][size]]"
 alias pw="pwd"
 
-alias arv='arduino --board arduino:avr:uno --verify'
-alias aru='arduino --board arduino:avr:uno --upload'
+# Change theme on line 35
+# Themes listed on lines 41-169
+# $ cat -n .zshrc | sed -n 'n,m'p .zshrc
+# $ sed -i '35s/".+"/"new"/' .zshrc
+# $ soz
