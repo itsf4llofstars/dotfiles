@@ -57,7 +57,6 @@ set copyindent
 set smartindent
 set showmatch
 set nojoinspaces
-set wildmenu
 set path+=**
 
 set backup
@@ -68,7 +67,8 @@ set backupdir=~/.vim/backups
 set undodir=~/.vim/undodir
 set directory=~/.vim/swaps
 
-set wildmode=list:longest
+set wildmenu
+set wildmode=full
 "" wildmode=full
 ""Complete first full match (default)
 
@@ -93,7 +93,7 @@ set wildmode=list:longest
 
 "" wildmode=list:lastused
 
-set completeopt=menuone,preview,popup
+set completeopt=menu,preview
 " set completeopt=longest,menuone
 "" menu,menuone,longest,preview,popup,popuphidden,noinsert,noselect
 
@@ -263,7 +263,7 @@ set statusline=\ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 "" source .vimrc
 "" NOTE: The braces are to show that any letter can be used. The braces should
 "" not be in the final let command. example:
-" let @l="080lbhxi"
+" let @l="80lbhxi"
 "
 autocmd Filetype arduino setlocal tabstop=2 sw=2 sts=2
 autocmd Filetype html setlocal tabstop=2 sw=2 sts=2
@@ -272,14 +272,16 @@ autocmd Filetype text setlocal wrap textwidth=79
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
 
+"" MACROS
 "" Opens a text file verticaly with a list of colorschemes
 let @o=":vs:e ~/vim/vim-colors.txtgg"
+"" Set marker for visual block lines in python
 
 "############################## Airline ########################################
 "" KEEP AIRLINE ON LINE 319 FOR THEME CHANGE MACRO TO WORK
 let g:airline_theme='murmur'
 
-let @t="0wye280ggf'pldt':w"
+let @t="0wye283ggf'pldt':w"
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic

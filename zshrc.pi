@@ -49,7 +49,6 @@ ZSH_THEME_RANDOM_CANDIDATES=(
     "frontcube"
     "funky"
     "fwalch"
-    "START BELOW",
     "gallois"
     "garyblessington"
     "gnzh"
@@ -182,7 +181,7 @@ alias mm="python3 main.py"
 # Editors
 alias vi="vim"
 alias mcedit="mcedit --skin=modarin256root"
-alias ed='ed -p ": "'
+alias ed='ed -E -p ": "'
 
 # Linux
 alias lh="ls -lh --hyperlink=auto --group-directories-first --quoting-style=shell --color=auto"
