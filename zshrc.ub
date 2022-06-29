@@ -1,3 +1,7 @@
+# THEME LINE:39, THEMES LINE:135,157
+# $ cat -n .zshrc | sed -n 'n,m'p .zshrc
+# $ sed -i '39s/".+"/"new"/' .zshrc
+#
 # Last line has line data for themes
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
@@ -27,11 +31,11 @@ PATH=$PATH:~/.pybin
 export ZSH="$HOME/.oh-my-zsh"
 
 ## THEMES
-# Set name of the theme to load --- if set to "random", it will
+# Set name of the theme to load --- if set to "smt", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# LINE 33 below
+# LINE 39 below
 ZSH_THEME="random"
 
 # Set list of themes to pick from when loading at random
@@ -39,133 +43,42 @@ ZSH_THEME="random"
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 ZSH_THEME_RANDOM_CANDIDATES=(
-    # "blinks" NO
-    # "bureau" YES
-    # "candy-kingdom"
-    # "candy" YES
-    # "clean" NO
-    # "cloud" NO
-    # "crcandy" YES
-    # "crunch" NO
-    # "cypher" NO
-    # "dallas" NO
-    # "darkblood" NO
-    # "daveverwer" NO
-    # "dieter" NO
-    # "dogenpunk" NO
-    # "dpoggi" NO
-    # "dstufft" NO
-    # "dst" NO
-    # "duellj" YES
-    # "eastwood" NO
-    # "emotty" NO
-    # "essembeh" NO
-    # "evan" NO
-    # "fino-time" YES
-    # "fino" YES
-    # "fishy" NO
-    # "flazz" NO
-    # "fletcherm" NO
-    # "fox" NO
-    # "frisk" NO
-    # "frontcube" YES
-    # "funky" YES
-    # "fwalch" YES
-    # "START BELOW",
-    # "gallifrey" NO
-    # "gallois" YES
-    # "garyblessington" YES
-    # "gentoo" NO
-    # "geoffgarside" NO
-    # "gianu" NO
-    # "gnzh" YES
-    # "gozilla" YES
-    # "humza" NO
-    # "imajes" YES
-    # "intheloop" YES
-    # "itchy" NO
-    # "jaischeema" NO
-    # "jbergantine" NO
-    # "jispwoso" NO
-    # "jnrowe" NO
-    # "jonathan" YES
-    # "josh" NO
-    # "jreese" NO
-    # "jtriley" NO
-    # "juanghurtado" NO
-    # "junkfood" NO
-    # "kafeitu" NO
-    # "kardan" YES
-    # "kennethreitz" YES
-    # "kiwi" YES
-    # "kolo" YES
-    # "kphoen" NO
-    # "lambda" YES
-    # "linuxonly" NO
-    # "lukerandall" NO
-    # "macovsky" YES
-    # "maran" NO
-    # "mgutz" YES
-    # "mh" NO
-    # "michelebologna" NO
-    # "mikeh" NO
-    # "miloshadzic" YES
-    # "minimal" YES
-    # "mira" NO
-    # "mlh" NO
-    # "mortalscumbag" NO
-    # "mrtazz" NO
-    # "murilasso" NO
-    # "muse" YES
-    # "nanotech" NO
-    # "nebirhos" NO
-    # "nicoulaj" NO
+    "bureau"
+    "candy-kingdom"
+    "candy"
+    "crcandy"
+    "duellj"
+    "fino-time"
+    "frontcube"
+    "funky"
+    "fwalch"
+    "gallois"
+    "garyblessington"
+    "gnzh"
+    "gozilla"
+    "imajes"
+    "intheloop"
+    "jonathan"
+    "kardan"
+    "kennethreitz"
+    "kiwi"
+    "kolo"
+    "lambda"
+    "macovsky"
+    "mgutz"
+    "miloshadzic"
+    "minimal"
+    "muse"
     "norm"
-    "obraun"
-    "peepcode"
-    # "philips" NO
-    # "pmcgee" NO
-    # "pygmalion-virtualenv" NO
-    # "pygmalion" NO
-    # "random"
-    # "re5et"
-    # "refined"
-    # "rgm"
-    # "risto"
-    # "rixius"
-    # "rkj-repos"
-    # "rkj"
-    # "robbyrussell"
-    # "sammy"
-    # "simonoff"
-    # "simple"
-    # "skaro"
-    # "smt"
-    # "Soliah"
-    # "sonicradish"
-    # "sorin"
-    # "sporty_256"
-    # "steeef"
-    # "strug"
-    # "sunaku"
-    # "sunrise"
-    # "superjarin"
-    # "suvash"
-    # "takashiyoshida"
-    # "terminalparty"
-    # "theunraveler"
-    # "tjkirch_mod"
-    # "tjkirch"
-    # "tonotdo"
-    # "trapd00r"
-    # "wedisagree"
-    # "wezm+"
-    # "wezm"
-    # "wuffers"
-    # "xiong-chiamiov-plus"
-    # "xiong-chiamiov"
-    # "ys"
-    # "zhann"
+    "refined"
+    "simple"
+    "sonicradish"
+    "sorin"
+    "strug"
+    "sunaku"
+    "tonotdo"
+    "xiong-chiamiov"
+    "zhann"
 )
 
 # Uncomment the following line to use case-sensitive completion.
@@ -267,11 +180,15 @@ alias py="python3"
 alias pyy="python3.9"
 alias pyt="python3.10"
 alias mm="python3 main.py"
+alias envs="source venv/bin/activate"
+alias envd="deactivate"
+alias envc="python3 -m venv venv && source venv/bin/activate && python3 -m pip install --upgrade pip"
+alias fence="source /home/bumper/python/pyautogui/venv/bin/activate && python3 /home/bumper/python/pyautogui/checkmail.py"
 
 # Editors
 alias vi="vim"
 alias mcedit="mcedit --skin=modarin256root"
-alias ed='ed -p ": "'
+# alias ed='ed -p ": "'
 
 # Linux
 alias lh="ls -lh --hyperlink=auto --group-directories-first --quoting-style=shell --color=auto"
@@ -283,8 +200,6 @@ alias lsize="ls -1FSsh --group-directories-first --quoting-style=shell --color=a
 alias ll="echo l[haxt[dot][size]]"
 alias pw="pwd"
 
-# Change theme on line 35
-# Themes listed on lines 41-169
+# THEME LINE:39, THEMES LINE:135,157
 # $ cat -n .zshrc | sed -n 'n,m'p .zshrc
-# $ sed -i '35s/".+"/"new"/' .zshrc
-# $ soz
+# $ sed -i '39s/".+"/"new"/' .zshrc
