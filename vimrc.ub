@@ -175,7 +175,7 @@ nmap <F3> :set foldmethod=indent<CR>
 
 "" Experimental
 "" Creates a C style block comment
-nnoremap <leader>d 0i/*<CR><SPACE>*<CR>*<SPACE>*/<ESC>ka<SPACE>
+nnoremap <leader>d 0i/*<CR><CR>*/<ESC>k
 
 "" This will close the preview box
 nnoremap <silent> <leader>x <C-k>:q!<CR>
