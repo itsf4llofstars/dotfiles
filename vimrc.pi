@@ -14,8 +14,6 @@ set nocompatible
 syntax enable
 set termguicolors
 set t_Co=256
-" set ruler
-" set showmode
 set laststatus=1
 set number
 set relativenumber
@@ -23,6 +21,8 @@ set shortmess+=a
 set shortmess+=c
 set shortmess+=s
 set shortmess+=w
+" set ruler
+" set showmode
 
 set expandtab
 set tabstop=4
@@ -38,10 +38,11 @@ set t_vb=
 set ignorecase
 set smartcase
 set autochdir
+set scrolloff=5
 set clipboard^=unnamed
 set backspace=indent,eol,start
 set colorcolumn=80,100,120
-set signcolumn=yes
+set signcolumn=auto
 set nowrap
 set incsearch
 set hidden
@@ -68,32 +69,11 @@ set undodir=~/.vim/undodir
 set directory=~/.vim/swaps
 
 set wildmenu
-set wildmode=full
-"" wildmode=full
-""Complete first full match (default)
+set wildmode=longest,full
+"" full longest, longest,full longest:full list longest,list longest:list
+"" lastused
 
-"" wildmode=longest
-
-"" wildmode=longest,full *
-"" Complete longest common string, then each full match
-
-"" wildmode=longest:full
-"" wildmode=list
-
-"" wildmode=list:full
-""List all matches and complete each full match
-
-"" wildmode=list,full
-"" List all matches without completing, then each full match
-
-"" wildmode=list:longest *
-
-"" wildmode=list:longest,list
-"" Complete longest common string, then list alternatives
-
-"" wildmode=list:lastused
-
-set completeopt=menu,preview
+set completeopt=longest,menuone,preview,popup
 " set completeopt=longest,menuone
 "" menu,menuone,longest,preview,popup,popuphidden,noinsert,noselect
 
@@ -113,15 +93,15 @@ set foldlevel=99
 ""   some folds clsd (1), no folds clsd (99) setting modeline overrules this.
 set foldlevelstart=99
 "" Max nested folds in syntax and indent modes. Default and max is 20
-set foldnestmax=10
+set foldnestmax=20
 " Fold syntax's indent, manual (d), syntax, expr, marker, diff
-set foldcolumn=3
+set foldcolumn=1
 "" Fold closes when cursor isn't in it
 " set foldclose=all
 "" Used only with indent. Folds get their lvl form surrounding lines. Good for C
 set foldignore=#
 "" Set min num of lines that can be folded. Default 1
-set foldminlines=0
+set foldminlines=1
 "" Specify for which commands open folds
 "" all,block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 set foldopen="block,hor,mark,percent,quickfix,serch,tag,undo"
@@ -135,7 +115,7 @@ set foldtext=foldtext()
 call plug#begin('~/.vim/plugged')
 " Plug 'yggdroot/indentline'
 Plug 'nvie/vim-flake8'
-" Plug 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
@@ -171,7 +151,7 @@ let g:user_emmet_leader_key=","
 let mapleader=" "
 inoremap kj <esc>
 
-nmap <F2> :set foldmethod=marker<CR>
+nmap <F2> :set foldmethod=manual<CR>
 nmap <F3> :set foldmethod=indent<CR>
 
 map <F6> :'a,'bw! markfile.txt<CR>
@@ -243,32 +223,11 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 "" Format satus line
 set statusline=\ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
-"" Tutorial on register saving/yanking/putting
-"" Record macro
-""     qa
-"" Stop recording
-""     <Esc>q
-""
-"" On a blank line yank macro form it's register
-""     "ap
-""
-"" Edit macro (if needed)
-""
-"" Save macro to same or another register
-""     "ay$
-""
-"" Write let @{a-z}=""
-"" Write let @{a-z}="<paste-macro-here>" in your .vimrc
-""
-"" source .vimrc
-"" NOTE: The braces are to show that any letter can be used. The braces should
-"" not be in the final let command. example:
-" let @l="80lbhxi"
-"
 autocmd Filetype arduino setlocal tabstop=2 sw=2 sts=2
 autocmd Filetype html setlocal tabstop=2 sw=2 sts=2
 autocmd Filetype c setlocal cindent
 autocmd Filetype text setlocal wrap textwidth=79
+
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
 
@@ -276,12 +235,13 @@ autocmd BufWinEnter *.* silent loadview
 "" Opens a text file verticaly with a list of colorschemes
 let @o=":vs:e ~/vim/vim-colors.txtgg"
 "" Set marker for visual block lines in python
+let @p="mamsV'aO0i# {{{'ao0i# }}}'sk$"
 
 "############################## Airline ########################################
 "" KEEP AIRLINE ON LINE 319 FOR THEME CHANGE MACRO TO WORK
-let g:airline_theme='murmur'
+let g:airline_theme='apprentice'
 
-let @t="0wye283ggf'pldt':w"
+let @t="0wye282ggf'pldt':w"
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic

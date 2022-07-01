@@ -182,6 +182,7 @@ alias mm="python3 main.py"
 alias vi="vim"
 alias mcedit="mcedit --skin=modarin256root"
 alias ed='ed -E -p ": "'
+alias nano='nano -J 80'
 
 # Linux
 alias lh="ls -lh --hyperlink=auto --group-directories-first --quoting-style=shell --color=auto"
