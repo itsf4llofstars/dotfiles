@@ -13,16 +13,14 @@
 "" Set VIM not compatable with Vi, but more usefull. Not needed if a .vimrc is
 "" present. May be best if this is the first entry.
 set nocompatible
-"" What is the diff between these two: enable & on
 syntax enable
-syntax on
 set termguicolors
 set t_Co=256
 set number
 set relativenumber
 set encoding=utf-8
 " set ruler
-set laststatus=1
+set laststatus=2
 
 set shortmess+=a
 set shortmess+=c
@@ -45,7 +43,7 @@ set smartcase
 set clipboard^=unnamed,unnamedplus
 set scrolloff=5
 set backspace=indent,eol,start
-set colorcolumn=80,100,120
+" set colorcolumn=80,100,120
 set signcolumn=auto
 set nowrap
 set incsearch
@@ -78,29 +76,20 @@ set wildmode=full
 
 "" set completeopt=menu,menuone
 " set completeopt=menuone,longest,preview
-set completeopt=menuone,longest,popuphidden
-
+set completeopt=menu,menuone,longest,preview,popuphidden
 " menu, menuone, longest, preview, popup, popuphidden, noinsert, noselect
 
 "###############################################################################
 "##                                 FOLDING                                   ##
 "###############################################################################
 set foldmethod=indent
-set foldenable
-set foldcolumn=1
-set foldlevel=0
-set foldlevelstart=10
-" set foldnestmax=10
-" set foldclose=all
-set foldignore=#
-set foldminlines=1
 
 "" Specify for which commands open folds
 "" all,block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 set foldopen="block,hor,mark,percent,quickfix,serch,tag,undo"
 
 "" Text displayed for a closed fold, EXPERIMENTAL
-" set foldtext=foldtext()
+set foldtext=foldtext()
 
 "###############################################################################
 "##                            BACKUP/UNDO AIDS                               ##
@@ -116,7 +105,7 @@ set undodir=~/.vim/undodir
 "###############################################################################
 "" Run :PlugInstall
 call plug#begin('~/.vim/plugged')
-" Plug 'yggdroot/indentline'
+Plug 'yggdroot/indentline'
 Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
@@ -130,6 +119,8 @@ Plug 'mattn/emmet-vim'
 Plug 'valloric/youcompleteme'
 call plug#end()
 
+colorscheme gruvbox
+
 "" Unsure of what Focus does.
 nnoremap ,f :NERDTreeFocus<CR>
 " nnoremap ,f :NERDTree<CR>
@@ -139,24 +130,8 @@ let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
 
 "" INDENTLINE PLUGIN FORAMT
-" let g:indentLine_setColors = 0
-" let g:indentLine_char = '|'
-
-colorscheme gruvbox
-
-""" NETRW FILE BROWSER
-"" Disable banner
-" let g:netrw_banner=0
-"" Open in prior window
-" let g:netrw_browse_split=4
-"" Open splits to the right
-" let g:netrw_altv=1
-"" Tree view
-" let g:netrw_liststyle=3
-" let g:netrw_list_hide=netrw_gitignore#Hide()
-" let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.S\+'
-"" set netrw (file explorer when using :e .) preview view to vertical split
-" let g:netrw_preview=1
+let g:indentLine_setColors = 0
+let g:indentLine_char = '|'
 
 "" Sets emmet leader to double comma
 let g:user_emmet_mode='n'
@@ -166,43 +141,21 @@ let g:user_emmet_leader_key=","
 "###############################################################################
 "##                              MAPPINGS                                     ##
 "###############################################################################
-"" NOTE TO SELF: USING forward slash JUST DOES NOT WORK!
 let mapleader=" "
 inoremap kj <esc>
 
-nmap <F2> :set foldmethod=manual<CR>
-nmap <F3> :set foldmethod=indent<CR>
-
-"" Experimental
 "" Creates a C style block comment
 nnoremap <leader>d 0i/*<CR><CR>*/<ESC>k
 
-"" This will close the preview box
-nnoremap <silent> <leader>x <C-k>:q!<CR>
-
-nnoremap <leader>ga :Git add .<CR>
-nnoremap <leader>gc :Git commit<CR>
-
-"" Switches between last open buffer (file)
-nnoremap <silent> <leader><leader> <C-^>
-
-"" Copys to void register then pastes from yank/delete register
-vnoremap <leader>p "_dP
-
-"" Cycle between buffers
-nnoremap <silent> [b :bprevious<CR>
+"" Buffers and switching between last open buffer
 nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> <leader><leader> <C-^>
 
 "" Yanks from cursor to end of line, from anywhere in the line
 nnoremap <leader>yd y$
 
 "" Sets up a replacement for the word under the cursor
 nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
-
-"" Opens the .vimrc file
-nnoremap \e :e $HOME/.vimrc<CR>
-nnoremap \b :e $HOME/.bashrc<CR>
-nnoremap \z :e $HOME/.zshrc<CR>
 
 "" Quick editing of text between (), [], {}, <>
 nnoremap <silent> <leader>ep 0f(ci(
@@ -221,11 +174,9 @@ nnoremap B ^
 nnoremap E $
 
 """ Various saves/exits
-nnoremap <leader>x :USE LEADER z
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>w :wall!<CR>
 nnoremap <silent><leader>t :wall<CR>:term<CR>
-nnoremap <leader>z ZZ
 
 """ Opens vert/horz splits and goes to the new split
 nnoremap <silent> <leader>v :vs<CR><C-w>l
@@ -242,16 +193,6 @@ nnoremap <leader>dd :resize -2<CR>
 "###############################################################################
 "##                                MACROS                                     ##
 "###############################################################################
-"" Wrappings for folding
-"" Python and bash marker fold from visual block mode
-
-"" Set markers for Python code
-let @p="mamsV'aO# {{{€ýa'ao# }}}€ýa'sk$"
-let @h="mamsV'a'aI# kj'a"
-let @e="0ggzR/# {{{ddgg/# }}}ddgg"
-
-"" Comments out a block from visual mode using slashes
-let @c="mamsV'a'aI// €ýa'a€ý"
 
 "###############################################################################
 "##                                OTHERS                                     ##
@@ -270,28 +211,6 @@ autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
 augroup END
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-"" Tutorial on register saving/yanking/putting
-"" Record macro
-""     qa
-"" Stop recording
-""     <Esc>a
-""
-"" On a blank line yank macro form it's register
-""     "ap
-""
-"" Edit macro
-""
-"" Save macro to same or another register
-""     "ay$
-""
-"" Write let @{a-z}=""
-"" Write let @{a-z}="<Paste-Here>" in your .vimrc
-""
-"" source .vimrc
-"" NOTE: The braces are to show that any letter can be used. The braces should
-"" not be in the final let command. example:
-" let @l="080lbhxi"
 
 "###############################################################################
 "##                              Autocorrect                                  ##
@@ -336,7 +255,7 @@ autocmd BufWinEnter *.* silent loadview
 "###############################################################################
 "##                                AIRLINE                                    ##
 "###############################################################################
-let g:airline_theme='apprentice' " serene
+" let g:airline_theme='apprentice' " serene
 
 
 "" USABLE THEMES
