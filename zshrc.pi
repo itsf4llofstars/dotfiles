@@ -199,3 +199,5 @@ alias pw="pwd"
 # $ cat -n .zshrc | sed -n 'n,m'p .zshrc
 # $ sed -i '35s/".+"/"new"/' .zshrc
 # $ soz
+
+clear && cat ~/ed/cow

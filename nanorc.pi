@@ -66,7 +66,7 @@ set titlecolor lightwhite
 set statuscolor lightwhite
 set errorcolor bold,lightwhite,red
 set selectedcolor black,lightwhite
-set stripecolor ,lightwhite
+set stripecolor lightwhite
 # set scrollercolor cyan
 set numbercolor lightwhite
 set keycolor lightwhite
