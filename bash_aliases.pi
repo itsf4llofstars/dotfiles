@@ -29,9 +29,10 @@ alias ex='exit'
 alias mv='mv -i'
 
 # Editors
-alias ed='ed -p "ed: "'
+alias ed='ed -E -p "ed: "'
 alias vi='vim'
-alias nano='nano -J 120'
+alias vit='vim -u ~/.vivert'
+# alias nano='nano -J 80'
 
 # Admin
 alias srn='sudo reboot now'

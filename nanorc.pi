@@ -11,21 +11,21 @@
 ## double quote on the line will be seen as the closing quote.
 
 set afterends
-# set atblanks
+set atblanks
 set autoindent
 set backup
 set backupdir "/home/pi/tmp"
 set boldtext
 # set bookstyle
 # set brackets ""')>]}"
-# set breaklonglines
+set breaklonglines
 # set casesensitive
 set constantshow
 set cutfromcursor
 set emptyline
 # set fill -8
 set historylog
-# set indicator
+set indicator
 # set jumpyscrolling
 set linenumbers
 set locking
@@ -39,7 +39,7 @@ set nonewlines
 # set operatingdir ""
 set positionlog
 # set preserve
-# set punct "!.?"
+set punct "!.?"
 # set quickblank
 set quotestr "^([ 	]*([!#%:;>|}]|//))+"
 # set rawsequences
@@ -48,7 +48,7 @@ set regexp
 # set saveonexit
 # set showcursor
 set smarthome
-# set softwrap
+set softwrap
 # set speller "aspell -x -c"
 set stateflags
 set suspendable
