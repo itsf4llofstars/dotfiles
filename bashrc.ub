@@ -1,4 +1,3 @@
-##
 ##    _               _
 ##   | |__   __ _ ___| |__  _ __ ___
 ##   | '_ \ / _` / __| '_ \| '__/ __|
@@ -23,8 +22,11 @@ function bash_prompt() {
     ## THREE
     #PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
 
-    ## Current
-    PS1='${debian_chroot:+($debian_chroot)}'${grn}'$(git_branch)'${blu}'\W \$ '${clr}
+    ## Old Current
+    # PS1='${debian_chroot:+($debian_chroot)}'${grn}'$(git_branch)'${blu}'\W \$ '${clr}
+
+    ## New Current
+    PS1='\e[0;32m[\h]\e[0m \e[1;34m\w $\e[0m '
 }
 
 function hg() {

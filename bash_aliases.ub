@@ -44,6 +44,7 @@ alias srn='sudo reboot'
 
 # Editors
 alias vi='vim'
+alias vib='vim -u ~/.vibare'
 
 #: Bash proper
 alias path='echo $PATH | tr -s ":" "\n"'
