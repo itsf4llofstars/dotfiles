@@ -1,31 +1,23 @@
-"###############################################################################
-"##                          VIMRC SETUP FILE                                 ##
-"###############################################################################
-"" ver: 1.1
-"" May 31, 2022
-"" ATTENTION: This vimrc file is now under version control see  ~/github/dotfiles
-""
-"" Airline on line 343 or <S-G> 126k
+"" Airline 217 G122k
 
-"###############################################################################
-"##                               GENERAL                                     ##
-"###############################################################################
-"" Set VIM not compatable with Vi, but more usefull. Not needed if a .vimrc is
-"" present. May be best if this is the first entry.
 set nocompatible
 syntax enable
 set termguicolors
 set t_Co=256
+
 set number
 set relativenumber
 set encoding=utf-8
-" set ruler
+
+set ruler
 set laststatus=2
+set showcmd
 
 set shortmess+=a
 set shortmess+=c
 set shortmess+=s
 set shortmess+=w
+
 set belloff=all
 set visualbell
 set t_vb=
@@ -37,14 +29,12 @@ set shiftwidth=4
 set smarttab
 set autoindent
 set smartindent
-
 set ignorecase
 set smartcase
+
 set clipboard^=unnamed,unnamedplus
 set scrolloff=5
 set backspace=indent,eol,start
-" set colorcolumn=80,100,120
-set signcolumn=auto
 set nowrap
 set incsearch
 set hidden
@@ -53,73 +43,55 @@ set background=dark
 set cursorline
 set cursorlineopt=number
 set lazyredraw
-set encoding=utf8
-set showmatch
-set wildmenu
 set path+=**
 set nojoinspaces
 
+filetype on
 filetype indent on
 filetype plugin on
 
+set wildmenu
 set wildmode=full
-" set wildmode=longest
-" set wildmode=longest:full
-" set wildmode=list
-" set wildmode=list:full
-" set wildmode=list:longest
-" set wildmode=list:lastused
-" set wildmode=full
-" set wildmode=full
-" set wildmode=full
-" set wildmode=list:longest,list:full
-
-"" set completeopt=menu,menuone
-" set completeopt=menuone,longest,preview
-set completeopt=menu,menuone,longest,preview,popuphidden
-" menu, menuone, longest, preview, popup, popuphidden, noinsert, noselect
+" longest longest[:|,]full list[:|,][full|longest|lastused] list:longest,list:full
+set completeopt=menuone,popuphidden
 
 "###############################################################################
 "##                                 FOLDING                                   ##
 "###############################################################################
+set foldenable
 set foldmethod=indent
-
-"" Specify for which commands open folds
-"" all,block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+set foldcolumn=4
 set foldopen="block,hor,mark,percent,quickfix,serch,tag,undo"
-
-"" Text displayed for a closed fold, EXPERIMENTAL
 set foldtext=foldtext()
 
 "###############################################################################
 "##                            BACKUP/UNDO AIDS                               ##
 "###############################################################################
-set noswapfile
+set swapfile
 set backup
 set undofile
 set backupdir=~/.vim/backups
 set undodir=~/.vim/undodir
+set directory=~/.vim/swaps
 
 "###############################################################################
 "##                              Plugins                                      ##
 "###############################################################################
 "" Run :PlugInstall
 call plug#begin('~/.vim/plugged')
-Plug 'yggdroot/indentline'
+" Plug 'yggdroot/indentline'
 Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
 Plug 'scrooloose/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'mattn/emmet-vim'
 Plug 'valloric/youcompleteme'
 call plug#end()
-
-colorscheme gruvbox
 
 "" Unsure of what Focus does.
 nnoremap ,f :NERDTreeFocus<CR>
@@ -130,8 +102,10 @@ let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
 
 "" INDENTLINE PLUGIN FORAMT
-let g:indentLine_setColors = 0
-let g:indentLine_char = '|'
+" let g:indentLine_setColors = 0
+" let g:indentLine_char = '|'
+
+colorscheme gruvbox
 
 "" Sets emmet leader to double comma
 let g:user_emmet_mode='n'
@@ -141,44 +115,35 @@ let g:user_emmet_leader_key=","
 "###############################################################################
 "##                              MAPPINGS                                     ##
 "###############################################################################
+"" NOTE TO SELF: USING forward slash JUST DOES NOT WORK!
 let mapleader=" "
+let localleader="\\"
 inoremap kj <esc>
 
-"" Creates a C style block comment
+nnoremap \e :e ~/.vimrc<CR>
+nnoremap \b :e ~/.bashrc<CR>
+
 nnoremap <leader>d 0i/*<CR><CR>*/<ESC>k
-
-"" Buffers and switching between last open buffer
-nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> <leader><leader> <C-^>
-
-"" Yanks from cursor to end of line, from anywhere in the line
+vnoremap <leader>p "_dP
+nnoremap <silent> [b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
 nnoremap <leader>yd y$
-
-"" Sets up a replacement for the word under the cursor
 nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
-
-"" Quick editing of text between (), [], {}, <>
 nnoremap <silent> <leader>ep 0f(ci(
 nnoremap <silent> <leader>eb 0f[ci[
 nnoremap <silent> <leader>er 0f{ci{
 nnoremap <silent> <leader>et 0f<ci<
-
-"" Wraps C, C++, Arduino, code with curly braces
 nnoremap <silent> <leader>b 0$a {<CR>}<Esc><S-o>
-
-"" Moves line the cursor is on up to top of page
 nnoremap <leader>a zt
-
-"" Easy move to begin/end of line
 nnoremap B ^
 nnoremap E $
 
-""" Various saves/exits
-nnoremap <leader>q :q!<CR>
-nnoremap <leader>w :wall!<CR>
+nnoremap <silent> <leader>q :q!<CR>
+nnoremap <silent> <leader>w :wall<CR>
 nnoremap <silent><leader>t :wall<CR>:term<CR>
+nnoremap <leader>z ZZ
 
-""" Opens vert/horz splits and goes to the new split
 nnoremap <silent> <leader>v :vs<CR><C-w>l
 nnoremap <silent> <leader>s :sp<CR><C-w>j
 nnoremap <C-h> <C-w>h
@@ -191,10 +156,6 @@ nnoremap <leader>uu :resize +2<CR>
 nnoremap <leader>dd :resize -2<CR>
 
 "###############################################################################
-"##                                MACROS                                     ##
-"###############################################################################
-
-"###############################################################################
 "##                                OTHERS                                     ##
 "###############################################################################
 "" Trims trailing whitespace on save
@@ -204,13 +165,6 @@ keeppatterns %s/\s\+$//e
 call winrestview(l:save)
 endfun
 
-augroup AE35_UNIT
-autocmd!
-autocmd BufWritePre * :call TrimWhitespace()
-autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
-augroup END
-
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 "###############################################################################
 "##                              Autocorrect                                  ##
@@ -219,167 +173,185 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 "" Abbreviations example
 "" Typing abrv and space changes it to implementatio
 " iabbrev abrv implementation
-abbr ture true
-abbr flase false
-abbr slef self
-abbr sefl self
-abbr pirnt print
-abbr pritn print
-abbr pirntf printf
-abbr pritnf printf
+iabbr ture true
+iabbr flase false
+iabbr slef self
+iabbr sefl self
+iabbr pirnt print
+iabbr pinrt print
+iabbr pritn print
+iabbr pirntf printf
+iabbr pinrtf printf
+iabbr pritnf printf
+
+set statusline=%m\ %F\ %y\ %c\ %l/%L
 
 "###############################################################################
 "##                              Autocommands                                 ##
 "###############################################################################
-autocmd Filetype c setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype c setlocal cin
-autocmd Filetype c setlocal cindent
-autocmd Filetype c setlocal cino=0
-autocmd Filetype c setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
-autocmd Filetype c setlocal cinw=if,else,while,do,for,switch
-autocmd Filetype cpp setlocal expandtab tabstop=4 sw=4 sts=4
-autocmd Filetype cpp setlocal cin
-autocmd Filetype cpp setlocal cindent
-autocmd Filetype cpp setlocal cino=0
-autocmd Filetype cpp setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
-autocmd Filetype cpp setlocal cinw=if,else,while,do,for,switch
-autocmd Filetype arduino setlocal expandtab tabstop=2 sw=2 sts=2
-autocmd Filetype html setlocal expandtab tabstop=2 sw=2 sts=2
-autocmd Filetype css setlocal expandtab tabstop=2 sw=2 sts=2
-autocmd Filetype make setlocal noexpandtab tabstop=4 sw=4 sts=4
+" Best when working on files may be:
+" autocmd BufNewFile,BufRead [filter] [action]
+" autocmd BufNewFile,BufRead *.txt setlocal nowrap
 
-"" Believed to save manually set folds, et. al.
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
+" au[tocmd] [group] {event} {aupat} {cmd}
+augroup AE35_UNIT
+    autocmd!
+    autocmd BufWritePre * :call TrimWhitespace()
+    autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+augroup END
+
+augroup filetypes
+    autocmd!
+    autocmd BufRead,BufNewFile,Filetype c setlocal et ts=4 sw=4 sts=4
+    autocmd BufRead,BufNewFile,Filetype c setlocal cindent
+    autocmd BufRead,BufNewFile,Filetype c setlocal cino=
+    autocmd BufRead,BufNewFile,Filetype c setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
+    autocmd BufRead,BufNewFile,Filetype c setlocal cinw=if,else,while,do,for,switch
+    autocmd BufRead,BufNewFile,Filetype cpp setlocal et ts=4 sw=4 sts=4
+    autocmd BufRead,BufNewFile,Filetype cpp setlocal cin
+    autocmd BufRead,BufNewFile,Filetype cpp setlocal cindent
+    autocmd BufRead,BufNewFile,Filetype cpp setlocal cino=0
+    autocmd BufRead,BufNewFile,Filetype cpp setlocal cink=0{,0},0),0],:,0#,!^F,o,O,e
+    autocmd BufRead,BufNewFile,Filetype cpp setlocal cinw=if,else,while,do,for,switch
+    autocmd BufRead,BufNewFile,Filetype arduino setlocal ts=2 sw=2 sts=2
+    autocmd BufNewFile,BufRead,Filetype html setlocal ts=2 sw=2 sts=2
+    autocmd BufNewFile,BufRead,Filetype css setlocal ts=2 sw=2 sts=2
+    autocmd BufNewFile,BufRead,Filetype make setlocal noet ts=4 sw=4 sts=4
+    autocmd BufNewFile,BufRead,Filetype text setlocal noet wrap tw=80 cc=+1
+    autocmd BufNewFile,BufRead,Filetype vim setlocal nowrap cc=+1 syntax=vim
+    autocmd BufEnter *.txt setlocal noet wrap tw=79 cc=+1
+augroup END
+
+augroup make_load_views
+    autocmd!
+    autocmd BufWinLeave *.* mkview
+    autocmd BufWinEnter *.* silent loadview
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup END
 
 "###############################################################################
 "##                                AIRLINE                                    ##
 "###############################################################################
-" let g:airline_theme='apprentice' " serene
+" let g:airline_theme='apprentice'
 
-
-"" USABLE THEMES
-"" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
-"" base16_default base16_greyscale base16_monokai
-"" zenburn base16_vim serene
-    "* alduin
-    "* angr
-    "* apprentice
-    "* atomic
-    "* ayu_light
-    "* ayu_mirage
-    "* ayu_dark
-    "* badwolf
-    "* base16 (|airline-theme-base16|)
-    "* base16_vim (|airline-theme-base16_vim|)
-    "* base16_shell (|airline-theme-base16_shell|)
-    "* base16_3024
-    "* base16_adwaita
-    "* base16_apathy
-    "* base16_ashes
-    "* base16_atelierdune
-    "* base16_atelierforest
-    "* base16_atelierheath
-    "* base16_atelierlakeside
-    "* base16_atelierseaside
-    "* base16_bespin
-    "* base16_brewer
-    "* base16_bright
-    "* base16_chalk
-    "* base16_classic
-    "* base16_codeschool
-    "* base16_colors
-    "* base16_default
-    "* base16_eighties
-    "* base16_embers
-    "* base16_flat
-    "* base16_google
-    "* base16_grayscale
-    "* base16_greenscreen
-    "* base16_gruvbox_dark_hard
-    "* base16_harmonic16
-    "* base16_hopscotch
-    "* base16_isotope
-    "* base16_londontube
-    "* base16_marrakesh
-    "* base16_mocha
-    "* base16_monokai
-    "* base16_nord
-    "* base16_ocean
-    "* base16_oceanicnext
-    "* base16_paraiso
-    "* base16_pop
-    "* base16_railscasts
-    "* base16_seti
-    "* base16_shapeshifter
-    "* base16_solarized
-    "* base16_spacemacs
-    "* base16_summerfruit
-    "* base16_tomorrow
-    "* base16_twilight
-    "* base16_vim
-    "* base16color
-    "* behelit
-    "* biogoo
-    "* bubblegum
-    "* cobalt2
-    "* cool
-    "* dark
-    "* dark_minimal
-    "* desertink
-    "* deus
-    "* distinguished LIKEABLE
-    "* durant LIKEABLE ?
-    "* faryfloss
-    "* fruit_punch
-    "* google_dark
-    "* google_light
-    "* hybrid
-    "* hybridline
-    "* jay
-    "* jellybeans
-    "* jet
-    "* kalisi
-    "* kolor
-    "* laederon
-    "* lessnoise
-    "* light
-    "* lighthaus LIKEABLE
-    "* lucius
-    "* luna
-    "* minimalist (|airline-theme-minimalist|)
-    "* molokai LIEKABLE
-    "* monochrome
-    "* murmur
-    "* night_owl
-    "* nord-minimal
-    "* onedark (|airline-theme-onedark|)
-    "* ouo
-    "* owo
-    "* papercolor
-    "* peaksea
-    "* powerlineish
-    "* qwq
-    "* raven
-    "* ravenpower
-    "* seagull
-    "* seoul256
-    "* serene
-    "* sierra
-    "* silver
-    "* simple
-    "* soda
-    "* sol
-    "* solarized (|airline-theme-solarized|)
-    "* solarized_flood
-    "* term
-    "* term_light
-    "* tomorrow
-    "* ubaryd
-    "* understated
-    "* violet
-    "* wombat
-    "* xtermlight
-    "* zenburn
-    "* transparent
+" alduin
+" angr
+" apprentice
+" atomic
+" ayu_light
+" ayu_mirage
+" ayu_dark
+" badwolf
+" base16 (|airline-theme-base16|)
+" base16_vim (|airline-theme-base16_vim|)
+" base16_shell (|airline-theme-base16_shell|)
+" base16_3024
+" base16_adwaita
+" base16_apathy
+" base16_ashes
+" base16_atelierdune
+" base16_atelierforest
+" base16_atelierheath
+" base16_atelierlakeside
+" base16_atelierseaside
+" base16_bespin
+" base16_brewer
+" base16_bright
+" base16_chalk
+" base16_classic
+" base16_codeschool
+" base16_colors
+" base16_default
+" base16_eighties
+" base16_embers
+" base16_flat
+" base16_google
+" base16_grayscale
+" base16_greenscreen
+" base16_gruvbox_dark_hard
+" base16_harmonic16
+" base16_hopscotch
+" base16_isotope
+" base16_londontube
+" base16_marrakesh
+" base16_mocha
+" base16_monokai
+" base16_nord
+" base16_ocean
+" base16_oceanicnext
+" base16_paraiso
+" base16_pop
+" base16_railscasts
+" base16_seti
+" base16_shapeshifter
+" base16_solarized
+" base16_spacemacs
+" base16_summerfruit
+" base16_tomorrow
+" base16_twilight
+" base16_vim
+" base16color
+" behelit
+" biogoo
+" bubblegum
+" cobalt2
+" cool
+" dark
+" dark_minimal
+" desertink
+" deus
+" distinguished LIKEABLE
+" durant LIKEABLE ?
+" faryfloss
+" fruit_punch
+" google_dark
+" google_light
+" hybrid
+" hybridline
+" jay
+" jellybeans
+" jet
+" kalisi
+" kolor
+" laederon
+" lessnoise
+" light
+" lighthaus LIKEABLE
+" lucius
+" luna
+" minimalist (|airline-theme-minimalist|)
+" molokai LIEKABLE
+" monochrome
+" murmur
+" night_owl
+" nord-minimal
+" onedark (|airline-theme-onedark|)
+" ouo
+" owo
+" papercolor
+" peaksea
+" powerlineish
+" qwq
+" raven
+" ravenpower
+" seagull
+" seoul256
+" serene
+" sierra
+" silver
+" simple
+" soda
+" sol
+" solarized (|airline-theme-solarized|)
+" solarized_flood
+" term
+" term_light
+" tomorrow
+" ubaryd
+" understated
+" violet
+" wombat
+" xtermlight
+" zenburn
+" transparent
 
