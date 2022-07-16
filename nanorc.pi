@@ -13,8 +13,8 @@
 set afterends
 set atblanks
 set autoindent
-set backup
-set backupdir "/home/pi/tmp"
+# set backup
+# set backupdir "/home/pi/temp/nanobackup"
 set boldtext
 # set bookstyle
 # set brackets ""')>]}"
@@ -25,7 +25,7 @@ set cutfromcursor
 set emptyline
 # set fill -8
 set historylog
-set indicator
+# set indicator
 # set jumpyscrolling
 set linenumbers
 set locking
@@ -35,7 +35,7 @@ set matchbrackets "(<[{)>]}"
 set multibuffer
 # set noconvert
 # set nohelp
-set nonewlines
+# set nonewlines
 # set operatingdir ""
 set positionlog
 # set preserve
@@ -51,7 +51,7 @@ set smarthome
 set softwrap
 # set speller "aspell -x -c"
 set stateflags
-set suspendable
+# set suspendable
 set tabsize 4
 set tabstospaces
 set trimblanks

@@ -1,130 +1,15 @@
-" {{{ PREFACE
-"        _
-" __   _(_)_ __ ___  _ __ ___
-" \ \ / / | '_ ` _ \| '__/ __|
-"  \ V /| | | | | | | | | (__
-" (_)_/ |_|_| |_| |_|_|  \___|
-"
-"" ver: 0.4
-"" Apr 6, 2022
-"" ATTENTION: This version is for the Raspberry Pi 4 64 bit OS
-"" Airline on line 181 or <S-G> 129k
-"" NOTE: If changing Airline check: laststatus, ruler, showmode
-" }}}
-
-" {{{ GENERAL
-set nocompatible
-syntax enable
-set termguicolors
-set t_Co=256
-set number
-set relativenumber
-set shortmess+=a
-set shortmess+=c
-set shortmess+=s
-set shortmess+=w
-
-" Airline
-set noruler
-set noshowmode
-set laststatus=1
-
-set expandtab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set smarttab
-set belloff=all
-set ignorecase
-set smartcase
-set scrolloff=5
-set clipboard^=unnamedplus
-set backspace=indent,eol,start
-set nowrap
-set incsearch
-set hidden
-set showcmd
-set ttyfast
-set background=dark
-set cursorline
-set cursorlineopt=number
-set encoding=utf8
-set splitright
-set autoindent
-set copyindent
-set smartindent
-set showmatch
-set nojoinspaces
-set lazyredraw
-set path+=**
-set nobackup
-set nowritebackup
-set noundofile
-set noswapfile
-set foldmethod=indent
-set foldtext=foldtext()
-set wildmenu
-set wildmode=list:longest
-set completeopt=longest,menuone
-" }}}
-
-" {{{ PLUGINS
-call plug#begin('~/.vim/plugged')
-Plug 'yggdroot/indentline'
-Plug 'nvie/vim-flake8'
-Plug 'flazz/vim-colorschemes'
-" Plug 'gruvbox-community/gruvbox'
-Plug 'scrooloose/nerdtree'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'mattn/emmet-vim'
-" Plug 'valloric/youcompleteme'
-call plug#end()
-
+syntax on
+filetype on
 colorscheme deus
-" }}}
 
-" {{{ PLUGINS SETTINGS
-" nnoremap ,f :NERDTreeFocus<CR>
-nnoremap ,f :NERDTree<CR>
-let g:NERDTreeQuitOnOpen=1
-let g:NERDTreeShowHidden=1
-let g:NERDTreeDirArrowExpandable="+"
-let g:NERDTreeDirArrowCollapsible="~"
+set shortmess+=a
+set shortmess+=s
+set shortmess+=F
+set shortmess+=W
 
-let g:indentLine_setColors = 0
-let g:indentLine_char = '|'
-
-let g:user_emmet_mode='n'
-let g:user_emmet_mode='i'
-let g:user_emmet_leader_key=","
-" }}}
-
-" {{{ MAPPINGS
 let mapleader=" "
+let maplocalleader="\\"
 inoremap kj <esc>
-
-nnoremap <silent> <leader><leader> <C-^>
-
-nnoremap <leader>yd y$
-nnoremap <leader>r :%s/\<<c-r><c-w>\>//g<left><left>
-nnoremap <leader>* :USE LEADER r
-
-nnoremap <silent> <leader>ep 0f(ci(
-nnoremap <silent> <leader>eb 0f[ci[
-nnoremap <silent> <leader>er 0f{ci{
-
-nnoremap <silent> <leader>b 0A<space>{<CR><backspace>}<Esc><S-o>
-
-nnoremap <leader>a zt
-
-nnoremap B ^
-nnoremap E $
-
-nnoremap <silent> <leader>t :wall!<CR>:term<CR>
 
 nnoremap <silent> <leader>v :vs<CR><C-w>l
 nnoremap <silent> <leader>s :sp<CR><C-w>j
@@ -132,173 +17,20 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap <leader>ll :vertical resize +2<CR>
-nnoremap <leader>rr :vertical resize -2<CR>
-nnoremap <leader>uu :resize +2<CR>
-nnoremap <leader>dd :resize -2<CR>
-" }}}
 
-" {{{ FUNCTIONS AND AUTOCMDS
-fun! TrimWhitespace()
-let l:save = winsaveview()
-keeppatterns %s/\s\+$//e
-call winrestview(l:save)
-endfun
-
-augroup AE35_UNIT
-autocmd!
-autocmd BufWritePre * :call TrimWhitespace()
-autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
+augroup setup
+au!
+au FileType vim setlocal nowrap et nu rnu
 augroup END
 
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+augroup pythonfiles
+au!
+au FileType python setlocal ts=4 sts=4 sw=4 tw=0 nowrap et fdm=indent fdc=1 nu rnu ai si
+au BufEnter *.py setlocal cc=40,50
+au BufWinLeave,BufLeave *.py :write
+augroup END
 
-autocmd Filetype html setlocal tabstop=2 sw=2 sts=2
-autocmd Filetype c setlocal cindent cino
-autocmd Filetype text setlocal wrap textwidth=79
-
-autocmd BufWinLeave *.* mkview
-autocmd BufWinEnter *.* silent loadview
-" }}}
-
-" {{{ MACROS
-"" Set marker for visual block lines in Python
-let @p="mamsV'aO0i# {{{'ao0i# }}}'sk$"
-" Change Airline theme
-let @t="0wye180ggf'pldt':w"
-" Changes colorscheme
-let @b=":colorscheme d"
-" }}}
-
-" {{{ FILETYPE
-filetype on
-filetype indent on
-filetype plugin on
-" }}}
-
-" {{{ AIRLINE
-let g:airline_theme='deus'
-
-" {{{ AIRLINE THEME
-" alduin
-" angr
-" apprentice
-" ayu_light
-" ayu_mirage
-" ayu_dark
-" badwolf
-" base16 (|airline-theme-base16|)
-" base16_vim (|airline-theme-base16_vim|)
-" base16_shell (|airline-theme-base16_shell|)
-" base16_3024
-" base16_adwaita
-" base16_apathy
-" base16_ashes
-" base16_atelierdune
-" base16_atelierforest
-" base16_atelierheath
-" base16_atelierlakeside
-" base16_atelierseaside
-" base16_bespin
-" base16_brewer
-" base16_bright
-" base16_chalk
-" base16_classic
-" base16_codeschool
-" base16_colors
-" base16_default
-" base16_eighties
-" base16_embers
-" base16_flat
-" base16_google
-" base16_grayscale
-" base16_greenscreen
-" base16_gruvbox_dark_hard
-" base16_harmonic16
-" base16_hopscotch
-" base16_isotope
-" base16_londontube
-" base16_marrakesh
-" base16_mocha
-" base16_monokai
-" base16_nord
-" base16_ocean
-" base16_oceanicnext
-" base16_paraiso
-" base16_pop
-" base16_railscasts
-" base16_seti
-" base16_shapeshifter
-" base16_solarized
-" base16_spacemacs
-" base16_summerfruit
-" base16_tomorrow
-" base16_twilight
-" base16_vim
-" base16color
-" behelit
-" biogoo
-" bubblegum
-" cobalt2
-" cool
-" dark
-" dark_minimal
-" desertink
-" deus
-" distinguished LIKEABLE
-" durant LIKEABLE ?
-" faryfloss
-" fruit_punch
-" google_dark
-" google_light
-" hybrid
-" hybridline
-" jay
-" jellybeans
-" jet
-" kalisi ?
-" kolor
-" laederon
-" lessnoise
-" light
-" lighthaus LIKEABLE
-" lucius
-" luna
-" minimalist (|airline-theme-minimalist|)
-" molokai LIEKABLE
-" monochrome
-" murmur
-" night_owl
-" nord-minimal
-" onedark (|airline-theme-onedark|)
-" ouo
-" owo
-" papercolor
-" peaksea
-" powerlineish
-" qwq
-" raven
-" ravenpower
-" seagull
-" seoul256
-" serene
-" sierra
-" silver
-" simple
-" soda
-" sol
-" solarized (|airline-theme-solarized|)
-" solarized_flood
-" term
-" term_light
-" tomorrow
-" ubaryd
-" understated
-" violet
-" wombat
-" xtermlight
-" zenburn
-" transparent
-" }}}
-" }}}
-
+augroup textfiles
+au!
+au FileType text setlocal ts=4 sts=4 sw=4 tw=79 cc=+1,+21
+augroup END

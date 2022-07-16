@@ -6,11 +6,12 @@
 #
 # FOR RASPBERRY PI 4
 #
-# ~/.bashrc: executed by bash(1) for non-login shells. # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 #
 # This bashrc file is under version control
-# 2022 ver: 0.1
+# 2022 ver: 0.3
 
 function get_branch() {
     if [ -d .git ]; then
@@ -20,7 +21,10 @@ function get_branch() {
 
 function bash_prompt() {
     ## Original from freecodecamp
-    PS1='${debian_chroot:+($debian_chroot)}'${grn}'$(get_branch)'${blu}'\W \$ '${clr}
+    # PS1='${debian_chroot:+($debian_chroot)}'${grn}'$(get_branch)'${blu}'\W \$ '${clr}
+
+    # Master prompt: Used from the Pi Desktop Environment
+    PS1=${grn}'[pi] '${cyn}'$(get_branch)'${blu}'\w $ '${clr}
 }
 
 function hg() {
@@ -28,13 +32,13 @@ function hg() {
 }
 
 function get_info() {
+    clear
     printf "\n"
-    printf "\t%s\n" "IP ADDR: $(curl ifconfig.me)"
-    printf "\t%s\n" "DATE: $(date)"
+    # printf "\t%s\n" "IP ADDR: $(curl ifconfig.me)"
+    printf "\n\t%s\n" "DATE: $(date)"
     printf "\t%s\n" "UPTIME: $(uptime -p)"
     printf "\t%s\n" "KERNEL: $(uname -rms)"
-    printf "\t%s\n" "MEMORY: $(free -m -h | awk '/Mem/{print $3" "$2}')"
-    printf "\n"
+    printf "\t%s\n" "MEMORY: $(free -m -h | awk '/Mem/{print $3" "$2}')\n"
 }
 
 # If not running interactively, don't do anything
@@ -47,7 +51,7 @@ esac
 blk="\[\033[01;30m\]"
 red="\[\033[01;31m\]"
 grn="\[\033[01;32m\]"
-ylw="\[\033[00;33m\]"
+ylw="\[\033[01;33m\]"
 blu="\[\033[01;34m\]"
 pur="\[\033[01;35m\]"
 cyn="\[\033[01;36m\]"
@@ -133,12 +137,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -165,11 +164,6 @@ PATH=$PATH:"$HOME"/.local/bin
 
 . /usr/lib/mc/mc.sh
 bash_prompt
+clear
 
-# PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\w\a\]$PS1"
-# PS1="pi: "
-# PS1="\d \A "
-# PS1="\W \A $ "
-# 33 or 38
-# PS1="\e[0;33m[\A] \w \$ \e[0m"
-# PS1="\e[1;32m\A\e[0m\e[0;33m \w\e[0m\e[1;34m $ \e[0m"
+. "$HOME/.cargo/env"
