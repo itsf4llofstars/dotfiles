@@ -12,25 +12,23 @@
 "" Airline on <S-g> 126k
 "" NOTE: If changing Airline check: laststatus, ruler, showmode
 
+source $VIMRUNTIME/defaults.vim
+
 set nocompatible
 syntax on
-
-if $TERM == "xterm-256color"
-    set termguicolors
-    set guioptions="!a"
-    set t_Co=256
-endif
+set termguicolors
+set t_Co=256
 
 set number
-set numberwidth=1
 set relativenumber
+
 set shortmess+=a
 set shortmess+=c
 set shortmess+=s
+
 set belloff=all
 set autochdir
-" set statusline=%m\ %r%{getcwd()}%h/%f\ \ \ %l:%L\ \ %c
-set statusline=%m%r%h%w\ %F\ %y\ %q\ %k\ \ %c\ [%l/%L]\ %p%%\ (%n)
+set autoread
 
 set expandtab
 set tabstop=4
@@ -41,11 +39,10 @@ set smarttab
 
 set ignorecase
 set smartcase
-set clipboard^=unnamed,unnamedplus
 set scrolloff=5
 set backspace=indent,eol,start
-set colorcolumn=80,100
-set signcolumn=number
+set colorcolumn=80
+set signcolumn=no
 set nowrap
 set incsearch
 set hidden
@@ -53,7 +50,7 @@ set showcmd
 set ttyfast
 set background=dark
 set cursorline
-set cursorlineopt=number
+set cursorlineopt=both
 set lazyredraw
 
 set splitright
@@ -77,75 +74,49 @@ set wildmenu
 set path+=**
 
 set laststatus=2
-set ruler
-set showmode
+set noruler
+set noshowmode
 
-set foldclose=""
-set foldcolumn=2
-set foldenable
-set foldexpr="0"
-set foldignore=#
-set foldlevel=5
-set foldlevelstart=5
-set foldmethod=indent
-set foldminlines=0
-set foldnestmax=20
-set foldopen="block,hor,mark,percent,quickfix,serch,tag,undo"
-set foldtext=foldtext()
+set foldcolumn=1
 
-if !isdirectory($HOME . '/.vim/backups')
-    call mkdir($HOME . '/.vim/backups', 'p')
-endif
-set backupdir=~/.vim/backups
-set backup
-
-if !isdirectory($HOME . '/.vim/swaps')
-    call mkdir($HOME . '/.vim/swaps', 'p')
-endif
-set directory=~/.vim/swaps
-set swapfile
-
-if has('persistent_undo')
-    if !isdirectory($HOME . '/.vim/undodir')
-        call mkdir($HOME . '/.vim/undodir', 'p')
-    endif
-    set undodir=~/.vim/undodir
-    set undofile
-endif
+set nobackup
+set nowritebackup
+set noundofile
+set noswapfile
 
 """ "" Run :PlugInstall
 call plug#begin('~/.vim/plugged')
-" Plug 'yggdroot/indentline'
-" Plug 'nvie/vim-flake8'
+Plug 'yggdroot/indentline'
+Plug 'nvie/vim-flake8'
 " Plug 'flazz/vim-colorschemes'
 Plug 'gruvbox-community/gruvbox'
-" Plug 'scrooloose/nerdtree'
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-" Plug 'tpope/vim-fugitive'
-" Plug 'airblade/vim-gitgutter'
-" Plug 'christoomey/vim-tmux-navigator'
-" Plug 'mattn/emmet-vim'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'mattn/emmet-vim'
 " Plug 'valloric/youcompleteme'
 call plug#end()
 
 colorscheme gruvbox
 
 " nnoremap ,f :NERDTreeFocus<CR>
-" nnoremap ,f :NERDTree<CR>
-" let g:NERDTreeQuitOnOpen=1
-" let g:NERDTreeShowHidden=1
-" let g:NERDTreeDirArrowExpandable="+"
-" let g:NERDTreeDirArrowCollapsible="~"
+nnoremap ,f :NERDTree<CR>
+let g:NERDTreeQuitOnOpen=1
+let g:NERDTreeShowHidden=1
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
 
 "" INDENTLINE PLUGIN FORAMT
-" let g:indentLine_setColors = 0
-" let g:indentLine_char = '|'
+let g:indentLine_setColors = 0
+let g:indentLine_char = '|'
 
 "" Emmet plug leader change
-" let g:user_emmet_mode='n'
-" let g:user_emmet_mode='i'
-" let g:user_emmet_leader_key=","
+let g:user_emmet_mode='n'
+let g:user_emmet_mode='i'
+let g:user_emmet_leader_key=","
 
 let mapleader=" "
 let maplocalleader="\\"
@@ -154,8 +125,7 @@ inoremap kj <esc>
 " Run delete in insert mode
 inoremap <c-d> <Cmd>delete<cr>
 
-nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> <leader>bn :bnext<CR>
 nnoremap <silent> <leader><leader> <C-^>
 
 nnoremap <leader>yd y$
@@ -170,7 +140,7 @@ nnoremap E $
 
 nnoremap <leader>w :write<CR>
 nnoremap <leader>q :quit!<CR>
-nnoremap <leader>z ZZ
+nnoremap <leader>z :wq<CR>
 
 nnoremap <silent> <leader>v :vs<CR><C-w>l
 nnoremap <silent> <leader>s :sp<CR><C-w>j
@@ -191,65 +161,57 @@ call winrestview(l:save)
 endfun
 
 " Auto Commands
-augroup general
+augroup begin
   autocmd!
-  autocmd BufWritePre * :call TrimWhitespace()
-  autocmd BufWritePre * mkview
-  autocmd BufReadPost * loadview
+  autocmd FileType * loadview
+  autocmd BufWritePre,BufReadPost * :call TrimWhitespace()
   autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
   autocmd InsertEnter * setlocal norelativenumber
   autocmd InsertLeave * setlocal relativenumber
 augroup END
 
-augroup filetype_vim
+augroup vimfiles
   autocmd!
-  autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2 textwidth=0 nowrap expandtab foldmethod=marker
+  autocmd FileType vim setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    \ textwidth=0 nowrap expandtab
+  autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
   autocmd Filetype vim nnoremap <buffer> <localleader>c I" <esc>
 augroup END
 
-augroup vimrc
-  autocmd!
-  autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
-augroup END
-
-augroup filetype_text
+augroup textfiles
   autocmd!
   autocmd FileType text setlocal textwidth=79 wrap noexpandtab
-augroup END
-
-augroup buffers_txt
-  autocmd!
   autocmd BufRead,BufNewFile *.txt :write
 augroup END
 
-augroup filetype_html
+augroup htmlfiles
   autocmd!
-  autocmd Filetype html,css setlocal tabstop=2 softtabstop=2 shiftwidth=2 textwidth=0 nowrap expandtab foldmethod=manual
+  autocmd Filetype html,css setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    \ textwidth=0 nowrap expandtab
   autocmd Filetype html nnoremap <buffer> <localleader>f Vatzf
-augroup END
-
-augroup buffer_html
-  autocmd!
   autocmd BufWritePre,BufRead *.html :normal gg=G
 augroup END
 
-augroup filetype_py
+augroup pythonfiles
   autocmd!
+  autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4
+    \ textwidth=0 nowrap expandtab
   autocmd FileType python nnoremap <buffer> <localleader>c I# <esc>
-  autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=0 nowrap expandtab
-  autocmd FileType python :iabbrev <buffer> iff if:<left>
-  autocmd FileType python let @f="mamsV'aO# {{{€ýa'ao# }}}€ýa'sk$"
 augroup END
 
-augroup filetype_c_cpp
+augroup c_cppfiles
   autocmd!
-  autocmd FileType c,cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=0 nowrap expandtab
+  autocmd FileType c,cpp setlocal tabstop=4 softtabstop=4 shiftwidth=4
+    \ textwidth=0 nowrap expandtab
   autocmd FileType c,cpp nnoremap <buffer> <localleader>c I// <esc>
-  autocmd Filetype c,cpp :iabbrev <buffer> iff if () {<cr><cr>}<esc>2k3l
-  autocmd FileType c,cpp let @f="mamsV'aO// {{{€ýa'ao// }}}€ýa'sk$"
 augroup END
 
-" let g:airline_theme='lessnoise' " serene
+augroup done
+    autocmd!
+    autocmd BufWritePre * mkview
+augroup END
+
+let g:airline_theme='lessnoise' " serene
 
 "" USABLE THEMES
 "" apprentice ayu_mirage badwolf base16_brewer base16_chalk base16_classic
