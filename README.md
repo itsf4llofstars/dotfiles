@@ -2,4 +2,4 @@
 
 ## Notes
 
-See the dotfiles_old repository references are needed
+See the dotfiles_old repository if references are needed.
