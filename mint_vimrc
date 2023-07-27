@@ -1,0 +1,431 @@
+": VIMRC
+
+": FUNCTION
+function GetLine()
+  if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
+endfunction
+
+function ShowWhitespace()
+  match ErrorMsg '\s\+$'
+endfunction
+
+function Indent()
+  let l:view = winsaveview()
+  :normal! gg=G
+  call winrestview(l:view)
+  " :normal! mpHmogg=G'ozt`p
+endfunction
+
+function DeleteWs() abort
+  normal mz
+  %s/\v\s+$//ge
+  normal `z
+endfunc
+
+function TextFiles()
+  let &tabstop = 8
+  let &softtabstop = 4
+  let &shiftwidth = 8
+  let &textwidth = 78
+  let &expandtab = 0
+  let &wrap = 1
+  let &colorcolumn = 80
+  let &foldenable = 0
+  let &foldcolumn = 0
+  let &signcolumn = 'no'
+  let &spelllang = 'en_us'
+  let &spell = 0
+endfunction
+
+": SETTINGS
+filetype indent plugin on
+syntax on
+set backspace=indent,eol,start
+set background=dark
+set encoding=utf-8 " COC
+set t_Co=256
+
+set tabstop=4
+set shiftwidth=4
+set textwidth=0
+set expandtab
+set nowrap
+set number
+set relativenumber
+
+set autoindent
+set autochdir
+set autoread
+set hidden
+set colorcolumn=80
+set cursorline
+set cursorlineopt=number
+set ignorecase
+set smartcase
+set incsearch
+set foldlevel=4
+set ruler
+set foldlevelstart=4
+set signcolumn=yes " COC
+set laststatus=0
+set showcmd
+set showmatch
+set scrolloff=5
+set path+=**
+set timeoutlen=500
+
+set completeopt=menuone,popup
+set wildmode=list:longest,full
+
+set undodir=~/.vim/undodir
+set directory=~/.vim/backup
+set backupdir=~/.vim/backup
+set undofile
+set nobackup " COC
+set writebackup " COC
+set swapfile
+set updatetime=300 " COC
+
+let mapleader=" "
+let maplocalleader="\\"
+": SETTINGS
+
+": ALE
+let g:ale_enabled = 1
+let g:ale_cursor_detail = 0 " 1 Gives the popup
+let g:ale_echo_cursor = 1 " Status line message
+let g:ale_echo_msg_error_str = 'ERR' " Used with severity in msg_format
+let g:ale_echo_msg_info_str = 'INF' " Used with severity in msg_format
+let g:ale_echo_msg_warning_str = 'WARN' " Used with severity in msg_format
+let g:ale_echo_msg_log = 'LOG' " Used with severity in msg_format
+let g:ale_echo_msg_format = '%type% [%code%] %s'
+let g:ale_exclude_highlights = ['line too long']
+let g:ale_fix_on_save = 1
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let g:ale_hover_cursor = 1
+let g:ale_hover_to_preview = 0 " dft=0 Can't see what this does
+let g:ale_hover_to_floating_preview = 0 " dft=0 Can't see what this does
+let g:ale_linters_explicit = 1
+let g:ale_lsp_suggestions = 0 " dft=0 May want to try this on/off
+let g:ale_max_signs = 10 " dft=-1 :0 is all off, does not seem to work
+let g:ale_popup_menu_enabled = 1
+let g:ale_set_signs = 1
+let g:ale_set_highlights = 1
+let g:ale_exclude_hightlights = [
+      \ 'docstring',
+      \ 'unused argument',
+      \ 'import-error',
+      \ 'inconsistent-return-statements'
+      \ ]
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = 'E' " dft='>>'
+let g:ale_sign_warning = 'W' " dft='--'
+let g:ale_sign_highlight_linenrs = 0 " dft=0 Just to see if this does anything
+let g:ale_virtualtext_cursor = 1 " dft='all', 'all:1', 'current:2' 'disabled:0'
+let g:ale_virtualtext_prefix = '%comment% %type%:'
+let g:ale_detail_to_floating_preview = 1
+let g:ale_sign_column_always = 1
+
+": PLUGINS
+call plug#begin()
+Plug 'nanotech/jellybeans.vim'
+Plug 'Yggdroot/indentLine'
+Plug 'liuchengxu/vim-which-key'
+Plug 'tpope/vim-fugitive'
+Plug 'mattn/emmet-vim'
+Plug 'mbbill/undotree'
+Plug 'itchyny/lightline.vim'
+Plug 'dense-analysis/ale'
+Plug 'easymotion/vim-easymotion'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+call plug#end()
+
+": ALE
+": 'rust': ['analyzer', 'rustc', 'cargo'],
+": 'python': ['pylint', 'isort', 'mypy', 'pyright', 'ruff'],
+let g:ale_linters = {
+      \ 'python': ['pylint'],
+      \ 'rust': ['analyzer'],
+      \ 'vim': [''],
+      \ 'cpp': ['clangd', 'cpplint'],
+      \ 'c': ['clangd', 'cpplint'],
+      \ 'json': ['eslint'],
+      \ }
+let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': ['autopep8', 'isort'],
+      \ 'rust': ['rustfmt'],
+      \ 'cpp': ['clang-format'],
+      \ 'c': ['clang-format'],
+      \ 'json': ['prettier'],
+      \}
+
+let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
+
+": COC
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <c-@> coc#refresh()
+
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+nmap <leader>rn <Plug>(coc-rename)
+" nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+" xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+" nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+
+" let g:jellybeans_overrides = {
+"       \    'background': { 'guibg': '040404' },
+"       \    'Todo': { 'guifg': '303030', 'guibg': 'f0f000',
+"       \              'ctermfg': 'Black', 'ctermbg': 'Yellow',
+"       \              'attr': 'bold' },
+"       \    'Comment': { 'guifg': 'ff0000' },
+"       \}
+let g:jellybeans_overrides = {
+      \    'background': { 'ctermbg': 'none', '256ctermbg': 'none' },
+      \    'Todo': { 'guifg': '303030', 'guibg': 'f0f000',
+      \              'ctermfg': 'Black', 'ctermbg': 'Yellow',
+      \              'attr': 'bold' },
+      \    'Comment': { 'guifg': '555555' },
+      \}
+
+if has('termguicolors') && &termguicolors
+  let g:jellyeans_overrides['background']['guibg'] = 'none'
+endif
+
+": COLORSCHEME
+colorscheme retrobox
+
+": EASYMOTION
+nnoremap <leader>mf <Plug>(easymotion-bd-f)
+nnoremap <leader>mf <Plug>(easymotion-overwin-f)
+nnoremap <leader>ms <Plug>(easymotion-bd-s)
+nnoremap <leader>ms <Plug>(easymotion-overwin-f2)
+nnoremap <leader>ml <plug>(easymotion-bd-jk)
+nnoremap <leader>ml <Plug>(easymotion-overwin-line)
+nnoremap <leader>mw <Plug>(easymotion-bd-w)
+nnoremap <leader>mw <Plug>(easymotion-overwin-w)
+
+nnoremap <silent><leader>ga :Git add .<cr>
+nnoremap <silent><leader>gc :Git commit<cr>
+
+": Which Key
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :WhichKey '\'<CR>
+nnoremap <silent> , :WhichKey ','<CR>
+
+": Emmet
+if &filetype == 'html' || &filetype == 'css'
+  let g:user_emmet_leader_key=','
+  let g:user_emmet_mode='inv'
+endif
+
+": ¦, ┆, │, ⎸, ▏
+" let g:indentLine_char = '▏'
+" let g:indentLine_char = '┊'
+let g:indentLine_char_list = ['▏', '▏', '▏', '┊']
+let g:indentLine_setColors = 0
+let g:indentLine_defaultGroup = 'SpecialKey'
+let g:indentLine_concealcursor = 'inc'
+let g:indentLine_conceallevel = 2
+" let g:indentLine_setConceal = 0
+let g:vim_json_conceal = 0
+let g:markdown_syntax_conceal = 0
+
+let g:UltiSnipsExpandTrigger='<TAB>'
+let g:UltiSnipsJumpForwardTrigger='<TAB>'
+let g:UltiSnipsJumpBackwardTrigger='<S-TAB>'
+
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ],
+        \ [ 'currentfunction', 'readonly', 'filename', 'modified' ] ]
+        \ },
+        \ }
+
+": UNDOTREE
+nnoremap <leader>ut :UndotreeToggle<cr>
+
+": MAPPINGS
+inoremap kj <ESC>
+vnoremap kj <ESC>
+
+nnoremap <cr> <C-g>
+nnoremap <leader>w :write<cr>
+nnoremap <leader>q ZQ
+nnoremap <leader>z ZZ
+nnoremap <leader>o :edit .<cr>
+nnoremap <localleader>e :edit $MYVIMRC<cr>
+nnoremap <localleader>ve :vsplit<cr><C-w>l:edit $MYVIMRC<cr>
+nnoremap <localleader>s mp:source $MYVIMRC<cr>:do FileType<cr>:do BufEnter<cr>`p
+nnoremap <leader>t :shell<cr>
+
+nnoremap <localleader>x :colorscheme s
+nnoremap <leader>nb :bnext<cr>
+nnoremap <leader>pb :bprevious<cr>
+nnoremap <S-b> _
+nnoremap <S-e> $
+nnoremap <S-y> y$
+nnoremap <F8> @
+nnoremap <F9> @@
+nnoremap <leader>a zt
+nnoremap <leader>bn :bnext<Cr>
+nnoremap <leader>bp :bprev<cr>
+nnoremap w W
+nnoremap n nzt
+nnoremap N Nzt
+nnoremap ' `
+nnoremap '' ``
+vnoremap J :m '>+1<cr>gv=gv
+vnoremap K :m '<-2<cr>gv=gv
+vnoremap < <gv
+vnoremap > >gv
+nnoremap <leader>* :%s/\<<C-r><C-w>\>//gI<left><left><left>
+nnoremap <leader>& :%s/\<<C-r><C-w>\>//gIc<left><left><left><left>
+
+nnoremap <silent> <leader>to :tabnew<cr>
+nnoremap <silent> <leader>tn :tabnext<cr>
+nnoremap <silent> <leader>tp :tabprevious<cr>
+nnoremap <silent> <leader>tc :tabclose<cr>
+
+nnoremap <leader>v :vsplit<cr><C-w>l
+nnoremap <leader>s :split<cr><C-w>j
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <leader>kk :vertical resize+5<cr>
+nnoremap <leader>ll :resize+5<cr>
+
+augroup ALL
+  au BufEnter * call GetLine()
+  au BufEnter * call ShowWhitespace()
+  au BufWritePre * call DeleteWs()
+  au InsertEnter * silent set nornu
+  au InsertLeave * silent set rnu
+augroup END
+
+augroup VIM
+  au!
+  au FileType vim silent setlocal ts=2 sw=2 fdm=indent
+  au BufWinEnter,BufWritePre $MYVIMRC,*.vim call Indent()
+augroup END
+
+augroup PYTHON
+  au!
+  au FileType python silent setlocal fdm=indent fdc=0
+  au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<cr>
+  au BufEnter *.py nnoremap <buffer> <F6> :!black %<cr>
+  au BufEnter *.py nnoremap <buffer> <F7> :!pylint %<cr>
+  au BufEnter *.py let @u=':vsplitl:edit ~/.vim/plugged/vim-snippets/UltiSnips/python_snips.txt:vertical resize -50h'
+  " au BufWritePre *.py call Indent()
+augroup END
+
+augroup C
+  au!
+  au FileType c silent setlocal ts=8 sw=8 fdm=indent cc=80 noai nosi noci cin cino=ln,c2
+  au BufEnter *.c nnoremap <buffer> <leader>mm :!make main<cr>
+  au BufEnter *.c nnoremap <buffer> <F5> :!./main<cr>
+  au BufEnter *.c,*.h nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
+  au BufWritePre *.c,*.h call Indent()
+augroup END
+
+augroup CPP
+  au!
+  au FileType cpp silent setlocal ts=4 sw=4 fdm=indent cc=80 noai nosi noci cin cino=ln,c2
+  au BufEnter *.cpp nnoremap <buffer> <leader>mm :!make main<cr>
+  au BufEnter *.cpp nnoremap <buffer> <F5> :!./main<cr>
+  au BufEnter *.cpp,*.h nnoremap <buffer> <leader>b o{<cr>}<esc>ko
+  au BufWritePre *.cpp,*.h call Indent()
+augroup END
+
+augroup RUST
+  au!
+  au FileType rust setlocal ts=4 sw=4 fdm=indent cc=80 noai nosi noci cin
+  au BufEnter *.rs nnoremap <buffer> <leader>mm :!clear && cargo check<cr>
+  au BufEnter *.rs nnoremap <buffer> <F5> :!clear && cargo run<cr>
+  au BufEnter *.rs nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
+  au BufWritePre *.rs call Indent()
+augroup END
+
+augroup HTML_CSS
+  au!
+  au FileType html setlocal ts=2 sw=2 cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
+  au FileType html,css nnoremap <buffer> <localleader>f Vatzf
+  au BufRead,BufEnter *.html nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
+  au BufRead,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
+  au BufEnter *.html,*.css nnoremap <buffer> <leader>d :!ud u<cr><cr>
+  au CursorHold *.html,*.css write
+augroup END
+
+augroup TEXT
+  au!
+  au BufWinEnter *.txt call TextFiles()
+  au BufEnter *.txt let @u=':vsplitl:edit ~/.vim/plugged/vim-snippets/UltiSnips/python_snips.txt:vertical resize -50h'
+augroup END
+
+augroup JSON
+  au!
+  au FileType json syntax match Comment +\/\/.\+$+
+augroup END
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s)
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  "" autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+augroup ABBREV
+  au!
+  au BufEnter * iabbrev <buffer> ifos itsf4llofstars
+  au BufEnter * iabbrev <buffer> emal irooted4hal@mailfence.com
+  au BufEnter * iabbrev <buffer> pirnt print
+  au BufEnter * iabbrev <buffer> prnit print
+  au BufEnter * iabbrev <buffer> pritn print
+  au BufEnter * iabbrev <buffer> prtn print
+  au BufEnter * iabbrev <buffer> prnt print
+  au BufEnter * iabbrev <buffer> slef self
+  au BufEnter * iabbrev <buffer> sefl self
+  au BufEnter * iabbrev <buffer> sfel self
+  au BufEnter * iabbrev <buffer> sfle self
+  au BufEnter * iabbrev <buffer> ptah path
+  au BufEnter * iabbrev <buffer> paht path
+  au BufEnter * iabbrev <buffer> phat path
+  au BufEnter * iabbrev <buffer> phta path
+  au BufEnter * iabbrev <buffer> tow two
+augroup END
+
+augroup OPERATOR
+  au!
+  au BufRead,BufEnter * :onoremap <buffer> it :<c-u>normal! f<vi<<cr>
+  au BufRead,BufEnter * :onoremap <buffer> ir :<c-u>normal! f{vi{<cr>
+  au BufRead,BufEnter * :onoremap <buffer> ip :<c-u>normal! f(vi(<cr>
+  au BufRead,BufEnter * :onoremap <buffer> ib :<c-u>normal! f[vi[<cr>
+augroup END

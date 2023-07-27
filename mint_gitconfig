@@ -1,0 +1,35 @@
+[user]
+	name = itsf4llofstars
+	email = irooted4hal@mailfence.com
+[core]
+	editor = vim
+[init]
+	defaultBranch = main
+[merge]
+	ff = false
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[cola]
+	spellcheck = false
+	tabwidth = 4
+	textwidth = 80
+	fontdiff = Monospace,11,-1,5,50,0,0,0,0,0
+	expandtab = true
+	theme = default
+[gui]
+	editor = gvim
+[alias]
+	ac = commit -am
+	ll = log --oneline --decorate --graph --all
+	la = log --oneline --decorate --all
+	lo = log -1
+	st = status
+	sw = switch
+	br = branch
+[commit]
+	gpgSign = false
+
+# vim:ft=gitconfig:ts=4:sts=4:sw=4:noet:

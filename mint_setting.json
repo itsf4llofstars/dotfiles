@@ -1,0 +1,149 @@
+{
+  "workbench.colorCustomizations": {
+    "editorError.foreground": "#00000000",
+    "editorWarning.foreground": "#00000000",
+    "editorInfo.foreground": "#00000000"
+  },
+  "workbench.preferredDarkColorTheme": "Monokai Dimmed",
+  "workbench.startupEditor": "none",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Vim Dark Hard",
+  "editor.fontFamily": "Liberation Mono Bold",
+  "editor.fontSize": 14,
+  "editor.fontWeight": "bold",
+  "editor.minimap.enabled": false,
+  "editor.formatOnSave": true,
+  "terminal.integrated.fontFamily": "Liberation Mono Bold",
+  "terminal.integrated.fontSize": 16,
+  "prettier.enable": true,
+  "prettier.singleQuote": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "liveServer.settings.donotShowInfoMsg": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "search.showLineNumbers": true,
+  "evenBetterToml.formatter.allowedBlankLines": 5,
+  "evenBetterToml.formatter.columnWidth": 80,
+  "python.linting.enabled": true,
+  "python.linting.lintOnSave": true,
+  "python.linting.ignorePatterns": ["**/site-packages/**/*.py", ".vscode/*.py"],
+  // "pylint.args": ["--rcfile=/home/bumper/python/pylint.conf"],
+  // "pylint.showNotifications": "onError",
+  "python.formatting.provider": "autopep8",
+  "python.formatting.autopep8Path": "/usr/bin/autopep8",
+  "vim.leader": "<space>",
+  "vim.cursorStylePerMode.insert": "block",
+  "vim.cursorStylePerMode.normal": "block",
+  "vim.cursorStylePerMode.replace": "block",
+  "vim.cursorStylePerMode.visual": "block",
+  "vim.cursorStylePerMode.visualblock": "block",
+  "vim.cursorStylePerMode.visualline": "block",
+  "vim.highlightedyank.textColor": "#00FF00",
+  "vim.textwidth": 80,
+  "vim.easymotion": false,
+  "vim.enableNeovim": false,
+  "vim.vimrc.enable": true,
+  "vim.useCtrlKeys": true,
+  "vim.handleKeys": {
+    "<C-s>": false
+  },
+  "vim.highlightedyank.enable": true,
+  "vim.highlightedyank.color": "rgba(0, 255, 0, 0.5)",
+  "vim.hlsearch": false,
+  "vim.incsearch": true,
+  "vim.joinspaces": false,
+  "vim.timeout": 1000,
+  "vim.useSystemClipboard": true,
+  "vim.ignorecase": true,
+  "vim.inccommand": "replace",
+  "vim.matchpairs": "(:),{:},[:],<:>",
+  "vim.showmodename": true,
+  "vim.showcmd": true,
+  "vim.showMarksInGutter": true,
+  "vim.smartcase": true,
+  "vim.smartRelativeLine": true,
+  "vim.statusBarColorControl": false,
+  "vim.normalModeKeyBindings": [],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "w"],
+      "commands": ["workbench.action.files.save"]
+    },
+    {
+      "before": ["<leader>", "a"],
+      "commands": ["z", "t"]
+    },
+    {
+      "before": ["Y"],
+      "after": ["y", "$"]
+    },
+    {
+      "before": ["B"],
+      "after": ["_"]
+    },
+    {
+      "before": ["E"],
+      "after": ["$"]
+    },
+    {
+      "before": [",", "a"],
+      "after": ["z", "t"]
+    },
+    {
+      "before": [",", "b"],
+      "after": ["z", "b"]
+    },
+    {
+      "before": [",", "z"],
+      "after": ["z", "z"]
+    },
+    {
+      "before": ["<leader>", "p"],
+      "after": ["\"", "*", "p"]
+    }
+  ],
+  "vim.insertModeKeyBindings": [],
+  "vim.insertModeKeyBindingsNonRecursive": [
+    {
+      "before": ["k", "j"],
+      "after": ["<ESC>"]
+    }
+  ],
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "before": [">"],
+      "commands": ["editor.action.indentLines"]
+    },
+    {
+      "before": ["<"],
+      "commands": ["editor.action.outdentLines"]
+    }
+  ],
+  "vim.visualModeKeyBindings": [],
+  "vim.operatorPendingModeKeyBindings": [],
+  "vim.operatorPendingModeKeyBindingsNonRecursive": [
+    {
+      "before": ["("],
+      "after": ["i"]
+    },
+    {
+      "before": ["{"],
+      "after": ["i"]
+    },
+    {
+      "before": ["["],
+      "after": ["i"]
+    },
+    {
+      "before": ["<"],
+      "after": ["i"]
+    }
+  ],
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

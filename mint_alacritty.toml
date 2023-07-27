@@ -1,0 +1,126 @@
+# Alacritty ACTIVE CONFIG
+# See ~/foobar/ [branch: alacritty-conf] for a safe
+# environment to edit settings. Copy this conf file
+# to the repository to ensure and up to date conf
+# file for editing. Ensure you are on the alacritty-donf
+# branch
+
+# alt_send_esc = true
+# background_opacity = 1.0
+# enable_experimental_conpty_backend = false
+# ref_test = false
+live_config_reload = true
+
+[env]
+# TERM = "alacritty"
+TERM = "xterm-256color"
+
+[window]
+decorations = "None"
+dynamic_padding = true # From false
+dynamic_title = false
+startup_mode = "Windowed"
+opacity = 1.0
+
+[window.dimensions]
+columns = 80
+lines = 23
+
+[window.padding]
+x = 0
+y = 1
+
+[cursor]
+style = "Block"
+unfocused_hollow = true
+
+[font]
+size = 11.0
+# use_thin_strokes = true
+
+[font.normal]
+family = "Hack"
+style = "Bold"
+
+[font.bold]
+family = "Hack"
+style = "Bold"
+
+[font.italic]
+family = "Hack"
+style = "Bold Italic"
+
+[font.offset]
+x = 0
+y = 0
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[colors]
+draw_bold_text_with_bright_colors = true
+indexed_colors = []
+transparent_background_colors = true
+
+[colors.primary]
+# background = '#1e2127'
+background = '#1c1c1c'
+foreground = '#abb2bf'
+
+# [colors.cursor]
+# text = '#CDD6F4'
+# cursor = '#D9D9D9'
+
+[colors.bright]
+black = '#5c6370'
+red = '#e06c75'
+green = '#98c379'
+yellow = '#d19a66'
+blue = '#61afef'
+magenta = '#c678dd'
+cyan = '#56b6c2'
+white = '#ffffff'
+
+[colors.normal]
+black = '#1e2127'
+red = '#e06c75'
+green = '#98c379'
+yellow = '#d19a66'
+blue = '#61afef'
+magenta = '#c678dd'
+cyan = '#56b6c2'
+white = '#abb2bf'
+
+[debug]
+log_level = "Warn"
+persistent_logging = false
+print_events = false
+render_timer = false
+
+[mouse]
+hide_when_typing = true
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[selection]
+save_to_clipboard = false
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+
+[bell]
+animation = "EaseOutExpo"
+color = "0xffffff"
+duration = 0
+
+# opacity: 23
+# size: 38
+# family: 42,50
+# colors: 61,91
+# brigth: 74,81
+# normal: 84,91

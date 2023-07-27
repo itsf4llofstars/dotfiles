@@ -1,0 +1,14 @@
+{
+    "*.txt": {
+        "tabstospaces": false
+    },
+    "colorcolumn": 80,
+    "colorscheme": "darcula",
+    "cursorline": false,
+    "diffgutter": true,
+    "parsecursor": true,
+    "rmtrailingws": true,
+    "savecursor": true,
+    "scrollmargin": 5,
+    "tabstospaces": true
+}
