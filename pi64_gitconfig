@@ -1,0 +1,32 @@
+[user]
+	name = itsf4llofstars
+	email = irooted4hal@mailfence.com
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main
+[merge]
+	ff = false
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
+[alias]
+	ac = commit -am
+	ll = log --oneline --decorate --graph --all
+	la = log --oneline --decorate --all
+	lo = log -1
+	st = status
+	sw = switch
+	co = checkout
+	br = branch
+[commit]
+	gpgSign = false
+[cola]
+	spellcheck = false
+	tabwidth = 4
+	textwidth = 50
+	expandtab = true
+	theme = flat-dark-grey
+	icontheme = dark
