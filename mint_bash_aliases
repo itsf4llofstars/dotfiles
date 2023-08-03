@@ -21,6 +21,7 @@ alias ard='arduino-cli'
 
 alias mm='python3 main.py'
 alias py='python3'
+alias pep8='autopep8 -i --max-line-length 90'
 alias act='source ./venv/bin/activate'
 alias dact='deactivate'
 
