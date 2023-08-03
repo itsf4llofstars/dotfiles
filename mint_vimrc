@@ -230,20 +230,19 @@ nnoremap <leader>ml <Plug>(easymotion-overwin-line)
 nnoremap <leader>mw <Plug>(easymotion-bd-w)
 nnoremap <leader>mw <Plug>(easymotion-overwin-w)
 
+": FUGITIVE
 nnoremap <silent><leader>ga :Git add .<cr>
 nnoremap <silent><leader>gc :Git commit<cr>
 
 ": Which Key
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :WhichKey '\'<CR>
-nnoremap <silent> , :WhichKey ','<CR>
 
 ": Emmet
-if &filetype == 'html' || &filetype == 'css'
-  let g:user_emmet_leader_key=','
-  let g:user_emmet_mode='inv'
-endif
+let g:user_emmet_leader_key=','
+let g:user_emmet_mode='inv'
 
+": INDENT LINE
 ": ¦, ┆, │, ⎸, ▏
 " let g:indentLine_char = '▏'
 " let g:indentLine_char = '┊'
@@ -256,10 +255,7 @@ let g:indentLine_conceallevel = 2
 let g:vim_json_conceal = 0
 let g:markdown_syntax_conceal = 0
 
-let g:UltiSnipsExpandTrigger='<TAB>'
-let g:UltiSnipsJumpForwardTrigger='<TAB>'
-let g:UltiSnipsJumpBackwardTrigger='<S-TAB>'
-
+": LIGHTLINE
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
       \ 'active': {
@@ -284,8 +280,8 @@ nnoremap <localleader>e :edit $MYVIMRC<cr>
 nnoremap <localleader>ve :vsplit<cr><C-w>l:edit $MYVIMRC<cr>
 nnoremap <localleader>s mp:source $MYVIMRC<cr>:do FileType<cr>:do BufEnter<cr>`p
 nnoremap <leader>t :shell<cr>
+nnoremap <localleader>t :terminal<cr>
 
-nnoremap <localleader>x :colorscheme s
 nnoremap <leader>nb :bnext<cr>
 nnoremap <leader>pb :bprevious<cr>
 nnoremap <S-b> _
@@ -324,7 +320,7 @@ nnoremap <leader>ll :resize+5<cr>
 
 augroup ALL
   au BufEnter * call GetLine()
-  au BufEnter * call ShowWhitespace()
+  " au BufEnter * call ShowWhitespace()
   au BufWritePre * call DeleteWs()
   au InsertEnter * silent set nornu
   au InsertLeave * silent set rnu
@@ -338,11 +334,10 @@ augroup END
 
 augroup PYTHON
   au!
-  au FileType python silent setlocal fdm=indent fdc=0
+  au FileType python silent setlocal fdm=indent fdc=0 cc=90
   au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<cr>
   au BufEnter *.py nnoremap <buffer> <F6> :!black %<cr>
   au BufEnter *.py nnoremap <buffer> <F7> :!pylint %<cr>
-  au BufEnter *.py let @u=':vsplitl:edit ~/.vim/plugged/vim-snippets/UltiSnips/python_snips.txt:vertical resize -50h'
   " au BufWritePre *.py call Indent()
 augroup END
 
@@ -353,6 +348,13 @@ augroup C
   au BufEnter *.c nnoremap <buffer> <F5> :!./main<cr>
   au BufEnter *.c,*.h nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
   au BufWritePre *.c,*.h call Indent()
+augroup END
+
+augroup ARDUINO
+  au!
+  au FileType arduino silent setlocal ts=2 sw=2 cc=80 fdm=indent noai nosi noci cin cino=ln,c2
+  au BufEnter *.ino nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
+  au BufWinEnter,BufWritePre *.ino call Indent()
 augroup END
 
 augroup CPP
@@ -375,18 +377,18 @@ augroup END
 
 augroup HTML_CSS
   au!
-  au FileType html setlocal ts=2 sw=2 cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
+  au FileType html setlocal ts=2 sw=2 tw=160 wrap cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
   au FileType html,css nnoremap <buffer> <localleader>f Vatzf
   au BufRead,BufEnter *.html nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
   au BufRead,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
   au BufEnter *.html,*.css nnoremap <buffer> <leader>d :!ud u<cr><cr>
+  au BufWinEnter,BufWritePre *.html,*.css call Indent()
   au CursorHold *.html,*.css write
 augroup END
 
 augroup TEXT
   au!
   au BufWinEnter *.txt call TextFiles()
-  au BufEnter *.txt let @u=':vsplitl:edit ~/.vim/plugged/vim-snippets/UltiSnips/python_snips.txt:vertical resize -50h'
 augroup END
 
 augroup JSON
@@ -420,6 +422,7 @@ augroup ABBREV
   au BufEnter * iabbrev <buffer> phat path
   au BufEnter * iabbrev <buffer> phta path
   au BufEnter * iabbrev <buffer> tow two
+  au BufEnter *.py iabbrev <buffer> ope os.path.expanduser(os.path.join("~",
 augroup END
 
 augroup OPERATOR
