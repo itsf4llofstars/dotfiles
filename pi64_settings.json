@@ -4,7 +4,6 @@
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
   },
-  "python.analysis.inlayHints.functionReturnTypes": true,
   "python.analysis.typeCheckingMode": "basic",
   "python.linting.maxNumberOfProblems": 20,
   "python.testing.pytestEnabled": true,
@@ -31,5 +30,8 @@
   "markdown.preview.lineHeight": 1.3,
   "markdown.preview.fontSize": 15,
   "markdown.preview.fontFamily": "-system-ui, 'Ubuntu', 'Droid Sans', sans-serif",
-  "files.autoSaveDelay": 1000
+  "files.autoSaveDelay": 1000,
+  "python.testing.pytestArgs": [
+    "-v"
+  ]
 }
