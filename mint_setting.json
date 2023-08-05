@@ -151,5 +151,6 @@
   "rust-analyzer.inlayHints.parameterHints.enable": false,
   "rust-analyzer.inlayHints.typeHints.enable": false,
   "autoDocstring.docstringFormat": "pep257",
-  "prettier.printWidth": 120
+  "prettier.printWidth": 120,
+  "liveServer.settings.donotVerifyTags": true
 }
