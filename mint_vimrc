@@ -13,7 +13,6 @@ function Indent()
   let l:view = winsaveview()
   :normal! gg=G
   call winrestview(l:view)
-  " :normal! mpHmogg=G'ozt`p
 endfunction
 
 function DeleteWs() abort
@@ -43,7 +42,6 @@ set relativenumber
 set autoindent
 set smartindent
 set copyindent
-" set autochdir
 set autoread
 set hidden
 set colorcolumn=80
@@ -53,10 +51,11 @@ set ignorecase
 set smartcase
 set incsearch
 set foldlevel=4
-set ruler
 set foldlevelstart=4
 set signcolumn=yes " COC
-set laststatus=0
+set ruler
+set laststatus=2
+set statusline=(%n)\ %<%f\ %h%m%r\ %Y%=%-14.(%c%V\ :\ %l%)\ %p%%\ %F\ |
 set showcmd
 set showmatch
 set scrolloff=5
@@ -74,7 +73,7 @@ set undofile
 set nobackup " COC
 set writebackup " COC
 set noswapfile
-set updatetime=300 " COC
+set updatetime=500 " COC
 
 let mapleader=" "
 let maplocalleader="\\"
@@ -127,16 +126,17 @@ Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
 Plug 'easymotion/vim-easymotion'
 Plug 'dense-analysis/ale'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
-colorscheme jellybeans
+colorscheme retrobox
 
 ": ALE
 ": 'rust': ['analyzer', 'rustc', 'cargo'],
 ": 'python': ['pylint', 'isort', 'mypy', 'pyright', 'ruff'],
 let g:ale_linters = {
-      \ 'python': ['pylint'],
+      \ 'python': [''],
       \ 'rust': ['analyzer'],
       \ 'vim': [''],
       \ 'cpp': ['clangd', 'cpplint'],
@@ -153,6 +153,7 @@ let g:ale_fixers = {
       \}
 
 let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
+" butter
 
 ": COC
 inoremap <silent><expr> <TAB>
@@ -189,11 +190,16 @@ nmap <leader>rn <Plug>(coc-rename)
 " xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 " nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
+": NETRW
 let g:netrw_banner=0
 let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\s\+'
+
+": TMUX NAVIGATOR
+let g:tmux_navigtor_save_on_swith = 2
+" bacon
 
 ": EASYMOTION
 nnoremap <leader>mf <Plug>(easymotion-bd-f)
@@ -304,7 +310,7 @@ augroup PYTHON
   au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<cr>
   au BufEnter *.py nnoremap <buffer> <F6> :!black %<cr>
   au BufEnter *.py nnoremap <buffer> <F7> :!pylint %<cr>
-  " au BufWritePre *.py call Indent()
+  au BufWritePre *.py call Indent()
 augroup END
 
 augroup C
@@ -343,7 +349,7 @@ augroup END
 
 augroup HTML_CSS
   au!
-  au FileType html setlocal ts=2 sw=2 tw=160 wrap cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
+  au FileType html setlocal ts=2 sw=2 tw=160 cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
   au FileType html,css nnoremap <buffer> <localleader>f Vatzf
   au BufRead,BufEnter *.html nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
   au BufRead,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
@@ -352,20 +358,25 @@ augroup HTML_CSS
   au CursorHold *.html,*.css write
 augroup END
 
-" augroup TEXT
-"   au!
-" augroup END
+augroup TEXT
+  au!
+  au Filetype text silent setlocal tw=80 wrap cc=80
+augroup END
 
 augroup JSON
   au!
   au FileType json syntax match Comment +\/\/.\+$+
 augroup END
 
+augroup JAVASCRIPT
+  au!
+  au FileType javascript silent setlocal ts=2 sw=2 fdm=indent
+  au BufEnter,BufWritePre *.js call Indent()
+augroup END
+
 augroup snippets
   au!
   au BufEnter *.py nnoremap <leader>pyt :-1read $HOME/.vim/snippets/.python.py<CR>gg010jw
-  " au BufEnter *.py nnoremap <leader>pxp <ESC>:-1read $HOME/.vim/snippets/.expand.py<CR>0i<TAB><esc>A<space>
-  " au BufEnter *.py nnoremap <leader>prf mp:-1read $HOME/.vim/snippets/.read.txt<CR><S-v>8j<S->>j2w5li
 augroup END
 
 augroup ABBREV
