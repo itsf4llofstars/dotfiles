@@ -13,7 +13,6 @@ function Indent()
   let l:view = winsaveview()
   :normal! gg=G
   call winrestview(l:view)
-  " :normal! mpHmogg=G'ozt`p
 endfunction
 
 function DeleteWs() abort
@@ -22,28 +21,15 @@ function DeleteWs() abort
   normal `z
 endfunc
 
-function TextFiles()
-  let &tabstop = 8
-  let &softtabstop = 4
-  let &shiftwidth = 8
-  let &textwidth = 78
-  let &expandtab = 0
-  let &wrap = 1
-  let &colorcolumn = 80
-  let &foldenable = 0
-  let &foldcolumn = 0
-  let &signcolumn = 'no'
-  let &spelllang = 'en_us'
-  let &spell = 0
-endfunction
-
 ": SETTINGS
-filetype indent plugin on
+filetype  plugin on
+filetype indent on
 syntax on
 set backspace=indent,eol,start
 set background=dark
 set encoding=utf-8 " COC
 set t_Co=256
+set termguicolors
 
 set tabstop=4
 set shiftwidth=4
@@ -54,7 +40,8 @@ set number
 set relativenumber
 
 set autoindent
-set autochdir
+set smartindent
+set copyindent
 set autoread
 set hidden
 set colorcolumn=80
@@ -64,17 +51,19 @@ set ignorecase
 set smartcase
 set incsearch
 set foldlevel=4
-set ruler
 set foldlevelstart=4
 set signcolumn=yes " COC
-set laststatus=0
+set ruler
+set laststatus=2
+set statusline=(%n)\ %<%f\ %h%m%r\ %Y%=%-14.(%c%V\ :\ %l%)\ %p%%\ %F\ |
 set showcmd
 set showmatch
 set scrolloff=5
 set path+=**
 set timeoutlen=500
 
-set completeopt=menuone,popup
+set completeopt=menuone,preview,popup
+set wildmenu
 set wildmode=list:longest,full
 
 set undodir=~/.vim/undodir
@@ -83,8 +72,8 @@ set backupdir=~/.vim/backup
 set undofile
 set nobackup " COC
 set writebackup " COC
-set swapfile
-set updatetime=300 " COC
+set noswapfile
+set updatetime=500 " COC
 
 let mapleader=" "
 let maplocalleader="\\"
@@ -135,17 +124,19 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
-Plug 'itchyny/lightline.vim'
-Plug 'dense-analysis/ale'
 Plug 'easymotion/vim-easymotion'
+Plug 'dense-analysis/ale'
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
+
+colorscheme retrobox
 
 ": ALE
 ": 'rust': ['analyzer', 'rustc', 'cargo'],
 ": 'python': ['pylint', 'isort', 'mypy', 'pyright', 'ruff'],
 let g:ale_linters = {
-      \ 'python': ['pylint'],
+      \ 'python': [''],
       \ 'rust': ['analyzer'],
       \ 'vim': [''],
       \ 'cpp': ['clangd', 'cpplint'],
@@ -162,6 +153,7 @@ let g:ale_fixers = {
       \}
 
 let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
+" butter
 
 ": COC
 inoremap <silent><expr> <TAB>
@@ -198,27 +190,16 @@ nmap <leader>rn <Plug>(coc-rename)
 " xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 " nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
-" let g:jellybeans_overrides = {
-"       \    'background': { 'guibg': '040404' },
-"       \    'Todo': { 'guifg': '303030', 'guibg': 'f0f000',
-"       \              'ctermfg': 'Black', 'ctermbg': 'Yellow',
-"       \              'attr': 'bold' },
-"       \    'Comment': { 'guifg': 'ff0000' },
-"       \}
-let g:jellybeans_overrides = {
-      \    'background': { 'ctermbg': 'none', '256ctermbg': 'none' },
-      \    'Todo': { 'guifg': '303030', 'guibg': 'f0f000',
-      \              'ctermfg': 'Black', 'ctermbg': 'Yellow',
-      \              'attr': 'bold' },
-      \    'Comment': { 'guifg': '555555' },
-      \}
+": NETRW
+let g:netrw_banner=0
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\s\+'
 
-if has('termguicolors') && &termguicolors
-  let g:jellyeans_overrides['background']['guibg'] = 'none'
-endif
-
-": COLORSCHEME
-colorscheme retrobox
+": TMUX NAVIGATOR
+let g:tmux_navigtor_save_on_swith = 2
+" bacon
 
 ": EASYMOTION
 nnoremap <leader>mf <Plug>(easymotion-bd-f)
@@ -244,8 +225,7 @@ let g:user_emmet_mode='inv'
 
 ": INDENT LINE
 ": ¦, ┆, │, ⎸, ▏
-" let g:indentLine_char = '▏'
-" let g:indentLine_char = '┊'
+" let g:indentLine_char = '¦'
 let g:indentLine_char_list = ['▏', '▏', '▏', '┊']
 let g:indentLine_setColors = 0
 let g:indentLine_defaultGroup = 'SpecialKey'
@@ -255,21 +235,14 @@ let g:indentLine_conceallevel = 2
 let g:vim_json_conceal = 0
 let g:markdown_syntax_conceal = 0
 
-": LIGHTLINE
-let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
-      \ 'active': {
-        \   'left': [ [ 'mode', 'paste' ],
-        \ [ 'currentfunction', 'readonly', 'filename', 'modified' ] ]
-        \ },
-        \ }
-
 ": UNDOTREE
 nnoremap <leader>ut :UndotreeToggle<cr>
 
 ": MAPPINGS
 inoremap kj <ESC>
 vnoremap kj <ESC>
+
+command! MakeTags !ctags -R .
 
 nnoremap <cr> <C-g>
 nnoremap <leader>w :write<cr>
@@ -319,8 +292,7 @@ nnoremap <leader>kk :vertical resize+5<cr>
 nnoremap <leader>ll :resize+5<cr>
 
 augroup ALL
-  au BufEnter * call GetLine()
-  " au BufEnter * call ShowWhitespace()
+  au BufReadPost * call GetLine()
   au BufWritePre * call DeleteWs()
   au InsertEnter * silent set nornu
   au InsertLeave * silent set rnu
@@ -338,7 +310,7 @@ augroup PYTHON
   au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<cr>
   au BufEnter *.py nnoremap <buffer> <F6> :!black %<cr>
   au BufEnter *.py nnoremap <buffer> <F7> :!pylint %<cr>
-  " au BufWritePre *.py call Indent()
+  au BufWritePre *.py call Indent()
 augroup END
 
 augroup C
@@ -377,7 +349,7 @@ augroup END
 
 augroup HTML_CSS
   au!
-  au FileType html setlocal ts=2 sw=2 tw=160 wrap cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
+  au FileType html setlocal ts=2 sw=2 tw=160 cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
   au FileType html,css nnoremap <buffer> <localleader>f Vatzf
   au BufRead,BufEnter *.html nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
   au BufRead,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
@@ -388,7 +360,7 @@ augroup END
 
 augroup TEXT
   au!
-  au BufWinEnter *.txt call TextFiles()
+  au Filetype text silent setlocal tw=80 wrap cc=80
 augroup END
 
 augroup JSON
@@ -396,13 +368,16 @@ augroup JSON
   au FileType json syntax match Comment +\/\/.\+$+
 augroup END
 
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s)
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  "" autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+augroup JAVASCRIPT
+  au!
+  au FileType javascript silent setlocal ts=2 sw=2 fdm=indent
+  au BufEnter,BufWritePre *.js call Indent()
+augroup END
+
+augroup snippets
+  au!
+  au BufEnter *.py nnoremap <leader>pyt :-1read $HOME/.vim/snippets/.python.py<CR>gg010jw
+augroup END
 
 augroup ABBREV
   au!
@@ -422,7 +397,8 @@ augroup ABBREV
   au BufEnter * iabbrev <buffer> phat path
   au BufEnter * iabbrev <buffer> phta path
   au BufEnter * iabbrev <buffer> tow two
-  au BufEnter *.py iabbrev <buffer> ope os.path.expanduser(os.path.join("~",
+  au BufEnter *.py iabbrev <buffer> rf try:<cr>with open() as read:<cr>lines = read.readlines()<cr><esc>0i<tab>except FileNotFoundError as fnfe:<cr>raise FileNotFoundError('File not found') from fnfe:<cr><esc>0i<tab>else:<cr>pass<cr><esc>0i<tab>finally:<cr>pass<esc>8k2w4l
+  au BufEnter *.py iabbrev <buffer> exp os.path.expanduser(os.path.join('~',))<left><left>
 augroup END
 
 augroup OPERATOR
