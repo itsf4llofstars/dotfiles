@@ -2,9 +2,9 @@
 "# Neovim is installed! A copy of the fancy vimrc is in .config/nvim
 
 function Indent()
-  :normal! mpHmo
+  let l:view = winsaveview()
   :normal! gg=G
-  :normal! 'ozt`p
+  call winrestview(l:view)
 endfunction
 
 set nocompatible
@@ -36,6 +36,7 @@ set smartcase
 set smartindent
 set statusline=(%n)\ %F\ %h%m%r%=%-15.([%Y]\ \ \ col:\ %c\ [%l:%L]%)\ \ \ %p%%\ \ %P\ \ %f\ |
 set noswapfile
+set path+=**
 set tabstop=4
 set textwidth=0
 set noundofile
@@ -44,17 +45,24 @@ set wildmode=list:longest,full
 set nowrap
 
 call plug#begin('~/.vim/autoload')
-" Plug 'honza/vim-snippets'
-" Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
 Plug 'mattn/emmet-vim'
 call plug#end()
 
 let g:user_emmet_mode='inv'
 let g:user_emmet_leader_key=','
 
-" let g:UltiSnipsExpandTrigger='<tab>'
-" let g:UltiSnipsJumpForwardTrigger='<tag>'
-" let g:UltiSnipsJumpBackwardTrigger='<S-tag>'
+" let g:netrw_browse_split=4
+let g:netrw_banner=0
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<tag>'
+let g:UltiSnipsJumpBackwardTrigger='<S-tag>'
 
 let mapleader=" "
 let maplocalleader="\\"
@@ -62,10 +70,13 @@ let maplocalleader="\\"
 inoremap kj <esc>
 vnoremap kj <ESC>
 
+command! MakeTags !ctags -R .
+
 nnoremap <leader>w :write<cr>
 nnoremap <leader>q ZQ
 nnoremap <leader>z ZZ
 nnoremap <leader>o :edit .<cr>
+nnoremap <leader>f :find 
 nnoremap <localleader>e :edit ~/.vimrc<cr>
 nnoremap <localleader>ve :vsplit<CR><C-w>l:edit ~/.vimrc<cr>
 nnoremap <localleader>s :source ~/.vimrc<cr>:do FileType<cr>:do BufEnter<cr>
@@ -150,4 +161,10 @@ augroup BASH
   au!
   au FileType sh silent setlocal nofen fdc=0 scl=no
   au BufWritePre,BufEnter *.sh call Indent()
+augroup END
+
+augroup ABBREVS
+  au!
+  au FileType python iabbrev exp os.path.expanduser(os.path.join('~',))<left><left>
+  au FileType python iabbrev def def():<left><left><left>
 augroup END
