@@ -7,13 +7,17 @@ function Indent()
   call winrestview(l:view)
 endfunction
 
+function GetLine()
+  if line("'\"") > 1 && line("'\"") <= line("$")
+    exe "normal! g'\""
+  endif
+endfunction
+
 set nocompatible
 filetype plugin on
 filetype indent on
 syntax enable
 set background=dark
-set t_Co=256
-colorscheme retrobox
 
 set autochdir
 set autoindent
@@ -34,7 +38,7 @@ set shiftwidth=4
 set showmatch
 set smartcase
 set smartindent
-set statusline=(%n)\ %F\ %h%m%r%=%-15.([%Y]\ \ \ col:\ %c\ [%l:%L]%)\ \ \ %p%%\ \ %P\ \ %f\ |
+set statusline=(%n)\ %f\ %h%m%r\ [%Y]%=%-15.(%c\ [%l:%L]%)\ \ %p%%\ %P\ %F\ |
 set noswapfile
 set path+=**
 set tabstop=4
@@ -44,11 +48,25 @@ set wildmenu
 set wildmode=list:longest,full
 set nowrap
 
-call plug#begin('~/.vim/autoload')
+call plug#begin()
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'mattn/emmet-vim'
+" Plug 'sheerun/vim-polyglot'
+" Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 call plug#end()
+
+if &term == 'linux'
+  colorscheme delek
+  " set t_Co=256
+  " set t_Co=32
+  set t_Co=16
+else
+  set t_Co=256
+  set termguicolors
+  colorscheme retrobox
+endif
+
 
 let g:user_emmet_mode='inv'
 let g:user_emmet_leader_key=','
@@ -61,8 +79,8 @@ let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 let g:UltiSnipsExpandTrigger='<tab>'
-let g:UltiSnipsJumpForwardTrigger='<tag>'
-let g:UltiSnipsJumpBackwardTrigger='<S-tag>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
 
 let mapleader=" "
 let maplocalleader="\\"
@@ -81,6 +99,9 @@ nnoremap <localleader>e :edit ~/.vimrc<cr>
 nnoremap <localleader>ve :vsplit<CR><C-w>l:edit ~/.vimrc<cr>
 nnoremap <localleader>s :source ~/.vimrc<cr>:do FileType<cr>:do BufEnter<cr>
 nnoremap <leader>t :shell<CR>
+nnoremap <localleader>t :terminal<CR>
+
+nnoremap <leader>i :call Indent()<cr>
 
 nnoremap w W
 nnoremap <leader>a zt
@@ -118,7 +139,9 @@ nnoremap <leader>tc :tabclose<cr>
 
 augroup ALL
   au!
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+  au InsertEnter * setlocal nornu
+  au InsertLeave * setlocal rnu
+  au FileType * call GetLine()
 augroup END
 
 augroup VIM
@@ -130,12 +153,15 @@ augroup END
 augroup PYTHON
   au!
   au FileType python setlocal fdm=indent fdc=0 fdl=99 fdls=99
-  au BufWritePre *.py call Indent()
+  au FileType python nnoremap <buffer> <F5> :write<cr>:!clear && python3 %<cr>
+  " au BufWritePre *.py call Indent()
 augroup END
 
 augroup C_CPP
   au!
-  au FileType c,cpp setlocal ts=8 sw=8 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=3 fdls=3
+  au FileType c,cpp
+        \ setlocal ts=8 sw=8 cc=80 noai nosi noci cin cino=ln,c2 fdc=3
+        \ fdm=indent fdl=3 fdls=3
   au BufEnter *.c,*.cpp,*.h nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
   au BufWritePre,BufEnter *.c,*.cpp,*.h call Indent()
 augroup END
@@ -148,10 +174,14 @@ augroup END
 
 augroup HTML_CSS
   au!
-  au FileType html,css setlocal ts=2 sw=2 cc=80,100,120 fdc=4 fdm=manual fdl=2 fdls=2 aw awa updatetime=2500
+  au FileType html,css
+        \ setlocal ts=2 sw=2 fdc=3 fdm=manual fdl=2 fdls=2 aw awa ut=1000
   au BufEnter *.html nnoremap <buffer> <localleader>f Vatzf
-  au BufRead,BufEnter *.html nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
-  au BufRead,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
+  au BufRead,BufEnter *.html
+        \ nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
+  au BufRead,BufEnter
+        \ *.css nnoremap
+        \ <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
   au BufRead,BufEnter *.html :onoremap <buffer> it :<c-u>normal! f<vi<<cr>
   au CursorHold *.html,*.css write
   au BufWritePre,BufWinEnter *.html,*.css call Indent()
@@ -163,8 +193,24 @@ augroup BASH
   au BufWritePre,BufEnter *.sh call Indent()
 augroup END
 
+augroup MAKE
+  au!
+  au Filetype make ts=8 sw=8 note
+augroup END
+
 augroup ABBREVS
   au!
-  au FileType python iabbrev exp os.path.expanduser(os.path.join('~',))<left><left>
-  au FileType python iabbrev def def():<left><left><left>
+  au FileType * abbrev memail irooted4hal@mailfence.com
+  au Filetype * abbrev meme itsf4llofstars
+  au FileType text,python,sh abbrev pirnt print
+  au FileType text,python,sh abbrev prnit print
+  au FileType text,python,sh abbrev pritn print
+  au FileType text,python,sh abbrev prnt print
+  au FileType text,python abbrev slef self
+  au FileType text,python abbrev sefl self
+  au FileType c abbrev pirntf printf
+  au FileType c abbrev prnitf printf
+  au FileType c abbrev pritnf printf
+  au FileType c abbrev prnt printf
+  au FileType c abbrev prntf printf
 augroup END
