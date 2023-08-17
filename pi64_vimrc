@@ -19,7 +19,6 @@ filetype indent on
 syntax enable
 set background=dark
 
-set autochdir
 set autoindent
 set backspace=indent,eol,start
 set nobackup
@@ -52,21 +51,20 @@ call plug#begin()
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'mattn/emmet-vim'
-" Plug 'sheerun/vim-polyglot'
+Plug 'sheerun/vim-polyglot'
 " Plug 'catppuccin/vim', { 'as': 'catppuccin' }
 call plug#end()
 
 if &term == 'linux'
-  colorscheme delek
   " set t_Co=256
   " set t_Co=32
   set t_Co=16
+  colorscheme delek
 else
   set t_Co=256
   set termguicolors
   colorscheme retrobox
 endif
-
 
 let g:user_emmet_mode='inv'
 let g:user_emmet_leader_key=','
@@ -148,6 +146,7 @@ augroup VIM
   au!
   au FileType vim setlocal ts=2 sw=2 sts=2
   au BufWritePre,BufEnter $MYVIMRC,*.vim call Indent()
+  " au BufWritePre $MYVIMRC :!cp % ~/safehouse/%.bak
 augroup END
 
 augroup PYTHON
@@ -159,9 +158,7 @@ augroup END
 
 augroup C_CPP
   au!
-  au FileType c,cpp
-        \ setlocal ts=8 sw=8 cc=80 noai nosi noci cin cino=ln,c2 fdc=3
-        \ fdm=indent fdl=3 fdls=3
+  au FileType c,cpp silent setlocal ts=4 sw=4 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
   au BufEnter *.c,*.cpp,*.h nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
   au BufWritePre,BufEnter *.c,*.cpp,*.h call Indent()
 augroup END
@@ -193,6 +190,16 @@ augroup BASH
   au BufWritePre,BufEnter *.sh call Indent()
 augroup END
 
+augroup MARKDOWN
+  au!
+  au FileType markdown silent setlocal ts=4 sts=2 sw=4 tw=0 et nowrap cc=90,100
+augroup END
+
+augroup TEXT
+  au!
+  au FileType text silent setlocal nofen fdc=0 cc=80
+augroup END
+
 augroup MAKE
   au!
   au Filetype make ts=8 sw=8 note
@@ -202,6 +209,7 @@ augroup ABBREVS
   au!
   au FileType * abbrev memail irooted4hal@mailfence.com
   au Filetype * abbrev meme itsf4llofstars
+  au Filetype * abbrev retrun return 
   au FileType text,python,sh abbrev pirnt print
   au FileType text,python,sh abbrev prnit print
   au FileType text,python,sh abbrev pritn print
@@ -213,4 +221,6 @@ augroup ABBREVS
   au FileType c abbrev pritnf printf
   au FileType c abbrev prnt printf
   au FileType c abbrev prntf printf
+  au FileType python abbrev slef self
+  au FileType python abbrev sefl self
 augroup END

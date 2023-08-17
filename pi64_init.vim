@@ -68,17 +68,17 @@ let g:python3_host_prog = '/usr/bin/python3'
 let mapleader=" "
 let maplocalleader="\\"
 
-" source ~/.config/nvim/setup_ale.vim
-" source ~/.config/nvim/setup_coc.vim
+source ~/.config/nvim/setup_ale.vim
+source ~/.config/nvim/setup_coc.vim
 source ~/.config/nvim/plugins.vim
 
-" call PreAleSetup()
+call PreAleSetup()
 
 call plug#begin()
 Plug 'liuchengxu/vim-which-key'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'christoomey/vim-tmux-navigator'
@@ -86,13 +86,13 @@ Plug 'mbbill/undotree'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'dense-analysis/ale'
+Plug 'dense-analysis/ale'
 call plug#end()
 
 colorscheme catppuccin-mocha
 
-" call PostAleSetup()
-" call CocSetup()
+call PostAleSetup()
+call CocSetup()
 call LesserPlugins()
 
 inoremap kj <ESC>
@@ -166,7 +166,7 @@ augroup END
 augroup PYTHON
   au!
   au FileType python setlocal ts=4 sw=4 tw=0 fdm=indent
-  au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!clear && python3 %<cr>
+  au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<CR>
   au BufEnter *.py nnoremap <buffer> <F6> :!black %<CR>
   au BufEnter *.py nnoremap <buffer> <F7> :!pylint --rcfile=~/python/pylint.conf %<CR>
 augroup END
