@@ -1,12 +1,17 @@
 ": VIMRC
+": Change: Tue Aug 22 09:34:37 PM CDT 2023
 
-": FUNCTION
+": FUNCTION {{{
+fun WriteDate()
+  :normal! mpHmoggj
+  :r!date
+  :normal! kdd
+  :execute "normal I\": Change:\<Space>\<Esc>"
+  :normal! 'ozt`p
+endf
+
 function GetLine()
   if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
-endfunction
-
-function ShowWhitespace()
-  match ErrorMsg '\s\+$'
 endfunction
 
 function Indent()
@@ -21,7 +26,15 @@ function DeleteWs() abort
   normal `z
 endfunc
 
-": SETTINGS
+function Emmet()
+  if &filetype=='html' || &filetype == 'css'
+    let g:user_emmet_leader_key=','
+    let g:user_emmet_mode='inv'
+  endif
+endfunction
+": }}}
+
+": SETTINGS {{{
 filetype  plugin on
 filetype indent on
 syntax on
@@ -50,22 +63,21 @@ set cursorlineopt=number
 set ignorecase
 set smartcase
 set incsearch
+" set hlsearch
 set foldlevel=4
 set foldlevelstart=4
 set signcolumn=yes " COC
 set ruler
 set laststatus=2
-set statusline=(%n)\ %<%f\ %h%m%r\ %Y%=%-14.(%c%V\ :\ %l%)\ %p%%\ %F\ |
+set statusline=(%n)\ %<%f\ %h%m%r\ %Y%=%-14.(%c%V\ :\ %l%)\ %p%%\ \ %F\ \ |
 set showcmd
 set showmatch
 set scrolloff=5
 set path+=**
 set timeoutlen=500
-
 set completeopt=menuone,preview,popup
 set wildmenu
 set wildmode=list:longest,full
-
 set undodir=~/.vim/undodir
 set directory=~/.vim/backup
 set backupdir=~/.vim/backup
@@ -77,10 +89,12 @@ set updatetime=500 " COC
 
 let mapleader=" "
 let maplocalleader="\\"
-": SETTINGS
+": }}}
 
-": ALE
-let g:ale_enabled = 1
+": PLUGINS {{{
+
+" PRE-ALE " {{{
+let g:ale_enabled = 0
 let g:ale_cursor_detail = 0 " 1 Gives the popup
 let g:ale_echo_cursor = 1 " Status line message
 let g:ale_echo_msg_error_str = 'ERR' " Used with severity in msg_format
@@ -110,35 +124,38 @@ let g:ale_exclude_hightlights = [
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = 'E' " dft='>>'
 let g:ale_sign_warning = 'W' " dft='--'
-let g:ale_sign_highlight_linenrs = 0 " dft=0 Just to see if this does anything
+let g:ale_sign_highlight_linenrs = 1 " dft=0 Just to see if this does anything
 let g:ale_virtualtext_cursor = 1 " dft='all', 'all:1', 'current:2' 'disabled:0'
 let g:ale_virtualtext_prefix = '%comment% %type%:'
 let g:ale_detail_to_floating_preview = 1
 let g:ale_sign_column_always = 1
+" END PRE-ALE " }}}
 
-": PLUGINS
 call plug#begin()
-Plug 'nanotech/jellybeans.vim'
+Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'easymotion/vim-easymotion'
+Plug 'sheerun/vim-polyglot'
 Plug 'Yggdroot/indentLine'
-Plug 'liuchengxu/vim-which-key'
 Plug 'tpope/vim-fugitive'
 Plug 'mattn/emmet-vim'
 Plug 'mbbill/undotree'
-Plug 'easymotion/vim-easymotion'
-Plug 'dense-analysis/ale'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'nanotech/jellybeans.vim'
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'honza/vim-snippets'
+" Plug 'SirVer/ultisnips'
 call plug#end()
 
-colorscheme retrobox
-
-": ALE
+" POST-ALE " {{{
 ": 'rust': ['analyzer', 'rustc', 'cargo'],
 ": 'python': ['pylint', 'isort', 'mypy', 'pyright', 'ruff'],
 let g:ale_linters = {
-      \ 'python': [''],
+      \ 'python': ['pylint'],
       \ 'rust': ['analyzer'],
-      \ 'vim': [''],
+      \ 'vim': ['vimls'],
       \ 'cpp': ['clangd', 'cpplint'],
       \ 'c': ['clangd', 'cpplint'],
       \ 'json': ['eslint'],
@@ -153,14 +170,14 @@ let g:ale_fixers = {
       \}
 
 let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
-" butter
+" END POST-ALE " }}}
 
-": COC
+": COC " {{{
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(2) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
@@ -186,47 +203,37 @@ endfunction
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
-" nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
-" xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
-" nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+vmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+" END COC " }}}
 
-": NETRW
-let g:netrw_banner=0
-let g:netrw_altv=1
-let g:netrw_liststyle=3
-let g:netrw_list_hide=netrw_gitignore#Hide()
-let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\s\+'
+colorscheme catppuccin_mocha
+" colorscheme retrobox
 
-": TMUX NAVIGATOR
-let g:tmux_navigtor_save_on_swith = 2
-" bacon
+nmap <leader><tab> <plug>(fzf-maps-n)
+imap <C-x><C-f> <plug>(fzf-complete-word)
+imap <C-x><C-d> <plug>(fzf-complete-path)
+imap <C-x><C-a> <plug>(fzf-complete-line)
+nnoremap <leader>fz :FZF<cr>
+nnoremap <leader>fh :FZF ~<CR>
 
-": EASYMOTION
-nnoremap <leader>mf <Plug>(easymotion-bd-f)
-nnoremap <leader>mf <Plug>(easymotion-overwin-f)
-nnoremap <leader>ms <Plug>(easymotion-bd-s)
-nnoremap <leader>ms <Plug>(easymotion-overwin-f2)
-nnoremap <leader>ml <plug>(easymotion-bd-jk)
-nnoremap <leader>ml <Plug>(easymotion-overwin-line)
-nnoremap <leader>mw <Plug>(easymotion-bd-w)
-nnoremap <leader>mw <Plug>(easymotion-overwin-w)
+if &filetype == 'python'
+  echom 'Filetyp' &filetype
+  nnoremap <leader>mf <Plug>(easymotion-bd-f)
+  nnoremap <leader>mf <Plug>(easymotion-overwin-f)
+  nnoremap <leader>ms <Plug>(easymotion-bd-s)
+  nnoremap <leader>ms <Plug>(easymotion-overwin-f2)
+  nnoremap <leader>ml <plug>(easymotion-bd-jk)
+  nnoremap <leader>ml <Plug>(easymotion-overwin-line)
+  nnoremap <leader>mw <Plug>(easymotion-bd-w)
+  nnoremap <leader>mw <Plug>(easymotion-overwin-w)
+endif
 
-": FUGITIVE
-nnoremap <silent><leader>ga :Git add .<cr>
-nnoremap <silent><leader>gc :Git commit<cr>
-
-": Which Key
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :WhichKey '\'<CR>
-
-": Emmet
-let g:user_emmet_leader_key=','
-let g:user_emmet_mode='inv'
-
-": INDENT LINE
-": ¦, ┆, │, ⎸, ▏
-" let g:indentLine_char = '¦'
-let g:indentLine_char_list = ['▏', '▏', '▏', '┊']
+let g:tmux_navigtor_save_on_switch = 1
+" let g:indentLine_char = '▏'
+let g:indentLine_char_list = ['▏', '▏', '┊']
 let g:indentLine_setColors = 0
 let g:indentLine_defaultGroup = 'SpecialKey'
 let g:indentLine_concealcursor = 'inc'
@@ -234,27 +241,42 @@ let g:indentLine_conceallevel = 2
 " let g:indentLine_setConceal = 0
 let g:vim_json_conceal = 0
 let g:markdown_syntax_conceal = 0
+let g:netrw_banner=0
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\s\+'
 
-": UNDOTREE
-nnoremap <leader>ut :UndotreeToggle<cr>
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
+" let g:UltiSnipsEditSplit="vertical"
+": }}}
 
-": MAPPINGS
+": MAPPINGS {{{
 inoremap kj <ESC>
 vnoremap kj <ESC>
 
-command! MakeTags !ctags -R .
+nnoremap <leader>f :find<space>
+nnoremap <leader>ut :UndotreeToggle<cr>
+nnoremap <leader>ga :Git add .<CR>
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gg :write<CR>:Git add .<CR>:Git commit<CR>
 
-nnoremap <cr> <C-g>
-nnoremap <leader>w :write<cr>
-nnoremap <leader>q ZQ
-nnoremap <leader>z ZZ
-nnoremap <leader>o :edit .<cr>
-nnoremap <localleader>e :edit $MYVIMRC<cr>
+nnoremap <leader>w :write<CR>
+nnoremap <localleader>w :wall<CR>
+nnoremap <leader>q :quit!<CR>
+nnoremap <leader>z :write<CR>:quit<CR>
+nnoremap <leader>o :edit .<CR>
+nnoremap <localleader>e :edit $MYVIMRC<CR>
 nnoremap <localleader>ve :vsplit<cr><C-w>l:edit $MYVIMRC<cr>
-nnoremap <localleader>s mp:source $MYVIMRC<cr>:do FileType<cr>:do BufEnter<cr>`p
 nnoremap <leader>t :shell<cr>
 nnoremap <localleader>t :terminal<cr>
 
+command! MakeTags !ctags -R .
+nnoremap cw bce
+nnoremap <cr> :nohls<cr><C-g>
+nnoremap <C-f> Lzt
 nnoremap <leader>nb :bnext<cr>
 nnoremap <leader>pb :bprevious<cr>
 nnoremap <S-b> _
@@ -266,8 +288,8 @@ nnoremap <leader>a zt
 nnoremap <leader>bn :bnext<Cr>
 nnoremap <leader>bp :bprev<cr>
 nnoremap w W
-nnoremap n nzt
-nnoremap N Nzt
+nnoremap n nzz
+nnoremap N Nzz
 nnoremap ' `
 nnoremap '' ``
 vnoremap J :m '>+1<cr>gv=gv
@@ -291,98 +313,136 @@ nnoremap <C-l> <C-w>l
 nnoremap <leader>kk :vertical resize+5<cr>
 nnoremap <leader>ll :resize+5<cr>
 
-augroup ALL
+tnoremap <C-h> <C-w>h
+tnoremap <C-j> <C-w>j
+tnoremap <C-k> <C-w>k
+tnoremap <C-l> <C-w>l
+": }}}
+
+": GROUPS {{{
+augroup ALL " {{{
+  au!
   au BufReadPost * call GetLine()
-  au BufWritePre * call DeleteWs()
+  au VimEnter,BufWritePre * call DeleteWs()
   au InsertEnter * silent set nornu
   au InsertLeave * silent set rnu
-augroup END
+augroup END " }}}
 
-augroup VIM
+augroup VIM " {{{
   au!
-  au FileType vim silent setlocal ts=2 sw=2 fdm=indent
+  au FileType vim silent setlocal ts=2 sw=2 sts=2 tw=0 cc=100 fdc=4 fdm=marker
   au BufWinEnter,BufWritePre $MYVIMRC,*.vim call Indent()
-augroup END
+  au BufEnter $MYVIMRC,*.vim nnoremap <buffer> <localleader>s mp:source $MYVIMRC<cr>
+        \ :do FileType<cr>:do BufEnter<cr>`p
+  au BufEnter $MYVIMRC,*.vim :IndentLinesDisable
+  au BufWritepre $MYVIMRC call WriteDate()
+augroup END " }}}
 
-augroup PYTHON
+augroup PYTHON " {{{
   au!
-  au FileType python silent setlocal fdm=indent fdc=0 cc=90
-  au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<cr>
-  au BufEnter *.py nnoremap <buffer> <F6> :!black %<cr>
-  au BufEnter *.py nnoremap <buffer> <F7> :!pylint %<cr>
+  au FileType python silent setlocal fdm=indent fdc=0 cc=90 tm=5000
+  au BufEnter *.py nnoremap <buffer> <F6> :!tt<CR>:write<cr>:!python3 %<cr>
+  au BufWinEnter *.py nnoremap <buffer> <F5> :write<CR>:!python3 %<CR>
   au BufWritePre *.py call Indent()
+  au BufEnter *.py let @n=":vsplitl: edit ~/notes/py_snips.txt: vertical resize-45h"
+  au BufEnter *.py nnoremap <buffer> <localleader>a '<S-a>
+  au BufEnter *.py nnoremap <buffer> <localleader>s '<S-s>
+  au BufEnter *.py nnoremap <buffer> <localleader>d '<S-d>
+  au BufEnter *.py nnoremap <buffer> <localleader>f '<S-f>
+augroup END " }}}
+
+augroup BASH
+  au!
+  au FileType sh silent setlocal ts=2 sw=2 sts=2 tw=0 et nowrap nofen fdc=0 cc=80
+  au BufEnter *.sh nnoremap <F5> :write<CR>:!./%<CR>
 augroup END
 
-augroup C
+augroup C " {{{
   au!
-  au FileType c silent setlocal ts=8 sw=8 fdm=indent cc=80 noai nosi noci cin cino=ln,c2
+  au FileType c silent setlocal ts=4 sts=4 sw=4 fdm=indent cc=80 noai nosi noci cin cino=ln,c2
   au BufEnter *.c nnoremap <buffer> <leader>mm :!make main<cr>
   au BufEnter *.c nnoremap <buffer> <F5> :!./main<cr>
-  au BufEnter *.c,*.h nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
+  au BufEnter *.c,*.h nnoremap <buffer> <leader>b o{<cr>}<esc>ko
   au BufWritePre *.c,*.h call Indent()
-augroup END
+augroup END " }}}
 
-augroup ARDUINO
+augroup ARDUINO " {{{
   au!
   au FileType arduino silent setlocal ts=2 sw=2 cc=80 fdm=indent noai nosi noci cin cino=ln,c2
-  au BufEnter *.ino nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
+  au BufEnter *.ino nnoremap <buffer> <leader>b o{<cr>}<esc>ko
   au BufWinEnter,BufWritePre *.ino call Indent()
-augroup END
+augroup END " }}}
 
-augroup CPP
+augroup CPP " {{{
   au!
   au FileType cpp silent setlocal ts=4 sw=4 fdm=indent cc=80 noai nosi noci cin cino=ln,c2
   au BufEnter *.cpp nnoremap <buffer> <leader>mm :!make main<cr>
   au BufEnter *.cpp nnoremap <buffer> <F5> :!./main<cr>
   au BufEnter *.cpp,*.h nnoremap <buffer> <leader>b o{<cr>}<esc>ko
   au BufWritePre *.cpp,*.h call Indent()
-augroup END
+augroup END " }}}
 
-augroup RUST
+augroup RUST " {{{
   au!
   au FileType rust setlocal ts=4 sw=4 fdm=indent cc=80 noai nosi noci cin
   au BufEnter *.rs nnoremap <buffer> <leader>mm :!clear && cargo check<cr>
   au BufEnter *.rs nnoremap <buffer> <F5> :!clear && cargo run<cr>
   au BufEnter *.rs nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
   au BufWritePre *.rs call Indent()
-augroup END
+augroup END " }}}
 
-augroup HTML_CSS
+augroup HTML_CSS " {{{
   au!
   au FileType html setlocal ts=2 sw=2 tw=160 cc=80,100,120 fdc=4 fdm=manual aw updatetime=1000
   au FileType html,css nnoremap <buffer> <localleader>f Vatzf
-  au BufRead,BufEnter *.html nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
+  au BufRead,BufEnter *.html
+        \ nnoremap <buffer> <localleader>c i<!------><esc>3hi<space><esc>i<space>
   au BufRead,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
   au BufEnter *.html,*.css nnoremap <buffer> <leader>d :!ud u<cr><cr>
   au BufWinEnter,BufWritePre *.html,*.css call Indent()
+  au BufWinEnter *.html,*.css call Emmet()
   au CursorHold *.html,*.css write
-augroup END
+augroup END " }}}
 
-augroup TEXT
+augroup MARKDOWN " {{{
   au!
-  au Filetype text silent setlocal tw=80 wrap cc=80
-augroup END
+  au Filetype markdown silent setlocal ts=4 sw=2 sts=4 tw=0 et nowrap cc=80,100
+  au BufEnter *.md colorscheme catppuccin_mocha
+  au BufLeave *.md colorscheme retrobox
+  au BufEnter *.md nnoremap <buffer> <localleader>x :set filetype=text<CR>
+  au BufEnter *.md nnoremap <buffer> <localleader>b :set filetype=markdown<CR>
+augroup END " }}}
 
-augroup JSON
+augroup TEXT " {{{
+  au!
+  au Filetype text silent setlocal ts=4 sw=2 sts=4 tw=80 noet nowrap ai nosi noci cc=80
+  au BufEnter *.txt :IndentLinesDisable
+augroup END " }}}
+
+augroup JSON " {{{
   au!
   au FileType json syntax match Comment +\/\/.\+$+
-augroup END
+augroup END " }}}
 
-augroup JAVASCRIPT
+augroup JAVASCRIPT " {{{
   au!
   au FileType javascript silent setlocal ts=2 sw=2 fdm=indent
   au BufEnter,BufWritePre *.js call Indent()
-augroup END
+augroup END " }}}
 
-augroup snippets
+augroup SNIPPETS " {{{
   au!
-  au BufEnter *.py nnoremap <leader>pyt :-1read $HOME/.vim/snippets/.python.py<CR>gg010jw
-augroup END
+  au BufEnter *.txt,*.py nnoremap <buffer> ,hash :-1read $HOME/.vim/snippets/.python.py<CR>gg010jw
+  au BufEnter *.txt,*.py nnoremap <buffer> ,cls
+        \ :-1read $HOME/.vim/snippets/.class.py<CR>0w:%s/\<<C-r><C-w>\>//gI<left><left><left>
+  au BufEnter *.txt,*.py nnoremap <buffer> ,def
+        \ :-1read $HOME/.vim/snippets/.def.py<CR>0w:%s/\<<C-r><C-w>\>//gI<left><left><left>
+augroup END " }}}
 
-augroup ABBREV
+augroup ABBREV " {{{
   au!
-  au BufEnter * iabbrev <buffer> ifos itsf4llofstars
-  au BufEnter * iabbrev <buffer> emal irooted4hal@mailfence.com
+  au BufEnter * iabbrev <buffer> ifos itsf5llofstars
+  au BufEnter * iabbrev <buffer> memail irooted5hal@mailfence.com
   au BufEnter * iabbrev <buffer> pirnt print
   au BufEnter * iabbrev <buffer> prnit print
   au BufEnter * iabbrev <buffer> pritn print
@@ -397,14 +457,24 @@ augroup ABBREV
   au BufEnter * iabbrev <buffer> phat path
   au BufEnter * iabbrev <buffer> phta path
   au BufEnter * iabbrev <buffer> tow two
-  au BufEnter *.py iabbrev <buffer> rf try:<cr>with open() as read:<cr>lines = read.readlines()<cr><esc>0i<tab>except FileNotFoundError as fnfe:<cr>raise FileNotFoundError('File not found') from fnfe:<cr><esc>0i<tab>else:<cr>pass<cr><esc>0i<tab>finally:<cr>pass<esc>8k2w4l
-  au BufEnter *.py iabbrev <buffer> exp os.path.expanduser(os.path.join('~',))<left><left>
-augroup END
+  au BufEnter * iabbrev <buffer> retrun return
+  au BufEnter * iabbrev <buffer> Retrun Return
+augroup END " }}}
 
-augroup OPERATOR
+" augroup TEST " {{{
+"   autocmd!
+"   autocmd Syntax text echom 'Syntax'
+"   autocmd FileType text echom 'FileType'
+"   autocmd BufReadPost *.txt echom 'BufReadPost'
+"   autocmd VimEnter *.txt echom 'VimEnter'
+"   autocmd BufEnter *.txt echom 'BufEnter'
+" augroup END " }}}
+
+augroup OPERATOR " {{{
   au!
   au BufRead,BufEnter * :onoremap <buffer> it :<c-u>normal! f<vi<<cr>
   au BufRead,BufEnter * :onoremap <buffer> ir :<c-u>normal! f{vi{<cr>
   au BufRead,BufEnter * :onoremap <buffer> ip :<c-u>normal! f(vi(<cr>
   au BufRead,BufEnter * :onoremap <buffer> ib :<c-u>normal! f[vi[<cr>
-augroup END
+augroup END " }}}
+": }}}
