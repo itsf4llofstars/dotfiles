@@ -1,0 +1,418 @@
+": Ubuntu Raspberry Pi 4 VIMRC
+
+": FUNCTIONS " {{{
+function GetLine()
+  if line("'\"") > 1 && line("'\"") <= line("$")
+    exec "normal g'\""
+  endif
+endfunction
+
+function Indent()
+  let myview = winsaveview()
+  :normal! gg=G
+  call winrestview(myview)
+endfunction
+
+function StripWhiteSpace()
+  let myview = winsaveview()
+  %s/\s\+$//e
+  call winrestview(myview)
+endfunction
+
+function ShowWhitespace()
+  match ErrorMsg '\s\+$'
+endfunction
+" " }}}: END Functions
+
+": SETTINGS " {{{
+set nocompatible
+filetype indent on
+filetype plugin on
+syntax enable
+set backspace=indent,eol,start
+set t_Co=256
+set guicursor=""
+set background=dark
+colorscheme retrobox
+
+set tabstop=4
+set shiftwidth=4
+set textwidth=0
+set expandtab
+set nowrap
+
+set autoread
+set autowrite
+set autowriteall
+set autoindent
+set copyindent
+set smartindent
+
+set colorcolumn=80
+set cursorline
+set cursorlineopt=both
+set foldcolumn=1
+set foldlevel=3
+set foldlevelstart=3
+set hidden
+set ignorecase
+set incsearch
+set laststatus=1
+set lazyredraw
+set signcolumn=yes
+
+set number
+set path+=**
+set relativenumber
+set scrolloff=5
+set shortmess+=acsoOTSF
+set showmatch
+set smartcase
+
+set ruler
+set regexpengine=0 " 0 1 2
+" set statusline=
+" set statusline=(%n)\ %f\ %m%r%h\ %w\ [%Y]\ %h\ CWD:\ %r%{getcwd()}%=%-14.(%l\:%c%)\ [0x%B\ :\ 0x%b]\ %p%%\ %P\ [%f]\ |
+set updatetime=250
+
+set wildmode=list:longest,full
+set completeopt=menuone,popup
+
+if has("persistent_undo")
+  let undodir_path = expand("~/.vim/undodir")
+  let directory_path = expand("~/.vim/swaps")
+
+  if !isdirectory(undodir_path)
+    call mkdir(undodir_path, "p", 0700)
+  endif
+
+  if !isdirectory(directory_path)
+    call mkdir(directory_path, "p", 0700)
+  endif
+
+  let &undodir=undodir_path
+  let &directory=directory_path
+  set undofile
+endif
+
+let g:python3_host_prog = '/usr/bin/python3'
+let g:netrw_banner=0
+let g:netrw_liststyle=3
+let g:netrw_altv=1
+let g:netrw_winsize=15
+
+let mapleader=" "
+let maplocalleader="\\"
+" " }}}: END Settings
+
+": ALE Pre-Startup " {{{
+let g:ale_enabled = 1
+let g:ale_max_signs = 10
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+let g:ale_lsp_suggestions = 1
+let g:ale_cursor_detail = 0 " 1 gives popup
+let g:ale_virtualtext_cursor = 0
+let g:ale_detail_to_floating_preview = 1
+let g:ale_echo_msg_format = "% code % [%linter%] %type% "
+let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let g:ale_warn_about_trailing_blank_lines = 1
+let g:ale_warn_about_trailing_whitespace = 1
+let g:ale_sign_column_always = 1
+let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
+let g:ale_set_highlights = 0
+
+" Prevents highlights in the code proper. This is a list of strings
+let g:ale_exclude_highlights = [
+      \ 'docstring',
+      \ 'Unused argument',
+      \ 'import-errro',
+      \ 'SC2164',
+      \ 'inconsistent-return-statements',
+      \ ]
+
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1 " 0 is default
+" " }}}: END ALE Pre-Startup
+
+": Vim-Plug " {{{
+call plug#begin()
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'mattn/emmet-vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'mbbill/undotree'
+Plug 'dense-analysis/ale'
+Plug 'valloric/youcompleteme'
+
+" Plug 'scrooloose/nerdtree'
+" Plug 'christoomey/vim-tmux-navigator'
+" Plug 'honza/vim-snippets'
+" Plug 'SirVer/ultisnips'
+call plug#end()
+" " }}}: END Vim-Plug
+
+": Ale Post Startup " {{{
+let g:ale_linters = {
+      \ 'python': ['pylint'],
+      \ 'rust': ['analyzer'],
+      \ 'vim': [''],
+      \ 'cpp': ['clangd', 'cpplint'],
+      \ 'json': ['eslint'],
+      \ }
+let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': ['black', 'isort'],
+      \ 'rust': ['rustfmt'],
+      \ 'cpp': ['clang-format'],
+      \ 'json': ['prettier'],
+      \}
+" " }}}: END Ale Post Startup
+
+": Other Plugins " {{{
+": Ultisnips
+" let g:UltiSnipsExpandTrigger="<Tab>"
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
+
+": YCM
+let g:ycm_auto_trigger = 1
+let g:ycm_enable_semantic_highlighting = 1
+let g:ycm_enable_inlay_hints = 1
+let g:ycm_clear_inlay_hints_in_insert_mode = 1
+let g:ycm_always_populate_location_list = 1
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_use_ultisnips_completer = 1
+" let g:ycm_key_list_stop_completion = ['<C-y>']
+" let g:ycm_python_sys_path = []
+let g:ycm_python_interpreter_path = '/usr/bin/python3.10'
+let g:ycm_extra_conf_vim_data = [
+      \  'g:ycm_python_interpreter_path',
+      \]
+" let g:ycm_extra_conf_vim_data = [
+"   \  'g:ycm_python_interpreter_path',
+"   \  'g:ycm_python_sys_path'
+"   \]
+" let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
+nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
+nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
+nmap <leader>yc <Plug>(YCMToggleInlayHints)
+
+": NERDTREE
+" let g:NERDTreeDirArrowExpandable = '▸'
+" let g:NERDTreeDirArrowCollapsible = '▾'
+" let g:NERDTreeQuitOnOpen = 1
+" let g:NERDTreeShowHidden = 1
+": nnoremap <leader>o :NERDTreeFocus<CR>
+" nnoremap <leader>o :NERDTree<CR>
+" nnoremap <leader>nf :NERDTreeFind<CR>
+
+": FUGITIVE
+nnoremap <leader>ga :Git add .<cr>
+nnoremap <leader>gc :Git commit<cr>
+
+": EMMET
+let g:user_emmet_mode='inv'
+let g:user_emmet_leader_key=','
+
+": EASYMOTION
+": <Leader>f{char} to move to {char}
+map <leader>mf <Plug>(easymotion-bd-f)
+nmap <leader>mf <Plug>(easymotion-overwin-f)
+nmap <leader>ms <Plug>(easymotion-overwin-f2)
+map <leader>ml <Plug>(easymotion-bd-jk)
+nmap <leader>ml <Plug>(easymotion-overwin-line)
+map <leader>mw <Plug>(easymotion-bd-w)
+nmap <leader>mw <Plug>(easymotion-overwin-w)
+
+": UNDOTREE
+nnoremap <leader>ut :UndotreeToggle<cr>
+" " }}}: END Other Plugins
+
+": MAPPINGS " {{{
+inoremap kj <ESC>
+vnoremap kj <ESC>
+
+nnoremap <leader>w :write<cr>
+nnoremap <leader>q ZQ
+nnoremap <leader>z ZZ
+nnoremap <localleader>e :edit $MYVIMRC<cr>
+nnoremap <localleader>ve :vsplit<cr><C-w>l:edit $MYVIMRC<cr>
+nnoremap <leader>o :edit .<CR>
+nnoremap <localleader>s :write<cr>:source $MYVIMRC<cr>:do FileType<cr>:do BufEnter<cr>zt
+nnoremap <localleader>t :shell<CR>
+nnoremap <leader>t :terminal<CR>
+
+nnoremap <CR> <C-g>
+nnoremap cw bce
+nnoremap <C-f> Lzt
+nnoremap <leader>p "+p
+nnoremap w W
+nnoremap <leader>a zt
+nnoremap <S-b> _
+nnoremap <S-e> $
+nnoremap <S-y> y$
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap ' `
+nnoremap '' ``
+nnoremap <F8> @
+nnoremap <F9> @@
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+vnoremap < <gv
+vnoremap > >gv
+nnoremap <silent> <leader>bn :bnext<cr>
+nnoremap <silent> <leader>bp :bprevious<cr>
+
+nnoremap <leader>* :%s/\<<C-r><C-w>\>//gI<left><left><left>
+nnoremap <leader>& :%s/\<<C-r><C-w>\>//gIc<left><left><left><left>
+
+nnoremap <leader>" :normal! ebi"<esc>ea"<esc>
+nnoremap <leader>' :normal! ebi'<esc>ea'<esc>
+nnoremap <leader>( :normal! ebi(<esc>ea)<esc>
+nnoremap <leader>[ :normal! ebi[<esc>ea]<esc>
+nnoremap <leader>{ :normal! ebi{<esc>ea}<esc>
+nnoremap <leader>< :normal! ebi<<esc>ea><esc>
+
+nnoremap <silent> <leader>to :tabnew<CR>
+nnoremap <silent> <leader>tn :tabnext<CR>
+nnoremap <silent> <leader>tp :tabprevious<CR>
+nnoremap <silent> <leader>tc :tabclose<CR>
+" Let 'tl' toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <leader>tl :exe "tabn ".g:lasttab<CR>
+
+nnoremap <silent> <leader>v :vsplit<cr><C-w>l
+nnoremap <silent> <leader>s :split<cr><C-w>j
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <leader>ll :vertical resize+
+nnoremap <leader>kk :resize+
+nnoremap <leader>rs <C-w>=
+" " }}}: END MAPPINGS
+
+": AUTOGROUP AUGROUP " {{{
+augroup ALL " {{{
+  au!
+  au InsertEnter * set nornu
+  au InsertLeave * set rnu
+  au BufReadPost * call GetLine()
+  au BufWritePre * call StripWhiteSpace()
+  au FocusGained,BufEnter * checktime
+  au TabLeave * let g:lasttab = tabpagenr()
+augroup END " }}}
+
+augroup IBBREVS " {{{
+  au BufWinEnter *.py iabbrev <buffer> eslf self
+  au BufWinEnter *.py iabbrev <buffer> slef self
+  au BufWinEnter *.py iabbrev <buffer> sefl self
+  au BufWinEnter *.py iabbrev <buffer> rpint print
+  au BufWinEnter *.py iabbrev <buffer> pirnt print
+  au BufWinEnter *.py iabbrev <buffer> prnit print
+  au BufWinEnter *.py iabbrev <buffer> pritn print
+  au BufWinEnter *.rs iabbrev <buffer> print println!
+augroup END " }}}
+
+augroup VIM " {{{
+  au!
+  au FileType vim setlocal ts=3 sw=2 fdc=1 fdm=marker
+  au BufEnter $MYVIMRC nnoremap <buffer> <leader>o :edit ~/.vim<CR>
+  au BufWinEnter $MYVIMRC,*.vim call Indent()
+augroup END " }}}
+
+augroup PYTHON " {{{
+  au!
+  au FileType python setlocal fdm=indent fdc=4
+  au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<CR>
+  au BufEnter *.py nnoremap <buffer> <F6> :write<CR>:!black %<CR>
+  au BufEnter *.py nnoremap <buffer> <F7> :write<CR>:!pylint --rcfile=~/python/pylint.conf %<CR>
+  au BufEnter *.py inoremap <buffer> <silent> <C-l> <Plug>(YCMToggleSignatureHelp)
+augroup END " }}}
+
+augroup C " {{{
+  au!
+  au FileType c,cpp silent setlocal ts=5 sw=4 et nowrap noai nosi
+        \ noci cin cino=ln,c3 fdm=indent
+  au BufEnter *.c nnoremap <buffer> <leader>b o{<cr>}<esc>ko
+  " au BufEnter *.c nnoremap <buffer> <F6> :!./main<cr>
+  au BufEnter *.c nnoremap <buffer> <leader>mm :write<cr>:!make main<cr>
+  au BufEnter *.c nnoremap <buffer> <F6> :YcmForceCompileAndDiagnostics<CR>
+  au BufWinEnter *.c,*.h call Indent()
+augroup END " }}}
+
+augroup RUST " {{{
+  au!
+  au FileType rust silent setlocal ts=5 sw=4 et nowrap noai nosi
+        \ noci cin cino=ln,c3 fdc=3 fdm=indent
+  au BufEnter *.rs nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
+  au BufEnter *.rs nnoremap <buffer> <F6> :!cargo run<cr>
+  au BufEnter *.rs nnoremap <buffer> <leader>mm :write<cr>:!cargo build<cr>
+  au BufWinEnter *.rs call Indent()
+augroup END " }}}
+
+augroup BASH " {{{
+  au!
+  au FileType sh silent setlocal ts=5 sw=4 fdc=0
+  au BufEnter *.sh nnoremap <buffer> <F6> :!./%<CR>
+augroup END " }}}
+
+augroup TEXT " {{{
+  au!
+  au FileType text silent setlocal noai nosi ci noet wrap nornu
+  au BufEnter *.txt nnoremap <buffer> <leader>x :<c-u>execute "normal! mpgg03WdwiHELLO \<lt>esc>'p"<cr>
+augroup END " }}}
+
+augroup GITCOMMIT " {{{
+  au!
+  au FileType gitcommit setlocal tw=51
+augroup END " }}}
+
+augroup MyYCMCustom " {{{
+  au!
+  au FileType c,cpp,python,sh let b:ycm_hover = {
+        \ 'command': 'GetDoc',
+        \ 'syntax': &filetype
+        \ }
+augroup END " }}}
+
+augroup SKELETON " {{{
+  au!
+  au BufNewFile *.py 1r ~/.vim/skeleton/skeleton.py
+  au BufNewFile *.c 1r ~/.vim/skeleton/skeleton.c
+  au BufNewFile *.sh 1r ~/.vim/skeleton/skeleton.sh
+augroup END " }}}
+
+" augroup NERDTREE " {{{
+"   au!
+"   au StdinReadPre * let s:std_in=2
+"   " au VimEnter * if argc() == 1 && !exists('s:std_in') | NERDTree | endif
+"   au BufEnter * if tabpagenr('$') == 2
+"         \ && winnr('$') == 2
+"         \ && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"   au BufEnter * if winnr('$') == 2 && exists('b:NERDTree')
+"         \ && b:NERDTree.isTabTree() | quit | endif
+"   au BufEnter * if bufname('#') =~ 'NERD_tree_\d\+'
+"         \ && bufname('%') !~ 'NERD_tree_\d\+'
+"         \ && winnr('$') > 2 | let buf=bufnr() | buffer#
+"         \ | execute =======>\"normal! \<C-W>w" | execute 'buffer'.buf | endif
+" augroup END " }}}
+
+augroup BOTTOM " {{{
+  au!
+  au FileType arduino,python,c,cpp,sh,vim,rust
+        \ :onoremap ib :<C-u>normal! 1f[vi[<CR>
+  au FileType arduino,python,c,cpp,sh,vim,rust
+        \ :onoremap it :<C-u>normal! 1f<vi<<CR>
+  au FileType arduino,python,c,cpp,sh,vim,rust
+        \ :onoremap ir :<C-u>normal! 1f{vi{<CR>
+  au FileType arduino,python,c,cpp,sh,vim,rust
+        \ :onoremap ip :<C-u>normal! 1f(vi(<CR>
+augroup END " }}}
+" " }}}: END AUTOGROUP AUGROUP
