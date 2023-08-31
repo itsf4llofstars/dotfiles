@@ -1,0 +1,47 @@
+# BASH_ALIASES
+
+alias ls='ls --color=always --group-directories-first --quoting-style=shell'
+alias lx='ls -lhgGAF --color=always --group-directories-first --quoting-style=shell'
+alias la='ls -A --color=always --group-directories-first --quoting-style=shell'
+alias ll='ls -1 --color=always --group-directories-first --quoting-style=shell'
+alias lh='ls -lh --color=always --group-directories-first --quoting-style=shell'
+
+alias srn='sudo reboot now'
+alias ssn='sudo shutdowon now'
+
+alias vi='vim'
+alias vimrc='vim ~/.vimrc'
+alias nano='nano -r 79'
+alias ed='ed -E -v -p "ed: "'
+
+alias mm='python3 main.py'
+alias py='python3'
+alias act='source ./venv/bin/activate'
+alias dact='deactivate'
+
+alias ..='cd ../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+
+alias path='echo $PATH | tr -s ":" "\n"'
+alias df='df -h /'
+alias sob='exec bash'
+
+alias colorz='bash -c "$(wget -qO- https://git.io/vQgMr)"'
+
+alias hist='history'
+alias tree='tree --dirsfirst -F'
+alias pw='pwd'
+alias ex='exit'
+
+alias comp='g++ -o main main.cpp'
+alias comc='gcc -o main main.c'
+
+# GIT
+alias gll='clear && git log --oneline --decorate --graph --all'
+alias glo='clear && git log --oneline --decorate --all'
+alias gst='clear && git status'
+alias gss='clear && git status -s'
+alias gap='clear && git add -p'
+
+# du -sh <path> -> Size of Directory
