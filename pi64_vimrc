@@ -13,11 +13,18 @@ function GetLine()
   endif
 endfunction
 
+function DelWhiteSpace()
+  let l:view = winsaveview()
+  %s/\s\+$//e
+  call winrestview(l:view)
+endfunction
+
 set nocompatible
 filetype plugin on
 filetype indent on
 syntax enable
 set background=dark
+set termguicolors
 
 set autoindent
 set backspace=indent,eol,start
@@ -37,7 +44,7 @@ set shiftwidth=4
 set showmatch
 set smartcase
 set smartindent
-set statusline=(%n)\ %f\ %h%m%r\ [%Y]%=%-15.(%c\ [%l:%L]%)\ \ %p%%\ %P\ %F\ |
+set statusline=(%n)\ %F\ %h%m%r\ [%Y]%=%-15.(%c,%l%)\ L:%L\ \ \ %p%%\ %P\ %f\ |
 set noswapfile
 set path+=**
 set tabstop=4
@@ -47,27 +54,99 @@ set wildmenu
 set wildmode=list:longest,full
 set nowrap
 
+": ALE Pre-Startup
+let g:ale_enabled = 1
+let g:ale_max_signs = 10
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+let g:ale_lsp_suggestions = 1
+let g:ale_cursor_detail = 0 " 1 gives popup
+let g:ale_virtualtext_cursor = 0
+let g:ale_detail_to_floating_preview = 1
+let g:ale_echo_msg_format = "% code % [%linter%] %type% "
+let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let g:ale_warn_about_trailing_blank_lines = 1
+let g:ale_warn_about_trailing_whitespace = 1
+let g:ale_sign_column_always = 1
+let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
+let g:ale_set_highlights = 0
+
+" Prevents highlights in the code proper. This is a list of strings
+let g:ale_exclude_highlights = [
+      \ 'docstring',
+      \ 'Unused argument',
+      \ 'import-errro',
+      \ 'SC2164',
+      \ 'inconsistent-return-statements',
+      \ ]
+
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1 " 0 is default
+": END ALE Pre-Startup
+
 call plug#begin()
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'
-Plug 'mattn/emmet-vim'
-Plug 'sheerun/vim-polyglot'
-" Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+Plug 'catppuccin/vim'
+Plug 'yggdroot/indentline'
+Plug 'dense-analysis/ale'
+Plug 'valloric/youcompleteme'
+Plug 'easymotion/vim-easymotion'
+Plug 'mbbill/undotree'
 call plug#end()
 
-if &term == 'linux'
-  " set t_Co=256
-  " set t_Co=32
-  set t_Co=16
-  colorscheme delek
-else
-  set t_Co=256
-  set termguicolors
-  colorscheme retrobox
-endif
+colorscheme catppuccin_mocha
 
-let g:user_emmet_mode='inv'
-let g:user_emmet_leader_key=','
+": ALE Post-Startup
+let g:ale_linters = {
+      \ 'python': ['pylint'],
+      \ 'rust': ['analyzer'],
+      \ 'vim': [''],
+      \ 'cpp': ['clangd', 'cpplint'],
+      \ 'json': ['eslint'],
+      \ }
+let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': ['black', 'isort'],
+      \ 'rust': ['rustfmt'],
+      \ 'cpp': ['clang-format'],
+      \ 'json': ['prettier'],
+      \}
+": END ALE Post-Startup
+
+": YCM
+let g:ycm_auto_trigger = 1
+let g:ycm_enable_semantic_highlighting = 1
+let g:ycm_enable_inlay_hints = 1
+let g:ycm_clear_inlay_hints_in_insert_mode = 1
+let g:ycm_always_populate_location_list = 1
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_use_ultisnips_completer = 1
+let g:ycm_python_interpreter_path = '/usr/bin/python3'
+nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
+nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
+nmap <leader>yc <Plug>(YCMToggleInlayHints)
+
+let g:indentLine_char = '│'
+" let g:indentLine_setColors = 0
+" let g:indentLine_defaultGroup = 'SpecialKey'
+" let g:indentLine_concealcursor = 'inc'
+" let g:indentLine_conceallevel = 2
+" let g:indentLine_setConceal = 0
+
+": EASYMOTION
+": <Leader>f{char} to move to {char}
+map <leader>mf <Plug>(easymotion-bd-f)
+nmap <leader>mf <Plug>(easymotion-overwin-f)
+nmap <leader>ms <Plug>(easymotion-overwin-f2)
+map <leader>ml <Plug>(easymotion-bd-jk)
+nmap <leader>ml <Plug>(easymotion-overwin-line)
+map <leader>mw <Plug>(easymotion-bd-w)
+nmap <leader>mw <Plug>(easymotion-overwin-w)
+
+nnoremap <leader>ut :UndotreeToggle<cr>
 
 " let g:netrw_browse_split=4
 let g:netrw_banner=0
@@ -75,10 +154,6 @@ let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-
-let g:UltiSnipsExpandTrigger='<tab>'
-let g:UltiSnipsJumpForwardTrigger='<tab>'
-let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
 
 let mapleader=" "
 let maplocalleader="\\"
@@ -89,23 +164,24 @@ vnoremap kj <ESC>
 command! MakeTags !ctags -R .
 
 nnoremap <leader>w :write<cr>
-nnoremap <leader>q ZQ
-nnoremap <leader>z ZZ
+nnoremap <localleader>w :wall<cr>
+nnoremap <leader>q :quit<CR>
+nnoremap <leader>z :wall<CR>:quit<CR>
+nnoremap <localleader>z :xall<CR>
 nnoremap <leader>o :edit .<cr>
-nnoremap <leader>f :find 
-nnoremap <localleader>e :edit ~/.vimrc<cr>
-nnoremap <localleader>ve :vsplit<CR><C-w>l:edit ~/.vimrc<cr>
-nnoremap <localleader>s :source ~/.vimrc<cr>:do FileType<cr>:do BufEnter<cr>
-nnoremap <leader>t :shell<CR>
-nnoremap <localleader>t :terminal<CR>
+nnoremap <leader>f :find<Space>
+nnoremap <localleader>e :edit $MYVIMRC<cr>
+nnoremap <localleader>ve :vsplit<CR><C-w>l:edit $MYVIMRC<cr>
+nnoremap <localleader>s :source $MYVIMRC<cr>:do FileType<cr>:do BufEnter<cr>
+nnoremap <leader>t :terminal<CR>
+nnoremap <localleader>t :shell<CR>
 
-nnoremap <leader>i :call Indent()<cr>
-
+nnoremap <C-f> <C-d>
 nnoremap w W
 nnoremap <leader>a zt
-nnoremap <S-b> _
-nnoremap <S-e> $
-nnoremap <S-y> y$
+nnoremap B _
+nnoremap E $
+nnoremap Y y$
 nnoremap n nzz
 nnoremap N Nzz
 nnoremap ' `
@@ -117,18 +193,23 @@ vnoremap K :m '<-2<CR>gv=gv
 vnoremap < <gv
 vnoremap > >gv
 nnoremap <leader>v :vsplit<cr><C-w>l
-nnoremap <leader>s :split<cr><C-w>j
+nnoremap <localleader>v :split<cr><C-w>j
 nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 
-nnoremap <leader>rj :vertical resize+5<CR>
-nnoremap <leader>rk :resize+5<CR>
+nnoremap <leader>kk :vertical resize+
+nnoremap <leader>ll :resize+
 nnoremap <leader>rs <C-w>=
 
-nnoremap <leader>bn :bnext<cr>
-nnoremap <leader>bp :bpreviouse<cr>
+nnoremap <C-l> :bnext<cr>
+nnoremap <C-h> :bpreviouse<cr>
+
+nnoremap <leader>s 'S
+nnoremap <leader>d 'D
+nnoremap <leader>f 'F
+nnoremap <leader>g 'G
 
 nnoremap <leader>to :tabnew<cr>
 nnoremap <leader>tn :tabnext<cr>
@@ -139,34 +220,31 @@ augroup ALL
   au!
   au InsertEnter * setlocal nornu
   au InsertLeave * setlocal rnu
-  au FileType * call GetLine()
+  au BufEnter * call GetLine()
+  au BufWritePre * call DelWhiteSpace()
+  au BufWritePre $MYVIMRC,*.vim,*.sh,*.py,*.c,*.cpp,*.h,*.rs call Indent()
 augroup END
 
 augroup VIM
   au!
   au FileType vim setlocal ts=2 sw=2 sts=2
-  au BufWritePre,BufEnter $MYVIMRC,*.vim call Indent()
   " au BufWritePre $MYVIMRC :!cp % ~/safehouse/%.bak
 augroup END
 
 augroup PYTHON
   au!
-  au FileType python setlocal fdm=indent fdc=0 fdl=99 fdls=99
+  au FileType python setlocal fdm=indent fdc=0 fdl=99 fdls=99 scl=auto
   au FileType python nnoremap <buffer> <F5> :write<cr>:!clear && python3 %<cr>
-  " au BufWritePre *.py call Indent()
 augroup END
 
 augroup C_CPP
   au!
   au FileType c,cpp silent setlocal ts=4 sw=4 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
-  au BufEnter *.c,*.cpp,*.h nnoremap <buffer> <leader>b A<space>{<cr>}<esc>ko
-  au BufWritePre,BufEnter *.c,*.cpp,*.h call Indent()
 augroup END
 
 augroup RUST
   au!
   au FileType rust setlocal noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent
-  au BufWritePre,BufEnter *.rs call Indent()
 augroup END
 
 augroup HTML_CSS
@@ -205,11 +283,19 @@ augroup MAKE
   au Filetype make ts=8 sw=8 note
 augroup END
 
+augroup MyYCMCustom
+  au!
+  au FileType c,cpp,python,sh let b:ycm_hover = {
+        \ 'command': 'GetDoc',
+        \ 'syntax': &filetype
+        \ }
+augroup END
+
 augroup ABBREVS
   au!
   au FileType * abbrev memail irooted4hal@mailfence.com
   au Filetype * abbrev meme itsf4llofstars
-  au Filetype * abbrev retrun return 
+  au Filetype * abbrev retrun return
   au FileType text,python,sh abbrev pirnt print
   au FileType text,python,sh abbrev prnit print
   au FileType text,python,sh abbrev pritn print
