@@ -4,13 +4,12 @@
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
   },
-  "python.analysis.typeCheckingMode": "basic",
-  "python.linting.maxNumberOfProblems": 20,
   "python.linting.enabled": true,
+  "python.linting.maxNumberOfProblems": 20,
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": true,
   "python.venvFolders": ["venv", "venv/"],
-  // "pylint.args": ["--rcfile=~/python/pylint.conf"],
+  "pylint.args": ["--rcfile=~/python/pylint.conf"],
   "editor.fontFamily": "Liberation Mono Bold",
   "editor.fontWeight": "bold",
   "editor.minimap.enabled": false,
@@ -35,5 +34,10 @@
   "files.autoSaveDelay": 1000,
   "python.testing.pytestArgs": [
     "-v"
-  ]
+  ],
+  "python.linting.pylintCategorySeverity.warning": "Error",
+  "python.linting.pylintCategorySeverity.convention": "Error",
+  "python.linting.pylintCategorySeverity.refactor": "Error",
+  "python.linting.pylintEnabled": true,
+  "python.analysis.logLevel": "Error"
 }
