@@ -1,3 +1,4 @@
+*.tar
 # Compiled Lua sources
 luac.out
 
