@@ -8,7 +8,15 @@
 
 require('plugins')
 
--- [[ Treesitter ]] <<<
+function Toggle_transparent()
+  -- vim.cmd.colorscheme "catppuccin-mocha"
+  vim.cmd.colorscheme "retrobox"
+
+  vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+end
+
+-- Treesitter
 require'nvim-treesitter.configs'.setup {
   modules = { "python" },
   ensure_installed = { "c", "rust", "lua", "vim", "vimdoc", "python" },
@@ -22,18 +30,17 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
--- >>>
 
--- [[ Telescope ]] <<<
+-- Telescope
 require('telescope').setup({
   defaults = {
     layout_config = {
       vertical = { width = 0.5 },
     },
   },
-}) -- >>>
+})
 
--- [[ Which key ]] <<<
+-- Which key
 require('which-key').setup({
   plugins = {
     marks = true,
@@ -108,9 +115,16 @@ require('which-key').setup({
     buftypes = {},
     filetypes = {},
   },
-}) -- >>>
+})
 
--- [[ Mason ]] <<<
+-- Fidget
+require('fidget').setup( {
+  timer = {
+    fidget_decay = 10000,
+  }
+})
+
+-- Mason
 require('mason').setup({
   ui = {
     check_outdated_packages_on_open = true,
@@ -151,9 +165,9 @@ require('mason').setup({
     upgrade_pip = false,
     install_args = {},
   },
-}) -- >>>
+})
 
--- [[ Mason Lsp-Config ]] <<<
+-- Mason Lsp-Config
 require('mason-lspconfig').setup({
   -- ensure_installed = { "lua_ls", "jedi_language_server", "rust_analyzer", "bashls", "cmake", "jsonls"},
   automatic_installation = false,
@@ -163,9 +177,9 @@ require('mason-lspconfig').setup({
       "vim"
     }
   },
-}) -- >>>
+})
 
--- [[ LSP Configs ]] <<<
+-- LSP Configs
 require('lspconfig').lua_ls.setup{}
 require('lspconfig').lua_ls.setup {
   settings = {
@@ -192,9 +206,9 @@ require('lspconfig').lua_ls.setup {
       },
     },
   },
-} -- >>>
+}
 
--- [[ LSP Config Setup ]] <<<
+-- LSP Config Setup
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('lspconfig').jedi_language_server.setup {
   require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -211,9 +225,9 @@ require('lspconfig').jsonls.setup {
 }
 require('lspconfig').rust_analyzer.setup {
   capabilities = capabilities
-} -- >>>
+}
 
--- [[ CMP ]] <<<
+-- CMP
 local cmp = require'cmp'
 cmp.setup({
   snippet = {
@@ -234,9 +248,9 @@ cmp.setup({
   }, {
     { name = 'buffer' },
   })
-}) -- >>>
+})
 
--- [[ Catppuccin ]] <<<
+-- Catppuccin
 require("catppuccin").setup({
   flavour = "mocha", -- latte, frappe, macchiato, mocha
   background = {
@@ -280,37 +294,21 @@ require("catppuccin").setup({
   },
 })
 
-vim.cmd.colorscheme "catppuccin"
--- >>>
-
--- [[ Indent Line ]] <<<
+-- Indent Line
 require("indent_blankline").setup {
   -- for example, context is off by default, use this to turn it on
   show_current_context = true,
   show_current_context_start = true,
-} -- >>>
+}
 
-require('settings')
-require('keymaps')
-require('autogroups')
-
--- LUA LINE <<<
---[[
+-- Lualine
 require('lualine').setup {
   options = {
     icons_enabled = false,
     theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    component_separators = { left = '|', right = '|'},
-    section_separators = { left = '|', right = '|'},
-    disabled_filetypes = {
-      statusline = {},
-      winbar = {},
-    },
-    ignore_focus = {},
+    component_separators = { left = '│', right = '│'},
+    section_separators = { left = '│', right = '│'},
     always_divide_middle = true,
-    globalstatus = false,
     refresh = {
       statusline = 1000,
       tabline = 1000,
@@ -323,20 +321,12 @@ require('lualine').setup {
     lualine_c = {'filename'},
     lualine_x = {'encoding', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
-    lualine_z = {'location'}
+    lualine_z = {'location', 'filename'}
   },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  winbar = {},
-  inactive_winbar = {},
-  extensions = {}
 }
-]]
--- >>>
+
+require('settings')
+require('keymaps')
+require('autogroups')
+
+Toggle_transparent()
