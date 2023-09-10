@@ -6,20 +6,23 @@
 -- Mason
 -- Mason Lsp-Config
 
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin =1
+
 require('plugins')
 
 function Toggle_transparent()
-  -- vim.cmd.colorscheme "catppuccin-mocha"
-  vim.cmd.colorscheme "retrobox"
+  vim.cmd.colorscheme "catppuccin-mocha"
+  -- vim.cmd.colorscheme "retrobox"
 
   vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
   vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 end
 
 -- Treesitter
-require'nvim-treesitter.configs'.setup {
-  modules = { "python" },
-  ensure_installed = { "c", "rust", "lua", "vim", "vimdoc", "python" },
+require'nvim-treesitter.configs'.setup({
+  -- modules = { "python" }, -- is this needed
+  ensure_installed = { "c", "rust", "lua", "vim", "vimdoc", "python", "bash" },
   sync_install = false,
   auto_install = true,
   ignore_install = { "javascript" },
@@ -27,9 +30,9 @@ require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
     -- disable = { "c", "rust" },
-    additional_vim_regex_highlighting = false,
+    additional_vim_regex_highlighting = true,
   },
-}
+})
 
 -- Telescope
 require('telescope').setup({
@@ -117,13 +120,6 @@ require('which-key').setup({
   },
 })
 
--- Fidget
-require('fidget').setup( {
-  timer = {
-    fidget_decay = 10000,
-  }
-})
-
 -- Mason
 require('mason').setup({
   ui = {
@@ -180,8 +176,8 @@ require('mason-lspconfig').setup({
 })
 
 -- LSP Configs
-require('lspconfig').lua_ls.setup{}
-require('lspconfig').lua_ls.setup {
+require('lspconfig').lua_ls.setup({})
+require('lspconfig').lua_ls.setup({
   settings = {
     Lua = {
       runtime = {
@@ -206,26 +202,26 @@ require('lspconfig').lua_ls.setup {
       },
     },
   },
-}
+})
 
 -- LSP Config Setup
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require('lspconfig').jedi_language_server.setup {
+require('lspconfig').jedi_language_server.setup({
   require('cmp_nvim_lsp').default_capabilities(capabilities)
   -- capabilities = capabilities
-}
-require('lspconfig').bashls.setup {
+})
+require('lspconfig').bashls.setup({
   capabilities = capabilities
-}
-require('lspconfig').cmake.setup {
+})
+require('lspconfig').cmake.setup({
   capabilities = capabilities
-}
-require('lspconfig').jsonls.setup {
+})
+require('lspconfig').jsonls.setup({
   capabilities = capabilities
-}
-require('lspconfig').rust_analyzer.setup {
+})
+require('lspconfig').rust_analyzer.setup({
   capabilities = capabilities
-}
+})
 
 -- CMP
 local cmp = require'cmp'
@@ -295,14 +291,14 @@ require("catppuccin").setup({
 })
 
 -- Indent Line
-require("indent_blankline").setup {
+require("indent_blankline").setup({
   -- for example, context is off by default, use this to turn it on
   show_current_context = true,
   show_current_context_start = true,
-}
+})
 
 -- Lualine
-require('lualine').setup {
+require('lualine').setup({
   options = {
     icons_enabled = false,
     theme = 'auto',
@@ -323,10 +319,64 @@ require('lualine').setup {
     lualine_y = {'progress'},
     lualine_z = {'location', 'filename'}
   },
-}
+})
+
+-- Zen Mode
+require('zen-mode').setup({
+  window = {
+    backdrop = 0.95,
+    width = 110,
+    height = 1,
+
+    options = {
+      signcolumn = "no",
+      number = true,
+      relativenumber = true,
+      foldcolumn = "0",
+      list = false,
+    },
+  },
+
+  plugins = {},
+
+  tmux = { enabled = false },
+
+  -- on_open = function(win)
+  -- end,
+
+  -- on_close = function(win)
+  -- end,
+})
+
+-- Bufferline
+require("bufferline").setup({})
+
+-- Nvim Tree
+require("nvim-tree").setup({
+  filters = {
+    dotfiles = true,
+  }
+})
+
+-- Emmet
+-- NIL for now
 
 require('settings')
 require('keymaps')
 require('autogroups')
 
-Toggle_transparent()
+vim.cmd.colorscheme "catppuccin-mocha"
+-- Toggle_transparent()
+
+--[[Fidget
+require('fidget').setup({
+text = {
+spinner = "dots",
+},
+timer = {
+spinner_rate = 125,
+fidget_decay = 2000,
+task_decay = 1000,
+}
+})
+--]]

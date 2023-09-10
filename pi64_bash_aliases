@@ -36,6 +36,8 @@ alias mm='python3 main.py'
 alias py='python3'
 alias act='source venv/bin/activate'
 alias dact='deactivate'
+alias pylint='pylint --rcfile=~/python/pylint.conf'
+alias pgd='python3 ~/python/cs50_web-dev/py_gui.py'
 
 # Rust
 alias cr='clear && cargo run'
