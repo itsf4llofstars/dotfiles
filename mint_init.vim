@@ -1,20 +1,26 @@
 ": NeoVim init.vim
-": Change: Wed Sep  6 02:50:28 PM CDT 2023
+": Change: Mon Sep 11 10:08:46 AM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
 function WriteDate()
-  normal! ggj
+  normal! mpHmoggj
   :r!date
   normal! kdd
   execute "normal I\": Change:\<Space>\<Esc>"
+  normal! 'ozt`p
 endfunction
 
 function Indent()
-  if &filetype == 'help' || &filetype == 'python'
-  else
-    normal! gg=G
-  endif
+  let l:view = winsaveview()
+  :normal! gg=G
+  call winrestview(l:view)
+endfunction
+
+function DelWhiteSpace()
+  let l:view = winsaveview()
+  %s/\s\+$//e
+  call winrestview(l:view)
 endfunction
 
 filetype plugin on
@@ -57,8 +63,48 @@ set noundofile
 let mapleader = " "
 let maplocalleader = "\\"
 
+": ALE Pre-Startup
+let g:ale_enabled = 1
+let g:ale_max_signs = 10
+let g:ale_completion_enabled = 0
+let g:ale_completion_autoimport = 0
+let g:ale_lsp_suggestions = 0
+
+" Popup when cursor is on line
+let g:ale_cursor_detail = 0
+" Associated with cursor_detail: 1, 0 cursor held below error
+let g:ale_detail_to_floating_preview = 1
+" Error attached to end of line, shown when cursror is on line
+let g:ale_virtualtext_cursor = 1
+
+let g:ale_echo_msg_format = "% code % [%linter%] %type% "
+let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let g:ale_warn_about_trailing_blank_lines = 1
+let g:ale_warn_about_trailing_whitespace = 1
+let g:ale_sign_column_always = 1
+let g:ale_python_pylint_options = '--rcfile ~/python/pylint.toml'
+let g:ale_set_highlights = 1
+
+" Prevents highlights in the code proper. This is a list of strings
+let g:ale_exclude_highlights = [
+      \ 'docstring',
+      \ 'Unused argument',
+      \ 'import-errro',
+      \ 'SC2164',
+      \ 'inconsistent-return-statements',
+      \ ]
+
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1 " 0 is default
+": END ALE Pre-Startup
+
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 Plug 'mattn/emmet-vim'
+Plug 'dense-analysis/ale'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mbbill/undotree'
@@ -71,6 +117,23 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
 
 colorscheme catppuccin-mocha
+
+": ALE Post-Startup
+let g:ale_linters = {
+      \ 'python': ['pylint'],
+      \ 'rust': ['analyzer'],
+      \ 'vim': [''],
+      \ 'cpp': ['clangd', 'cpplint'],
+      \ 'json': ['eslint'],
+      \ }
+let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': ['black', 'isort'],
+      \ 'rust': ['rustfmt'],
+      \ 'cpp': ['clang-format'],
+      \ 'json': ['prettier'],
+      \}
+": END ALE Post-Startup
 
 let g:coc_global_extensions = [
       \ 'coc-json', 'coc-tsserver', 'coc-snippets', 'coc-eslint', 'coc-sh',
@@ -162,12 +225,14 @@ nnoremap <localleader>z :xall<CR>
 nnoremap <leader>q :quit!<CR>
 nnoremap <leader>o :edit .<CR>
 nnoremap <leader>t :write<CR>:term<CR>
-" NOTE: TMAPS NEEDED
+tnoremap <ESC> <C-\><C-n>
+tnoremap <C-v><ESC> <ESC>
 
 nnoremap <localleader>e :write<CR>:edit ~/.config/nvim/init.vim<CR>
 nnoremap <localleader>ve :write<CR>:vsplit<CR><C-w>l:edit ~/.config/nvim/init.vim<CR>
 nnoremap <localleader>s :write<CR>:source ~/.config/nvim/init.vim<CR>:do FileType<CR>:do BufEnter<CR>
 
+nnoremap gg gg0
 nnoremap <leader>p "+p
 nnoremap <C-f> <C-d>
 nnoremap zz zt
@@ -186,11 +251,10 @@ vnoremap > >gv
 nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bp :bprev<cr>
 
-nnoremap tk g<Tab>
-nnoremap th gT
-nnoremap tl gt
-nnoremap tn :tabnew<CR>
-nnoremap tc :tabclose<CR>
+nnoremap H gt
+nnoremap L gt
+nnoremap <leader>to :tabnew<CR>
+nnoremap <leader>tc :tabclose<CR>
 
 nnoremap <leader>v :vsplit<cr><C-w>l
 nnoremap <localleader>v :split<cr><C-w>j
@@ -202,21 +266,13 @@ nnoremap <C-l> <C-w>l
 nnoremap <leader>kk :vertical resize+
 nnoremap <leader>ll :resize+
 
-nnoremap <leader>a '<S-a>
-nnoremap <leader>s '<S-s>
-nnoremap <leader>d '<S-d>
-nnoremap <leader>f '<S-f>
-
 augroup ALL
   autocmd!
-  autocmd BufWritePre * :normal! mpHmo
   autocmd InsertEnter * set nornu
   autocmd InsertLeave * set rnu
   autocmd BufEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
-  autocmd BufWritePre * :%s/\s\+$//e
-  " autocmd BufWritePre * :normal! gg=G
+  autocmd BufWritePre * call DelWhiteSpace()
   autocmd BufWritePre * call Indent()
-  autocmd BufWritePost * :normal! 'ozt`p
 augroup END
 
 augroup FILETYPES
@@ -231,14 +287,22 @@ augroup END
 
 augroup VIM
   autocmd!
-  " autocmd BufWritePre init.vim call WriteDate()
+  autocmd BufWritePre init.vim call WriteDate()
+  autocmd BufWritePre init.vim call Indent()
 augroup END
 
 augroup PYTHON
   autocmd FileType python let @c=':vsplitl:edit $HOME/notes/py_snips.txt:vertical resize-34h'
   autocmd BufWinEnter *.py nnoremap <F5> :write<CR>:!python3 %<CR>
   autocmd BufWinEnter *.py nnoremap <F6> :write<CR>:!black %<CR>
-  autocmd BufWinEnter *.py nnoremap <F7> :write<CR>:!pylint --rcfile=~/python/pylint.conf %<CR>
+  autocmd BufWinEnter *.py nnoremap <F7> :write<CR>:!pylint --rcfile=~/python/pylint.toml %<CR>
+  autocmd BufWritePre *.py call Indent()
+augroup END
+
+augroup C_CPP
+  autocmd!
+  autocmd FileType c,cpp setlocal ts=4 sw=4 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
+  autocmd BufWritePre *.c,*.cpp,*.h call Indent()
 augroup END
 
 augroup HTML_CSS
@@ -250,6 +314,7 @@ augroup HTML_CSS
   autocmd BufReadPost,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
   autocmd BufReadPost,BufEnter *.html onoremap <buffer> it :<c-u>normal! f<vi<<cr>
   autocmd CursorHold *.html,*.css write
+  autocmd BufWritePre *.html,*.css call Indent()
 augroup END
 
 augroup RUNCODE
