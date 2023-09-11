@@ -1,57 +1,42 @@
 ": VIMRC
-": Change: Wed Aug 30 10:56:54 AM CDT 2023
+": Change: Fri Sep  8 11:47:04 AM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
-fun WriteDate()
-  normal! mpHmoggj
+function WriteDate()
+  let l:view = winsaveview()
   :r!date
   normal! kdd
   execute "normal I\": Change:\<Space>\<Esc>"
-  normal! 'ozt`p
-endf
+  call winrestview(l:view)
+endfunction
 
 function GetLine()
-  if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
-endfunction
-
-function Indent()
-  normal! mp
-  normal! =ap
-  normal! `p
-endfunction
-
-function BufPreWrite()
-  if &filetype == 'snippets'
-    echom "one"
-  else
-    echom "two"
-    normal! mpHmo
-
-    if expand('%f') == '.vimrc'
-      setlocal ts=2 sw=4
-
-      normal! ggj
-      :r!date
-      normal! kdd
-      execute "normal I\": Change:\<Space>\<Esc>"
-    endif
-
-    :%s/\s\+$//e
-    normal! =ap
-    normal! 'ozt`p
+  if line("'\"") > 1 && line("'\"") <= line("$")
+    exe "normal! g'\""
   endif
 endfunction
 
+function Indent()
+  let l:view = winsaveview()
+  normal! gg=G
+  call winrestview(l:view)
+endfunction
+
+function Whitespace()
+  let l:view = winsaveview()
+  :%s/\s\+$//e
+  call winrestview(l:view)
+endfunction
+
+set nocompatible
 filetype plugin on
 filetype indent on
-syntax on
+syntax enable
 set backspace=indent,eol,start
 set background=dark
 set t_Co=256
 set termguicolors
-
-" Put cursor here -> X <-
 
 set tabstop=4
 set shiftwidth=4
@@ -64,6 +49,7 @@ set autoindent
 set autoread
 set autochdir
 set completeopt=menuone,preview,popup
+set cursorlineopt=number
 set foldlevel=99
 set foldlevelstart=99
 set hidden
@@ -71,9 +57,12 @@ set ignorecase
 set incsearch
 set path+=**
 set ruler
+set laststatus=2
+set statusline=(%n)\ %<%F%h%m%r%=%c%V\ [%l:%L]\ \ [%b\ 0x%B]\ \ %p%%\ \ %P\ \ %f\ \ |
 set scrolloff=5
 set showcmd
 set showmatch
+set signcolumn=yes
 set smartcase
 set smartindent
 set updatetime=333
@@ -84,18 +73,55 @@ set directory=~/.vim/backup
 set backupdir=~/.vim/backup
 set undodir=~/.vim/undodir
 set nobackup
+set nowritebackup
 set undofile
 set noswapfile
-set writebackup
 
 let mapleader=" "
 let maplocalleader="\\"
 
+": ALE Pre-Startup
+let g:ale_enabled = 1
+let g:ale_max_signs = 10
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+let g:ale_lsp_suggestions = 1
+let g:ale_cursor_detail = 0 " 1 gives popup
+let g:ale_virtualtext_cursor = 0
+let g:ale_detail_to_floating_preview = 1
+let g:ale_echo_msg_format = "% code % [%linter%] %type% "
+let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let g:ale_warn_about_trailing_blank_lines = 1
+let g:ale_warn_about_trailing_whitespace = 1
+let g:ale_sign_column_always = 1
+let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
+let g:ale_set_highlights = 0
+
+" Prevents highlights in the code proper. This is a list of strings
+let g:ale_exclude_highlights = [
+      \ 'docstring',
+      \ 'Unused argument',
+      \ 'import-errro',
+      \ 'SC2164',
+      \ 'inconsistent-return-statements',
+      \ ]
+
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1 " 0 is default
+": END ALE Pre-Startup
+
 call plug#begin()
+Plug 'catppuccin/vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
+Plug 'dense-analysis/ale'
 " Plug 'garbas/vim-snipmate'
+" Plug 'MarcWeber/vim-addon-mw-utils'
+" Plug 'tomtom/tlib_vim'
+Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
@@ -105,6 +131,25 @@ Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
+
+": ALE Post-Startup
+let g:ale_linters = {
+      \ 'python': ['pylint'],
+      \ 'rust': ['analyzer'],
+      \ 'vim': [''],
+      \ 'cpp': ['clangd', 'cpplint'],
+      \ 'json': ['eslint'],
+      \ }
+let g:ale_fixers = {
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'python': ['black', 'isort'],
+      \ 'rust': ['rustfmt'],
+      \ 'cpp': ['clang-format'],
+      \ 'json': ['prettier'],
+      \}
+": END ALE Post-Startup
+
+" let g:snipMate = { 'snippet_version': 1 }
 
 let g:coc_global_extensions = [
       \ 'coc-json', 'coc-tsserver', 'coc-snippets', 'coc-eslint', 'coc-sh',
@@ -142,17 +187,17 @@ inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>
 " inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"
 " inoremap <expr> <S-Tab> coc#pum#visible() ? coc#pum#prev(1) : "\<S-Tab>"
 
-nnoremap <leader>fz :FZF<cr>
-nnoremap <leader>fh :FZF ~<CR>
-nnoremap <leader>fb :Buffers<cr>
-nnoremap <leader>fc :Colors<cr>
-nnoremap <leader>fll :Lines<cr>
-nnoremap <leader>flb :BLines<cr>
-nnoremap <leader>ftt :Tags<cr>
-nnoremap <leader>ftb :BTags<cr>
-nnoremap <leader>fm :Marks<cr>
-nnoremap <leader>fj :Jumps<cr>
-nnoremap <leader>fp :Maps<cr>
+nnoremap <leader>of :FZF<cr>
+nnoremap <leader>oh :FZF ~<CR>
+nnoremap <leader>ob :Buffers<cr>
+nnoremap <leader>oc :Colors<cr>
+nnoremap <leader>oll :Lines<cr>
+nnoremap <leader>olb :BLines<cr>
+nnoremap <leader>ott :Tags<cr>
+nnoremap <leader>otb :BTags<cr>
+nnoremap <leader>om :Marks<cr>
+nnoremap <leader>oj :Jumps<cr>
+nnoremap <leader>op :Maps<cr>
 
 nmap <leader>mf <Plug>(easymotion-bd-f)
 nmap <leader>mf <Plug>(easymotion-overwin-f)
@@ -166,6 +211,7 @@ nmap <leader>mw <Plug>(easymotion-overwin-w)
 let g:undotree_SplitWidth=40
 let g:undotree_ShortIndicators=1
 let g:undotree_HighlightChangedText=0
+
 nnoremap <leader>ut :UndotreeToggle<cr>
 
 let g:indentLine_char = '▏'
@@ -182,15 +228,16 @@ let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\s\+'
 
-let g:snipMate = { 'snippet_version': 1 }
+let g:user_emmet_mode='a'
+let g:user_emmet_install_global=0
+let g:user_emmet_leader_key=','
 
-colorscheme retrobox
+colorscheme catppuccin_mocha
+
+command! MakeTags !ctags -R .
 
 inoremap kj <ESC>
 vnoremap kj <ESC>
-
-nnoremap <localleader>e :write<CR>:edit $MYVIMRC<CR>
-nnoremap <localleader>ve :write<CR>:vsplit<CR><C-w>l:edit $MYVIMRC<CR>
 
 nnoremap <leader>w :write<CR>
 nnoremap <localleader>w :wall<CR>
@@ -198,10 +245,15 @@ nnoremap <leader>z :write<CR>:quit<CR>
 nnoremap <localleader>z :xall<CR>
 nnoremap <leader>q :quit!<CR>
 nnoremap <leader>o :edit .<CR>
-nnoremap <leader>t :term<CR>
+nnoremap <leader>t :write<CR>:term<CR>
+nnoremap <localleader>t :shell<CR>
+
+nnoremap <localleader>e :write<CR>:edit $MYVIMRC<CR>
+nnoremap <localleader>ve :write<CR>:vsplit<CR><C-w>l:edit $MYVIMRC<CR>
+nnoremap <localleader>s :write<CR>:source $MYVIMRC<CR>:do FileType<CR>:do BufEnter<CR>
 
 nnoremap <C-f> <C-d>
-nnoremap [a zt
+nnoremap zz zt
 nnoremap E $
 nnoremap Y y$
 nnoremap B _
@@ -214,8 +266,13 @@ vnoremap J :m '>+1<cr>gv=gv
 vnoremap K :m '<-2<cr>gv=gv
 vnoremap < <gv
 vnoremap > >gv
-nnoremap ]b :bnext<cr>
-nnoremap [b :bprev<cr>
+nnoremap <leader>bn :bnext<cr>
+nnoremap <leader>bp :bprev<cr>
+
+nnoremap H gT
+nnoremap L gt
+nnoremap <leader>to :tabnew<CR>
+nnoremap <leader>tc :tabclose<CR>
 
 nnoremap <leader>v :vsplit<cr><C-w>l
 nnoremap <localleader>v :split<cr><C-w>j
@@ -224,37 +281,61 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap <leader>kk :vertical resize+
-nnoremap <leader>ll :resize+
-
-nnoremap <leader>a '<S-a>
-nnoremap <leader>s '<S-s>
-nnoremap <leader>d '<S-d>
-nnoremap <leader>f '<S-f>
+nnoremap <leader>ll :vertical resize+
+nnoremap <leader>kk :resize+
 
 augroup ALL
   autocmd!
   autocmd InsertEnter * set nornu
   autocmd InsertLeave * set rnu
-  autocmd BufWrite * call BufPreWrite()
-  autocmd BufEnter * call GetLine()
+  autocmd BufEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
+  autocmd BufWritePre * call Whitespace()
 augroup END
 
-augroup FILETYPES
+augroup VIM
   autocmd!
-  autocmd FileType vim setlocal ts=2 sw=2
-  autocmd FileType python setlocal fdc=3 fdm=indent
-  autocmd FileType c,rust setlocal fdm=indent noai nosi noci cin cino=ln,c2
-  autocmd Filetype text setlocal
-        \ ts=8 sw=8 sts=4 tw=80 noet wrap noai nosi noci cc=80
-  autocmd FileType json syntax match Comment +\/\/.\+$+
+  autocmd FileType vim setlocal ts=2 sw=2 nofen fdc=0 scl=no
+  autocmd BufWritePre *.vim,$MYVIMRC :normal! mpHmogg=G'ozt`p
 augroup END
 
-augroup RUNCODE
+augroup PYTHON
   autocmd!
-  " autocmd BufWinEnter *.py <F5> :write<CR>:!python3 %<CR>
+  autocmd FileType python setlocal cc=90 fdm=indent fdc=0
+  autocmd BufWinEnter *.py nnoremap <F5> :write<CR>:!python3 %<CR>
+augroup END
+
+augroup C
+  autocmd!
+  autocmd FileType c setlocal fdm=indent noai nosi noci cin cino=ln,c2
   autocmd BufWinEnter *.c nnoremap <buffer> <leader>mm :!make main<CR>
-  " autocmd BufWinEnter *.c <F5> :write<cr>:!./main
+  autocmd BufWinEnter *.c nnoremap <F5> :write<cr>:!./main
+augroup END
+
+augroup RUST
+  autocmd!
+  autocmd FileType rust setlocal fdm=indent noai nosi noci cin cino=ln,c2
+augroup END
+
+augroup HTML
+  autocmd!
+  autocmd FileType html,css setlocal ts=2 sw=2 tw=0 fdm=manual aw ut=1000 cc=80,100,120
+  autocmd FileType html nnoremap <buffer> <localleader>f Vatzf
+  autocmd FileType text,html,htmldjango,css EmmetInstall
+  autocmd BufReadPost,BufEnter *.html nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
+  autocmd BufReadPost,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
+  autocmd BufReadPost,BufEnter *.html onoremap <buffer> it :<c-u>normal! f<vi<<cr>
+  autocmd CursorHold *.html,*.css write
+augroup END
+
+augroup TEXT
+  autocmd!
+  autocmd Filetype text setlocal
+        \ ts=8 sw=8 sts=4 tw=80 noet wrap noai nosi noci fdc=0 scl=no cc=80
+augroup END
+
+augroup JSON
+  autocmd!
+  autocmd FileType json syntax match Comment +\/\/.\+$+
 augroup END
 
 augroup ABBREV
