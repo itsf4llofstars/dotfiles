@@ -7,6 +7,26 @@ function GetLine()
   endif
 endfunction
 
+fun MarkPre()
+  :normal! mpHmo
+endfun
+
+fun MarkPost()
+  :normal! 'ozt`p
+endfun
+
+function Indent()
+  let l:view = winsaveview()
+  :normal! gg=G
+  call winrestview(l:view)
+endfunction
+
+function DelWhiteSpace()
+  let l:view = winsaveview()
+  %s/\s\+$//e
+  call winrestview(l:view)
+endfunction
+
 filetype indent plugin on
 syntax on
 set termguicolors
@@ -46,16 +66,6 @@ set wildmode=list:longest,full
 set foldlevel=99
 set foldlevelstart=99
 
-if $TERM == 'linux'
-  set mouse=
-else
-  set breakindent
-  set clipboard=unnamedplus
-  set laststatus=2
-  set lazyredraw
-  set mouse=a
-endif
-
 let &undodir=expand('~/.local/state/nvim/undo')
 let &directory=expand('~/.local/state/nvim/swap')
 let &backupdir=expand('~/.local/state/nvim/backup')
@@ -68,17 +78,10 @@ let g:python3_host_prog = '/usr/bin/python3'
 let mapleader=" "
 let maplocalleader="\\"
 
-source ~/.config/nvim/setup_ale.vim
-source ~/.config/nvim/setup_coc.vim
-source ~/.config/nvim/plugins.vim
-
-call PreAleSetup()
-
 call plug#begin()
 Plug 'liuchengxu/vim-which-key'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'christoomey/vim-tmux-navigator'
@@ -86,21 +89,58 @@ Plug 'mbbill/undotree'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'dense-analysis/ale'
+Plug 'yggdroot/indentline'
 call plug#end()
 
-colorscheme catppuccin-mocha
+colorscheme retrobox
 
-call PostAleSetup()
-call CocSetup()
-call LesserPlugins()
+let g:indentLine_char = '▏'
+" let g:indentLine_char_list = ['▏', '▏', '┊']
+let g:indentLine_setColors = 0
+let g:indentLine_defaultGroup = 'SpecialKey'
+let g:indentLine_concealcursor = 'inc'
+let g:indentLine_conceallevel = 2
+" let g:indentLine_setConceal = 0
+
+": <Leader>f{char} to move to {char}
+map <leader>mf <Plug>(easymotion-bd-f)
+nmap <leader>mf <Plug>(easymotion-overwin-f)
+nmap <leader>ms <Plug>(easymotion-overwin-f2)
+map <leader>ml <Plug>(easymotion-bd-jk)
+nmap <leader>ml <Plug>(easymotion-overwin-line)
+map <leader>mw <Plug>(easymotion-bd-w)
+nmap <leader>mw <Plug>(easymotion-overwin-w)
+
+nnoremap <leader>fz :FZF<cr>
+nnoremap <leader>fh :FZF ~<CR>
+nnoremap <leader>fb :Buffers<cr>
+nnoremap <leader>fc :Colors<cr>
+nnoremap <leader>fll :Lines<cr>
+nnoremap <leader>flb :BLines<cr>
+nnoremap <leader>ftt :Tags<cr>
+nnoremap <leader>ftb :BTags<cr>
+nnoremap <leader>fm :Marks<cr>
+nnoremap <leader>fj :Jumps<cr>
+nnoremap <leader>fp :Maps<cr>
+nnoremap <leader>ut :UndotreeToggle<cr>
+
+" let g:netrw_browse_split=4
+let g:netrw_banner=0
+let g:netrw_altv=1
+let g:netrw_liststyle=3
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+command! MakeTags !ctags -R .
 
 inoremap kj <ESC>
 vnoremap kj <ESC>
 
 nnoremap <silent> <leader>w :write<CR>
-nnoremap <leader>q ZQ
-nnoremap <leader>z ZZ
+nnoremap <silent> <localleader>w :wall<CR>
+nnoremap <leader>q :quit!<CR>
+nnoremap <leader>z :write<CR>:quit<CR>
+nnoremap <localleader>z :xall<CR>
 nnoremap <leader>o :edit .<CR>
 nnoremap <localleader>e :edit ~/.config/nvim/init.vim<CR>
 nnoremap <localleader>ve :vsplit<CR><C-w>l:edit ~/.config/nvim/init.vim<CR>
@@ -146,78 +186,74 @@ nnoremap <leader>ll :vertical resize+5<CR>
 nnoremap <leader>jj :resize-5<CR>
 nnoremap <leader>rs <C-w>=
 nnoremap <leader>to :tabnew<CR>
-nnoremap <leader>tn :tabnext<CR>
-nnoremap <leader>tp :tabprevious<CR>
+nnoremap L :tabnext<CR>
+nnoremap H :tabprevious<CR>
 nnoremap <leader>tc :tabclose<CR>
 
 augroup ALL
   au!
   au InsertEnter * set nornu
   au InsertLeave * set rnu
-  au BufEnter,BufWritePre * :normal! mpHmogg=G'ozt`p
   au BufEnter * call GetLine()
+  au BufWritePre * call DelWhiteSpace()
+  au BufWritePre * call Indent()
 augroup END
 
-augroup VIM
+augroup FILETYPES
   au!
-  au FileType vim setlocal ts=2 sw=2 tw=0 fdm=marker fdc=2 cc=120
+  au FileType vim,lua setlocal ts=2 sw=2
+  au FileType python setlocal fdm=indent
+  au FileType sh setlocal nofen
+  au FileType c,cpp,rust setlocal noai nosi noci cin cino=ln,c2 fdc=4 fdm=indent
+  au FileType text setlocal tw=79 wrap
+  au FileType gitcommit setlocal ts=2 sw=2 tw=70 wrap cc=50,70
+  au FileType html,css setlocal ts=2 sw=2 aw awa ut=1000
+  au FileType markdown silent setlocal cc=90,100
 augroup END
 
-augroup PYTHON
+augroup CODE_RUNNERS
   au!
-  au FileType python setlocal ts=4 sw=4 tw=0 fdm=indent
   au BufEnter *.py nnoremap <buffer> <F5> :write<cr>:!python3 %<CR>
   au BufEnter *.py nnoremap <buffer> <F6> :!black %<CR>
   au BufEnter *.py nnoremap <buffer> <F7> :!pylint --rcfile=~/python/pylint.conf %<CR>
-augroup END
-
-augroup SH
-  au!
-  au FileType sh setlocal ts=4 sw=4 tw=0 nofen fdc=0
   au BufEnter *.sh nnoremap <buffer> <F5> :write<cr>:!./%<cr>
-  au BufEnter *.sh nnoremap <buffer> <F5> :write<cr>:!./%<cr>
-augroup END
-
-augroup C-CPP
-  au!
-  au FileType c,cpp setlocal ts=4 sw=4 tw=0 noai nosi noci cin cino=ln,c2 fdc=4 fdm=indent
-  au FileType c,cpp nnoremap <buffer> <leader>nb o{<CR>}<ESC>O
-augroup END
-
-augroup RUST
-  au!
-  au FileType rust setlocal ts=4 sw=4 tw=0 noai nosi noci cin cino=ln,c2 fdc=4 fdm=indent
-  au FileType rust nnoremap <buffer> <leader>nb o{<CR>}<ESC>O
   au BufEnter *.rs nnoremap <buffer> <F5> :write<CR>:!cargo run<CR>
 augroup END
 
-augroup LUA
+augroup HTML_CSS
   au!
-  au FileType lua setlocal ts=2 sw=2 tw=0 fdm=indent fdc=3
-  au BufEnter *.lua nnoremap <buffer> <F5> :write<CR>:!lua %<CR>
+  au BufEnter *.html nnoremap <buffer> <localleader>f Vatzf
+  au BufEnter *.html
+        \ nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
+  au BufEnter
+        \ *.css nnoremap
+        \ <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
+  au BufEnter *.html :onoremap <buffer> it :<c-u>normal! f<vi<<cr>
+  au CursorHold *.html,*.css write
 augroup END
 
-augroup TEXT
+augroup ABBREVS
   au!
-  au FileType text setlocal ts=4 sw=4 tw=79 wrap fdc=1
-augroup END
-
-augroup GITCOMMIT
-  au!
-  au FileType gitcommit setlocal ts=2 sw=2 tw=70 wrap cc=50,70
+  au FileType * abbrev memail irooted4hal@mailfence.com
+  au Filetype * abbrev meme itsf4llofstars
+  au Filetype * abbrev retrun return
+  au FileType text,python,sh abbrev pirnt print
+  au FileType text,python,sh abbrev prnit print
+  au FileType text,python,sh abbrev pritn print
+  au FileType text,python,sh abbrev prnt print
+  au FileType text,python abbrev slef self
+  au FileType text,python abbrev sefl self
+  au FileType c abbrev pirntf printf
+  au FileType c abbrev prnitf printf
+  au FileType c abbrev pritnf printf
+  au FileType c abbrev prnt printf
+  au FileType c abbrev prntf printf
+  au FileType python abbrev slef self
+  au FileType python abbrev sefl self
 augroup END
 
 augroup FZF
   au!
   au FileType fzf set laststatus=0 noshowmode noruler
-  " au BufLeave * <buffer> set laststatus=2 showmode ruler
   au VimEnter,BufEnter * nnoremap <leader>fz :<C-u>FZF<CR>
-augroup END
-
-augroup SNIPPETS
-  au!
-  au BufEnter *.py nnoremap <buffer> <leader>hs :-1read $HOME/.vim/snippets/py_hash<CR>
-  au BufEnter *.py abbrev def def():<left><left><esc>i
-  au BufEnter *.py abbrev <buffer> fori for i, item in enumerate():<esc>0f(
-  au BufEnter *.py nnoremap <buffer> <leader>cl :-1read $HOME/.vim/snippets/py_class<CR>wi
 augroup END
