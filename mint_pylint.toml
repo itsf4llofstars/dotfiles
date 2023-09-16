@@ -114,11 +114,11 @@ attr-naming-style = "snake_case"
 # attr-rgx =
 
 # Bad variable names which should always be refused, separated by a comma.
-bad-names = ["foo", "bar", "fiz", "buz", "baz", "toto", "tutu", "tata", "wang", "doodle"]
+bad-names = []
 
 # Bad variable names regexes, separated by a comma. If names match any regex,
 # they will always be refused
-# bad-names-rgxs =
+bad-names-rgxs = []
 
 # Naming style matching correct class attribute names.
 class-attribute-naming-style = "any"
@@ -162,7 +162,7 @@ function-naming-style = "snake_case"
 # function-rgx =
 
 # Good variable names which should always be accepted, separated by a comma.
-good-names = ["i", "j", "k", "ex", "Run", "_"]
+good-names = ["i", "j", "k", "n", "m", "_"]
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted
@@ -365,7 +365,16 @@ confidence = ["HIGH", "CONTROL_FLOW", "INFERENCE", "INFERENCE_FAILURE", "UNDEFIN
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
-disable = ["raw-checker-failed", "bad-inline-option", "locally-disabled", "file-ignored", "suppressed-message", "useless-suppression", "deprecated-pragma", "use-symbolic-message-instead", "C0114", "C0116", "C0103"]
+disable = [
+    "no-else-return",
+    "expression-not-assigned",
+    "C0114",
+    "C0115",
+    "C0116",
+    "C0103"
+]
+# C0114-0116: doc strings
+# W0401, W0614, R0903 UNK
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -380,7 +389,7 @@ timeout-methods = ["requests.api.delete", "requests.api.get", "requests.api.head
 
 [tool.pylint.miscellaneous]
 # List of note tags to take in consideration, separated by a comma.
-notes = ["FIXME", "XXX", "TODO"]
+notes = ["FIXME", "XXX", "TODO", "NOTE"]
 
 # Regular expression of note tags to take in consideration.
 # notes-rgx =

@@ -1,14 +1,15 @@
 ": NeoVim init.vim
-": Change: Mon Sep 11 10:08:46 AM CDT 2023
+": Change: Sat Sep 16 01:03:03 AM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
 function WriteDate()
-  normal! mpHmoggj
+  let l:view = winsaveview()
+  normal! ggj
   :r!date
   normal! kdd
   execute "normal I\": Change:\<Space>\<Esc>"
-  normal! 'ozt`p
+  call winrestview(l:view)
 endfunction
 
 function Indent()
@@ -63,7 +64,6 @@ set noundofile
 let mapleader = " "
 let maplocalleader = "\\"
 
-": ALE Pre-Startup
 let g:ale_enabled = 1
 let g:ale_max_signs = 10
 let g:ale_completion_enabled = 0
@@ -263,16 +263,15 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap <leader>kk :vertical resize+
-nnoremap <leader>ll :resize+
+nnoremap <leader>ll :vertical resize+
+nnoremap <leader>kk :resize+
 
 augroup ALL
-  autocmd!
+  au!
   autocmd InsertEnter * set nornu
   autocmd InsertLeave * set rnu
   autocmd BufEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
   autocmd BufWritePre * call DelWhiteSpace()
-  autocmd BufWritePre * call Indent()
 augroup END
 
 augroup FILETYPES
@@ -281,14 +280,14 @@ augroup FILETYPES
   autocmd FileType python setlocal tw=0 fdm=indent
   autocmd FileType c,rust setlocal tw=0 fdm=indent noai nosi noci cin cino=ln,c2
   autocmd Filetype text setlocal
-        \ ts=8 sw=8 sts=4 tw=80 noet wrap noai nosi noci cc=80
+        \ ts=8 sw=8 sts=4 tw=79 noet wrap noai nosi noci cc=80
   autocmd FileType json syntax match Comment +\/\/.\+$+
 augroup END
 
 augroup VIM
   autocmd!
-  autocmd BufWritePre init.vim call WriteDate()
   autocmd BufWritePre init.vim call Indent()
+  autocmd BufWritePre init.vim call WriteDate()
 augroup END
 
 augroup PYTHON
@@ -315,6 +314,11 @@ augroup HTML_CSS
   autocmd BufReadPost,BufEnter *.html onoremap <buffer> it :<c-u>normal! f<vi<<cr>
   autocmd CursorHold *.html,*.css write
   autocmd BufWritePre *.html,*.css call Indent()
+augroup END
+
+augroup TEXT
+  autocmd!
+  autocmd BufWritePre *.txt call WriteDate()
 augroup END
 
 augroup RUNCODE
