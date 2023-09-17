@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Sat Sep 16 01:03:03 AM CDT 2023
+": Change: Sat Sep 16 02:13:22 PM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -21,6 +21,13 @@ endfunction
 function DelWhiteSpace()
   let l:view = winsaveview()
   %s/\s\+$//e
+  call winrestview(l:view)
+endfunction
+
+function CleanUp()
+  let l:view = winsaveview()
+  %s/\s\+$//e
+  :normal! gg=G
   call winrestview(l:view)
 endfunction
 
@@ -114,9 +121,20 @@ Plug 'yggdroot/indentline'
 Plug 'easymotion/vim-easymotion'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'stevearc/dressing.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-neo-tree/neo-tree.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'nvim-lua/plenary.nvim',
 call plug#end()
 
 colorscheme catppuccin-mocha
+
+source ~/.config/nvim/treesitter.lua
+source ~/.config/nvim/dev_icons.lua
+source ~/.config/nvim/dressing.lua
+source ~/.config/nvim/neotree.lua
 
 ": ALE Post-Startup
 let g:ale_linters = {
@@ -220,10 +238,9 @@ vnoremap kj <ESC>
 
 nnoremap <leader>w :write<CR>
 nnoremap <localleader>w :wall<CR>
-nnoremap <leader>z :write<CR>:quit<CR>
-nnoremap <localleader>z :xall<CR>
-nnoremap <leader>q :quit!<CR>
-nnoremap <leader>o :edit .<CR>
+nnoremap <leader>z ZZ
+nnoremap <leader>q ZQ
+nnoremap <leader>oo :Neotree<CR>
 nnoremap <leader>t :write<CR>:term<CR>
 tnoremap <ESC> <C-\><C-n>
 tnoremap <C-v><ESC> <ESC>
@@ -232,7 +249,6 @@ nnoremap <localleader>e :write<CR>:edit ~/.config/nvim/init.vim<CR>
 nnoremap <localleader>ve :write<CR>:vsplit<CR><C-w>l:edit ~/.config/nvim/init.vim<CR>
 nnoremap <localleader>s :write<CR>:source ~/.config/nvim/init.vim<CR>:do FileType<CR>:do BufEnter<CR>
 
-nnoremap gg gg0
 nnoremap <leader>p "+p
 nnoremap <C-f> <C-d>
 nnoremap zz zt
@@ -256,9 +272,13 @@ nnoremap L gt
 nnoremap <leader>to :tabnew<CR>
 nnoremap <leader>tc :tabclose<CR>
 
+nnoremap to :tabnew<CR>
+nnoremap tc :tabclose<CR>
+nnoremap H :tabnext<CR>
+nnoremap L :tabprev<CR>
+
 nnoremap <leader>v :vsplit<cr><C-w>l
 nnoremap <localleader>v :split<cr><C-w>j
-
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -282,26 +302,27 @@ augroup FILETYPES
   autocmd Filetype text setlocal
         \ ts=8 sw=8 sts=4 tw=79 noet wrap noai nosi noci cc=80
   autocmd FileType json syntax match Comment +\/\/.\+$+
+  autocmd FileType lua setlocal ts=2 sts=2 sw=2
 augroup END
 
 augroup VIM
   autocmd!
-  autocmd BufWritePre init.vim call Indent()
+  autocmd BufWritePre init.vim call CleanUp()
   autocmd BufWritePre init.vim call WriteDate()
 augroup END
 
 augroup PYTHON
-  autocmd FileType python let @c=':vsplitl:edit $HOME/notes/py_snips.txt:vertical resize-34h'
+  " autocmd FileType python let @c=':vsplitl:edit $HOME/notes/py_snips.txt:vertical resize-34h'
   autocmd BufWinEnter *.py nnoremap <F5> :write<CR>:!python3 %<CR>
   autocmd BufWinEnter *.py nnoremap <F6> :write<CR>:!black %<CR>
   autocmd BufWinEnter *.py nnoremap <F7> :write<CR>:!pylint --rcfile=~/python/pylint.toml %<CR>
-  autocmd BufWritePre *.py call Indent()
+  autocmd BufWritePre *.py call DelWhiteSpace()
 augroup END
 
 augroup C_CPP
   autocmd!
   autocmd FileType c,cpp setlocal ts=4 sw=4 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
-  autocmd BufWritePre *.c,*.cpp,*.h call Indent()
+  autocmd BufWritePre *.c,*.cpp,*.h call CleanUp()
 augroup END
 
 augroup HTML_CSS
@@ -313,12 +334,15 @@ augroup HTML_CSS
   autocmd BufReadPost,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
   autocmd BufReadPost,BufEnter *.html onoremap <buffer> it :<c-u>normal! f<vi<<cr>
   autocmd CursorHold *.html,*.css write
-  autocmd BufWritePre *.html,*.css call Indent()
+  autocmd BufWritePre *.html,*.css call CleanUp()
 augroup END
 
 augroup TEXT
   autocmd!
-  autocmd BufWritePre *.txt call WriteDate()
+  autocmd BufEnter *.txt :IndentLinesDisable
+  autocmd BufLeave *.txt :IndentLinesEnable
+  autocmd BufEnter *.txt colorscheme default
+  autocmd BufLeave *.txt colorscheme catppuccin-mocha
 augroup END
 
 augroup RUNCODE
@@ -329,6 +353,7 @@ augroup RUNCODE
 augroup END
 
 augroup ABBREV
+
   autocmd!
   autocmd BufEnter * iabbrev ifos itsf4llofstars
   autocmd BufEnter * iabbrev memail irooted4hal@mailfence.com
