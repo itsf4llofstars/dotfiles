@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Sat Sep 16 02:13:22 PM CDT 2023
+": Change: Mon Sep 18 01:22:25 AM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -267,11 +267,6 @@ vnoremap > >gv
 nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bp :bprev<cr>
 
-nnoremap H gt
-nnoremap L gt
-nnoremap <leader>to :tabnew<CR>
-nnoremap <leader>tc :tabclose<CR>
-
 nnoremap to :tabnew<CR>
 nnoremap tc :tabclose<CR>
 nnoremap H :tabnext<CR>
@@ -290,7 +285,7 @@ augroup ALL
   au!
   autocmd InsertEnter * set nornu
   autocmd InsertLeave * set rnu
-  autocmd BufEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
+  autocmd BufWinEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
   autocmd BufWritePre * call DelWhiteSpace()
 augroup END
 
