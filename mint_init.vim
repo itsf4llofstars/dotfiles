@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Mon Sep 18 01:22:25 AM CDT 2023
+": Change: Wed Sep 20 10:38:42 PM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -71,6 +71,7 @@ set noundofile
 let mapleader = " "
 let maplocalleader = "\\"
 
+": ALE
 let g:ale_enabled = 1
 let g:ale_max_signs = 10
 let g:ale_completion_enabled = 0
@@ -205,14 +206,14 @@ nnoremap <leader>om :Marks<cr>
 nnoremap <leader>oj :Jumps<cr>
 nnoremap <leader>op :Maps<cr>
 
-nmap <leader>mf <Plug>(easymotion-bd-f)
-nmap <leader>mf <Plug>(easymotion-overwin-f)
-nmap <leader>ms <Plug>(easymotion-bd-s)
-nmap <leader>ms <Plug>(easymotion-overwin-f2)
-nmap <leader>ml <plug>(easymotion-bd-jk)
-nmap <leader>ml <Plug>(easymotion-overwin-line)
-nmap <leader>mw <Plug>(easymotion-bd-w)
-nmap <leader>mw <Plug>(easymotion-overwin-w)
+nmap <leader>ff <Plug>(easymotion-bd-f)
+nmap <leader>ff <Plug>(easymotion-overwin-f)
+nmap <leader>fs <Plug>(easymotion-bd-s)
+nmap <leader>fs <Plug>(easymotion-overwin-f2)
+nmap <leader>fl <plug>(easymotion-bd-jk)
+nmap <leader>fl <Plug>(easymotion-overwin-line)
+nmap <leader>fw <Plug>(easymotion-bd-w)
+nmap <leader>fw <Plug>(easymotion-overwin-w)
 
 let g:undotree_SplitWidth=40
 let g:undotree_ShortIndicators=1
