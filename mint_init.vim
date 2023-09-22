@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Wed Sep 20 10:38:42 PM CDT 2023
+": Change: Thu Sep 21 11:14:44 PM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -111,6 +111,9 @@ let g:ale_fix_on_save = 1 " 0 is default
 ": END ALE Pre-Startup
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
 Plug 'mattn/emmet-vim'
 Plug 'dense-analysis/ale'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
@@ -130,12 +133,14 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-lua/plenary.nvim',
 call plug#end()
 
-colorscheme catppuccin-mocha
+colorscheme retrobox
 
 source ~/.config/nvim/treesitter.lua
 source ~/.config/nvim/dev_icons.lua
 source ~/.config/nvim/dressing.lua
 source ~/.config/nvim/neotree.lua
+
+let g:snipMate = { 'snippet_version' : 1 }
 
 ": ALE Post-Startup
 let g:ale_linters = {
