@@ -5,34 +5,40 @@ alias la='ls -A --color=always --group-directories-first --quoting-style=shell'
 alias ll='ls -1 --color=always --group-directories-first --quoting-style=shell'
 alias ld='ls -d .* --color=always --group-directories-first --quoting-style=shell'
 
-alias vimrc='vim ~/.vimrc'
-alias vimu='vim -u ~/vimrc.vim'
 alias vi='vim'
+alias vimrc='vim ~/.vimrc'
 alias vimm='vim main.py'
+alias vimg='vim ~/.vim/vim_augroups.vim'
+alias vimf='vim ~/.vim/vim_functions.vim'
+alias vimk='vim ~/.vim/vim_keymaps.vim'
+
+alias nconf='cd $HOME/.config/nvim'
+alias nv='nvim'
+alias nvimrc='nvim ~/.config/nvim/init.vim'
+alias nvimm='nvim main.py'
+
 alias ed='ed -E -v -p "ed: "'
-alias nano='nano -r 79'
+alias nano='nano -r 80'
 alias mu='micro'
 
-alias kittyrc='vim ~/.config/kitty/kitty.conf'
 alias critty='cd ~/.config/alacritty'
 alias ala='vim ~/.config/alacritty/alacritty.toml'
 
-alias ard='arduino-cli'
+alias pylint='pylint --rcfile=~/python/pylint.toml'
 
 alias mm='python3 main.py'
 alias py='python3'
-alias pep8='autopep8 -i --max-line-length 90'
 alias act='source ./venv/bin/activate'
 alias dact='deactivate'
 
 alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
+alias .....='cd ../../../../'
 
 alias path='echo $PATH | tr -s ":" "\n"'
 alias df='df -h /'
 alias sob='exec bash'
-alias kittyconf='vim ~/.config/kitty/kitty.conf'
 
 alias colorz='bash -c "$(wget -qO- https://git.io/vQgMr)"'
 

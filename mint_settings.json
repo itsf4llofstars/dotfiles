@@ -1,40 +1,30 @@
 {
-  "workbench.colorCustomizations": {
-    "editorError.foreground": "#00000000",
-    "editorWarning.foreground": "#00000000",
-    "editorInfo.foreground": "#00000000"
-  },
-  "workbench.preferredDarkColorTheme": "Monokai Dimmed",
-  "workbench.startupEditor": "none",
-  "workbench.iconTheme": "material-icon-theme",
-  "workbench.colorTheme": "Vim Dark Hard",
-  "editor.fontFamily": "Liberation Mono Bold",
-  "editor.fontSize": 14,
+  // "workbench.colorCustomizations": {
+    // "editorError.foreground": "#ff2222",
+    // "editorWarning.foreground": "#226622",
+    // "editorInfo.foreground": "#662222",
+    // "editorHint.foreground": "#222266"
+  // },
+  "editor.fontFamily": "Hack",
+  "editor.fontSize": 15,
   "editor.fontWeight": "bold",
   "editor.minimap.enabled": false,
-  "editor.formatOnSave": true,
-  "terminal.integrated.fontFamily": "Liberation Mono Bold",
+  "terminal.integrated.fontFamily": "Hack",
   "terminal.integrated.fontSize": 16,
-  "prettier.enable": true,
-  "prettier.singleQuote": true,
-  "[html]": {
+  // "pylint.severity": {
+    // "E1101": "Hint",
+    // "C0114": "Hint",
+    // "C0103": "Hint",
+    // "C0116": "Hint"
+  // },
+  "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "liveServer.settings.donotShowInfoMsg": true,
-  "diffEditor.ignoreTrimWhitespace": false,
-  "search.showLineNumbers": true,
-  "evenBetterToml.formatter.allowedBlankLines": 5,
-  "evenBetterToml.formatter.columnWidth": 80,
-  "python.linting.enabled": true,
-  "python.linting.lintOnSave": true,
-  "python.linting.ignorePatterns": ["**/site-packages/**/*.py", ".vscode/*.py"],
-  // "pylint.args": ["--rcfile=/home/bumper/python/pylint.conf"],
-  // "pylint.showNotifications": "onError",
-  "python.formatting.provider": "autopep8",
-  "python.formatting.autopep8Path": "/usr/bin/autopep8",
+  "rust-analyzer.inlayHints.chainingHints.enable": false,
+  "rust-analyzer.inlayHints.closureStyle": "hide",
+  "rust-analyzer.inlayHints.parameterHints.enable": false,
+  "rust-analyzer.inlayHints.typeHints.enable": false,
+  "liveServer.settings.donotVerifyTags": true,
   "vim.leader": "<space>",
   "vim.cursorStylePerMode.insert": "block",
   "vim.cursorStylePerMode.normal": "block",
@@ -43,14 +33,6 @@
   "vim.cursorStylePerMode.visualblock": "block",
   "vim.cursorStylePerMode.visualline": "block",
   "vim.highlightedyank.textColor": "#00FF00",
-  "vim.textwidth": 80,
-  "vim.easymotion": false,
-  "vim.enableNeovim": false,
-  "vim.vimrc.enable": true,
-  "vim.useCtrlKeys": true,
-  "vim.handleKeys": {
-    "<C-s>": false
-  },
   "vim.highlightedyank.enable": true,
   "vim.highlightedyank.color": "rgba(0, 255, 0, 0.5)",
   "vim.hlsearch": false,
@@ -67,7 +49,6 @@
   "vim.smartcase": true,
   "vim.smartRelativeLine": true,
   "vim.statusBarColorControl": false,
-  "vim.normalModeKeyBindings": [],
   "vim.normalModeKeyBindingsNonRecursive": [
     {
       "before": ["<leader>", "w"],
@@ -88,18 +69,6 @@
     {
       "before": ["E"],
       "after": ["$"]
-    },
-    {
-      "before": [",", "a"],
-      "after": ["z", "t"]
-    },
-    {
-      "before": [",", "b"],
-      "after": ["z", "b"]
-    },
-    {
-      "before": [",", "z"],
-      "after": ["z", "z"]
     },
     {
       "before": ["<leader>", "p"],
@@ -125,32 +94,21 @@
   ],
   "vim.visualModeKeyBindings": [],
   "vim.operatorPendingModeKeyBindings": [],
-  "vim.operatorPendingModeKeyBindingsNonRecursive": [
-    {
-      "before": ["("],
-      "after": ["i"]
-    },
-    {
-      "before": ["{"],
-      "after": ["i"]
-    },
-    {
-      "before": ["["],
-      "after": ["i"]
-    },
-    {
-      "before": ["<"],
-      "after": ["i"]
-    }
+  "vim.operatorPendingModeKeyBindingsNonRecursive": [],
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "gitlens.graph.minimap.additionalTypes": [
+    "localBranches",
+    "stashes",
+    "remoteBranches",
+    "tags"
   ],
-  "[jsonc]": {
+  "zenMode.hideTabs": false,
+  "workbench.iconTheme": "material-icon-theme",
+  "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "rust-analyzer.inlayHints.chainingHints.enable": false,
-  "rust-analyzer.inlayHints.closureStyle": "hide",
-  "rust-analyzer.inlayHints.parameterHints.enable": false,
-  "rust-analyzer.inlayHints.typeHints.enable": false,
-  "autoDocstring.docstringFormat": "pep257",
   "prettier.printWidth": 120,
-  "liveServer.settings.donotVerifyTags": true
+  "files.autoSave": "afterDelay"
 }

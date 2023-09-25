@@ -1,14 +1,15 @@
+# vim:fdm=marker:
 # ~/.bashrc: executed by bash(2) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-## 0-normal, 1-bold, 2-dim, 3-italicsr, 4-underlined
+## {{{ COLORS
+## 0-normal, 1-bold, 2-dim, 3-italics, 4-underlined
 ## \e[00;nnm x \e[0m
 ## PS1='\e[0;34 \$ \e[0m'
 ## 30-black, red, grn, bwn, blu, pur, cyn, 37-gry,
 ## 0-norm, bold, dim, italics, 4-underlined
 
-# {{{ COLORS
 blk="\[\033[00;30m\]"
 red="\[\033[00;31m\]"
 red_b="\[\033[01;31m\]"
@@ -64,18 +65,17 @@ function hg() {
 }
 
 function bash_prompt() {
-    # PS1='\e[0;33m$(git_branch) \e[0m\e[1;34m\w \e[0m\e[1;34m\$ \e[0m'
-    # Replaced 33 in git with 32 and $ color 34 with 32 for green prompts
-    PS1='\e[1;33m$(git_branch) \e[0m\e[1;34m\w \e[0m\e[1;34m\$ \e[0m'
-    # PS1=${bwn}'$(git_branch)'${grn_b}' \W '${blu_b}'\$ '${clr}
+    PS1='\[\033[00;33m\]$(git_branch) \[\033[03;32m\]\w \[\033[00;34m\]\$ \[\033[00m\]'
+    # PS1=' \[\033[00;37m\]GRAY \[\033[00;36m\]CYAN \[\033[00;35m\]PURPLE \[\033[00;33m\]BROWN \[\033[00;32m\]GREEN \[\033[00;31m\]RED \[\033[00;34m\]BLUE \[\033[00m\]'
+    # PS1=' \[\033[00;35m\]ZERO \[\033[01;33m\]ONE \[\033[02;33m\]TWO \[\033[03;33m\]THREE \[\033[04;33m\]FOUR \$ \[\033[00m\]'
 }
 # }}}
 
-# If not running interactively, don't do anything
+# If not running interactively, don't do anything {{{
 case $- in
     *i*) ;;
     *) return;;
-esac
+esac # }}}
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -174,7 +174,6 @@ fi
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -182,13 +181,13 @@ fi
 ## enable programmable completion features (you don't need to enable
 ## this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 ## sources /etc/bash.bashrc).
-# if ! shopt -oq posix; then
-#         if [ -f /usr/share/bash-completion/bash_completion ]; then
-#                 . /usr/share/bash-completion/bash_completion
-#         elif [ -f /etc/bash_completion ]; then
-#                 . /etc/bash_completion
-#         fi
-# fi
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
 
 export PATH="$HOME"/bin:$PATH
 PATH=$PATH:"$HOME"/.local/bin
@@ -205,9 +204,7 @@ bash_prompt
 
 . "$HOME/.cargo/env"
 
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# source /home/bumper/alacritty/extra/completions/alacritty.bash
 # source /home/bumper/alacritty/extra/completions/alacritty.bash
