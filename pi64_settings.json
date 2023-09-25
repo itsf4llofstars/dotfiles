@@ -15,7 +15,7 @@
   "pylint.showNotifications": "off",
   "tabnine.experimentalAutoImports": true,
   "git.autofetch": true,
-  "files.autoSave": "afterDelay"
+  "workbench.startupEditor": "none"
 }
 
 // "workbench.colorCustomizations": {

@@ -1,6 +1,7 @@
 "# VIMRC: Sourced from ~/.vimrc
 "# Neovim is installed! A copy of the fancy vimrc is in .config/nvim
 
+" Functions
 function Indent()
   let l:view = winsaveview()
   :normal! gg=G
@@ -18,7 +19,16 @@ function DelWhiteSpace()
   %s/\s\+$//e
   call winrestview(l:view)
 endfunction
+" END Functions
 
+function CleanUp()
+  let l:view = winsaveview()
+  %s/\s\+$//e
+  :normal! gg=G
+  call winrestview(l:view)
+endfunction
+
+" Settings
 set nocompatible
 filetype plugin on
 filetype indent on
@@ -54,50 +64,61 @@ set wildmenu
 set wildmode=list:longest,full
 set nowrap
 
-": ALE Pre-Startup
+let mapleader=" "
+let maplocalleader="\\"
+" END Settings
+
+" ALE Pre-Startup
 let g:ale_enabled = 1
+let g:ale_python_pylint_options = '--rcfile /home/bumper/python/pylint.conf'
 let g:ale_max_signs = 10
-let g:ale_completion_enabled = 1
-let g:ale_completion_autoimport = 1
-let g:ale_lsp_suggestions = 1
+let g:ale_completion_enabled = 0
+let g:ale_completion_autoimport = 0
+let g:ale_lsp_suggestions = 0
 let g:ale_cursor_detail = 0 " 1 gives popup
-let g:ale_virtualtext_cursor = 0
 let g:ale_detail_to_floating_preview = 1
-let g:ale_echo_msg_format = "% code % [%linter%] %type% "
+let g:ale_echo_msg_format = "%type% [%linter%] %code%"
 let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let g:ale_virtualtext_delay = 250
+let g:ale_virtualtext_prefix = '%comment% %type%: '
+let g:ale_virtualtext_cursor = 2 " '2:all', '1:current', '0:disables'
 let g:ale_warn_about_trailing_blank_lines = 1
 let g:ale_warn_about_trailing_whitespace = 1
 let g:ale_sign_column_always = 1
-let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
-let g:ale_set_highlights = 0
+" let g:ale_python_pylint_options = '--rcfile ~/python/pylint.conf'
+let g:ale_set_highlights = 1 " highlights each error on line
+let g:ale_set_signs = 1 " hightlights the scl
 
 " Prevents highlights in the code proper. This is a list of strings
-let g:ale_exclude_highlights = [
-      \ 'docstring',
-      \ 'Unused argument',
-      \ 'import-errro',
-      \ 'SC2164',
-      \ 'inconsistent-return-statements',
-      \ ]
+let g:ale_exclude_highlights = ['line to long', 'docstring']
 
 let g:ale_linters_explicit = 1
 let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_save = 1
 let g:ale_fix_on_save = 1 " 0 is default
-": END ALE Pre-Startup
+" END ALE Pre-Startup
 
+": Vim-Plug
 call plug#begin()
+Plug 'mattn/emmet-vim'
+Plug 'tpope/vim-commentary'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
 Plug 'catppuccin/vim'
 Plug 'yggdroot/indentline'
 Plug 'dense-analysis/ale'
 Plug 'valloric/youcompleteme'
 Plug 'easymotion/vim-easymotion'
 Plug 'mbbill/undotree'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
+": END Vim-Plug
 
-colorscheme catppuccin_mocha
+" colorscheme catppuccin_mocha
+colorscheme retrobox
 
 ": ALE Post-Startup
 let g:ale_linters = {
@@ -128,6 +149,25 @@ let g:ycm_python_interpreter_path = '/usr/bin/python3'
 nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
 nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
 nmap <leader>yc <Plug>(YCMToggleInlayHints)
+": END YCM
+
+": Plugins
+nnoremap <leader>of :FZF<CR>
+nnoremap <leader>oh :FZF ~<CR>
+nnoremap <leader>ob :Buffers<CR>
+nnoremap <leader>oc :Colors<CR>
+nnoremap <leader>oll :Lines<CR>
+nnoremap <leader>olb :BLines<CR>
+nnoremap <leader>ott :Tags<CR>
+nnoremap <leader>otb :BTags<CR>
+nnoremap <leader>om :Marks<CR>
+nnoremap <leader>oj :Jumps<CR>
+nnoremap <leader>op :Maps<CR>
+
+nnoremap <leader>gc "Git commit<CR>
+nnoremap <leader>ga :Git add .<CR>
+nnoremap <leader>gs :Git status<CR>
+nnoremap <leader>gb :Git branch<CR>
 
 let g:indentLine_char = '│'
 " let g:indentLine_setColors = 0
@@ -146,6 +186,10 @@ nmap <leader>ml <Plug>(easymotion-overwin-line)
 map <leader>mw <Plug>(easymotion-bd-w)
 nmap <leader>mw <Plug>(easymotion-overwin-w)
 
+let g:user_emmet_mode='a'
+let g:user_emmet_install_global=0
+let g:user_emmet_leader_key=','
+
 nnoremap <leader>ut :UndotreeToggle<cr>
 
 " let g:netrw_browse_split=4
@@ -154,9 +198,6 @@ let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-
-let mapleader=" "
-let maplocalleader="\\"
 
 inoremap kj <esc>
 vnoremap kj <ESC>
@@ -168,8 +209,7 @@ nnoremap <localleader>w :wall<cr>
 nnoremap <leader>q :quit<CR>
 nnoremap <leader>z :wall<CR>:quit<CR>
 nnoremap <localleader>z :xall<CR>
-nnoremap <leader>o :edit .<cr>
-nnoremap <leader>f :find<Space>
+nnoremap <leader>oo :edit .<cr>
 nnoremap <localleader>e :edit $MYVIMRC<cr>
 nnoremap <localleader>ve :vsplit<CR><C-w>l:edit $MYVIMRC<cr>
 nnoremap <localleader>s :source $MYVIMRC<cr>:do FileType<cr>:do BufEnter<cr>
@@ -178,7 +218,7 @@ nnoremap <localleader>t :shell<CR>
 
 nnoremap <C-f> <C-d>
 nnoremap w W
-nnoremap <leader>a zt
+nnoremap zz zt
 nnoremap B _
 nnoremap E $
 nnoremap Y y$
@@ -206,12 +246,9 @@ nnoremap <leader>rs <C-w>=
 nnoremap <C-l> :bnext<cr>
 nnoremap <C-h> :bpreviouse<cr>
 
-nnoremap <leader>s 'S
-nnoremap <leader>d 'D
-nnoremap <leader>f 'F
-nnoremap <leader>g 'G
-
 nnoremap <leader>to :tabnew<cr>
+nnoremap H :tabprev<CR>
+nnoremap L :tabnext<CR>
 nnoremap <leader>tn :tabnext<cr>
 nnoremap <leader>tp :tabprev<cr>
 nnoremap <leader>tc :tabclose<cr>
@@ -220,26 +257,25 @@ augroup ALL
   au!
   au InsertEnter * setlocal nornu
   au InsertLeave * setlocal rnu
-  au BufEnter * call GetLine()
-  au BufWritePre * call DelWhiteSpace()
-  au BufWritePre $MYVIMRC,*.vim,*.sh,*.py,*.c,*.cpp,*.h,*.rs call Indent()
+  au BufWinEnter * call GetLine()
+  au BufWritePre * call CleanUp()
 augroup END
 
 augroup VIM
   au!
-  au FileType vim setlocal ts=2 sw=2 sts=2
-  " au BufWritePre $MYVIMRC :!cp % ~/safehouse/%.bak
+  au FileType vim setlocal ts=2 sw=2 sts=2 fdm=marker
 augroup END
 
 augroup PYTHON
   au!
-  au FileType python setlocal fdm=indent fdc=0 fdl=99 fdls=99 scl=auto
+  au FileType python setlocal fdm=indent fdc=0 fdl=99 fdls=99 scl=yes
   au FileType python nnoremap <buffer> <F5> :write<cr>:!clear && python3 %<cr>
 augroup END
 
 augroup C_CPP
   au!
-  au FileType c,cpp silent setlocal ts=4 sw=4 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
+  au FileType c,cpp silent setlocal ts=4 sw=4 cc=80 noai nosi noci cin
+        \ cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
 augroup END
 
 augroup RUST
@@ -251,6 +287,7 @@ augroup HTML_CSS
   au!
   au FileType html,css
         \ setlocal ts=2 sw=2 fdc=3 fdm=manual fdl=2 fdls=2 aw awa ut=1000
+  au FileType text,html,css,htmldjango EmmetInstall
   au BufEnter *.html nnoremap <buffer> <localleader>f Vatzf
   au BufRead,BufEnter *.html
         \ nnoremap <buffer> <localleader>c i<!----><esc>2hi<space><esc>i<space>
@@ -264,18 +301,18 @@ augroup END
 
 augroup BASH
   au!
-  au FileType sh silent setlocal nofen fdc=0 scl=no
+  au FileType sh setlocal nofen fdc=0 scl=no
   au BufWritePre,BufEnter *.sh call Indent()
 augroup END
 
 augroup MARKDOWN
   au!
-  au FileType markdown silent setlocal ts=4 sts=2 sw=4 tw=0 et nowrap cc=90,100
+  au FileType markdown setlocal ts=4 sts=2 sw=4 tw=0 et nowrap cc=90,100
 augroup END
 
 augroup TEXT
   au!
-  au FileType text silent setlocal nofen fdc=0 cc=80
+  au FileType text setlocal nofen fdc=0 cc=80
 augroup END
 
 augroup MAKE
@@ -294,7 +331,7 @@ augroup END
 augroup ABBREVS
   au!
   au FileType * abbrev memail irooted4hal@mailfence.com
-  au Filetype * abbrev meme itsf4llofstars
+  au Filetype * abbrev ifos itsf4llofstars
   au Filetype * abbrev retrun return
   au FileType text,python,sh abbrev pirnt print
   au FileType text,python,sh abbrev prnit print
@@ -305,6 +342,7 @@ augroup ABBREVS
   au FileType c abbrev pirntf printf
   au FileType c abbrev prnitf printf
   au FileType c abbrev pritnf printf
+  au FileType c abbrev print printf
   au FileType c abbrev prnt printf
   au FileType c abbrev prntf printf
   au FileType python abbrev slef self

@@ -2,7 +2,7 @@
 	name = itsf4llofstars
 	email = irooted4hal@mailfence.com
 [core]
-	editor = nvim
+	editor = vim
 [init]
 	defaultBranch = main
 [merge]
