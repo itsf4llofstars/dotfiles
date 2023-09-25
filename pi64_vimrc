@@ -22,9 +22,18 @@ endfunction
 " END Functions
 
 function CleanUp()
+  let l:go = 1
   let l:view = winsaveview()
   %s/\s\+$//e
-  :normal! gg=G
+
+  if &filetype == 'python'
+    let l:go = 0
+  endif
+
+  if l:go
+    :normal! gg=G
+  endif
+
   call winrestview(l:view)
 endfunction
 
