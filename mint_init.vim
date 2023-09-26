@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Thu Sep 21 11:14:44 PM CDT 2023
+": Change: Mon Sep 25 09:48:08 AM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -133,7 +133,7 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-lua/plenary.nvim',
 call plug#end()
 
-colorscheme retrobox
+colorscheme catppuccin-mocha
 
 source ~/.config/nvim/treesitter.lua
 source ~/.config/nvim/dev_icons.lua
@@ -354,7 +354,6 @@ augroup RUNCODE
 augroup END
 
 augroup ABBREV
-
   autocmd!
   autocmd BufEnter * iabbrev ifos itsf4llofstars
   autocmd BufEnter * iabbrev memail irooted4hal@mailfence.com
