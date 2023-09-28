@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Mon Sep 25 09:48:08 AM CDT 2023
+": Change: Wed Sep 27 02:02:03 AM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -26,8 +26,20 @@ endfunction
 
 function CleanUp()
   let l:view = winsaveview()
+  let l:go = 1
+
   %s/\s\+$//e
-  :normal! gg=G
+
+  if &filetype == 'python'
+    let l:go = 0
+  endif
+  if &filetype == 'conf'
+    let l:go = 0
+  endif
+
+  if l:go == 1
+    :normal! gg=G
+  endif
   call winrestview(l:view)
 endfunction
 
@@ -292,7 +304,7 @@ augroup ALL
   autocmd InsertEnter * set nornu
   autocmd InsertLeave * set rnu
   autocmd BufWinEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
-  autocmd BufWritePre * call DelWhiteSpace()
+  autocmd BufWritePre * call CleanUp()
 augroup END
 
 augroup FILETYPES
@@ -308,7 +320,6 @@ augroup END
 
 augroup VIM
   autocmd!
-  autocmd BufWritePre init.vim call CleanUp()
   autocmd BufWritePre init.vim call WriteDate()
 augroup END
 
