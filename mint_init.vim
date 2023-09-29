@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Wed Sep 27 02:02:03 AM CDT 2023
+": Change: Thu Sep 28 10:32:28 PM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -164,7 +164,7 @@ let g:ale_linters = {
       \ }
 let g:ale_fixers = {
       \ '*': ['remove_trailing_lines', 'trim_whitespace'],
-      \ 'python': ['black', 'isort'],
+      \ 'python': ['autopep8', 'isort'],
       \ 'rust': ['rustfmt'],
       \ 'cpp': ['clang-format'],
       \ 'json': ['prettier'],
@@ -287,8 +287,9 @@ nnoremap <leader>bp :bprev<cr>
 
 nnoremap to :tabnew<CR>
 nnoremap tc :tabclose<CR>
-nnoremap H :tabnext<CR>
-nnoremap L :tabprev<CR>
+nnoremap L :tabnext<CR>
+nnoremap K g<Tab>
+nnoremap H :tabprev<CR>
 
 nnoremap <leader>v :vsplit<cr><C-w>l
 nnoremap <localleader>v :split<cr><C-w>j
