@@ -1,19 +1,20 @@
-" NVIM INIT
+" NeoVim init.vim
+": Change: Mon 25 Sep 2023 01:44:39 AM CDT
+
+function WriteDate()
+  let l:view = winsaveview()
+  normal! ggj
+  :r!date
+  normal! kdd
+  execute "normal I\": Change:\<Space>\<Esc>"
+  call winrestview(l:view)
+endfunction
 
 function GetLine()
-  ": On one-line use seperate each line with a bar |
   if line("'\"") > 1 && line("'\"") <= line("$")
     exe "normal! g'\""
   endif
 endfunction
-
-fun MarkPre()
-  :normal! mpHmo
-endfun
-
-fun MarkPost()
-  :normal! 'ozt`p
-endfun
 
 function Indent()
   let l:view = winsaveview()
@@ -27,10 +28,25 @@ function DelWhiteSpace()
   call winrestview(l:view)
 endfunction
 
-filetype indent plugin on
-syntax on
+function CleanUp()
+  let l:view = winsaveview()
+  %s/\s\+$//e
+  let l:indent = 1
+
+  if &filetype == 'conf' || &filetype == 'python'
+    let l:indent = 0
+  endif
+
+  if l:indent == 1
+    :normal! gg=G
+  endif
+
+  call winrestview(l:view)
+endfunction
+
+filetype plugin on
+filetype indent on
 set termguicolors
-set background=dark
 set guicursor=""
 
 set tabstop=4
@@ -39,19 +55,19 @@ set softtabstop=4
 set textwidth=0
 set expandtab
 set nowrap
+set number
+set relativenumber
 
-set copyindent
-set colorcolumn=80
-set cursorline
-set cursorlineopt=number
+set clipboard=unnamedplus
 set completeopt=menuone,preview
-
+set foldlevel=99
+set foldlevelstart=99
 set nohlsearch
 set ignorecase
-set number
-
+set incsearch
+set cursorline
+set cursorlineopt=number
 set path+=**
-set relativenumber
 set scrolloff=5
 set shortmess=aoOstT
 set showmatch
@@ -59,18 +75,18 @@ set showmode
 set signcolumn=yes
 set smartcase
 set smartindent
+set updatetime=300
+set wildmode=longest,list,full
 set statusline=
 set noruler
-set updatetime=50
 set wildmode=list:longest,full
-set foldlevel=99
-set foldlevelstart=99
 
 let &undodir=expand('~/.local/state/nvim/undo')
 let &directory=expand('~/.local/state/nvim/swap')
 let &backupdir=expand('~/.local/state/nvim/backup')
 set undofile
 set nobackup
+set nowritebackup
 set noswapfile
 
 let g:python3_host_prog = '/usr/bin/python3'
@@ -78,7 +94,17 @@ let g:python3_host_prog = '/usr/bin/python3'
 let mapleader=" "
 let maplocalleader="\\"
 
+source ~/.config/nvim/coc_setup.vim
+
 call plug#begin()
+" Plug 'dense-analysis/ale'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+Plug 'stevearc/dressing.nvim'
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-neo-tree/neo-tree.nvim'
+Plug 'MunifTanjim/nui.nvim'
+Plug 'nvim-lua/plenary.nvim',
 Plug 'liuchengxu/vim-which-key'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -90,19 +116,30 @@ Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'yggdroot/indentline'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
-colorscheme retrobox
+colorscheme catppuccin-mocha
 
-let g:indentLine_char = '▏'
-" let g:indentLine_char_list = ['▏', '▏', '┊']
+source ~/.config/nvim/treesitter.lua
+source ~/.config/nvim/dev_icons.lua
+source ~/.config/nvim/dressing.lua
+source ~/.config/nvim/neotree.lua
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
+
+let g:user_emmet_mode='a'
+let g:user_emmet_install_global=0
+let g:user_emmet_leader_key=','
+
+let g:indentLine_char_list = ['▏', '▏', '▏', '┊']
 let g:indentLine_setColors = 0
 let g:indentLine_defaultGroup = 'SpecialKey'
 let g:indentLine_concealcursor = 'inc'
 let g:indentLine_conceallevel = 2
-" let g:indentLine_setConceal = 0
 
-": <Leader>f{char} to move to {char}
 map <leader>mf <Plug>(easymotion-bd-f)
 nmap <leader>mf <Plug>(easymotion-overwin-f)
 nmap <leader>ms <Plug>(easymotion-overwin-f2)
@@ -111,20 +148,24 @@ nmap <leader>ml <Plug>(easymotion-overwin-line)
 map <leader>mw <Plug>(easymotion-bd-w)
 nmap <leader>mw <Plug>(easymotion-overwin-w)
 
-nnoremap <leader>fz :FZF<cr>
-nnoremap <leader>fh :FZF ~<CR>
-nnoremap <leader>fb :Buffers<cr>
-nnoremap <leader>fc :Colors<cr>
-nnoremap <leader>fll :Lines<cr>
-nnoremap <leader>flb :BLines<cr>
-nnoremap <leader>ftt :Tags<cr>
-nnoremap <leader>ftb :BTags<cr>
-nnoremap <leader>fm :Marks<cr>
-nnoremap <leader>fj :Jumps<cr>
-nnoremap <leader>fp :Maps<cr>
+nnoremap <leader>of :FZF<cr>
+nnoremap <leader>oz :FZF ~<CR>
+nnoremap <leader>ob :Buffers<cr>
+nnoremap <leader>oc :Colors<cr>
+nnoremap <leader>oll :Lines<cr>
+nnoremap <leader>olb :BLines<cr>
+nnoremap <leader>ott :Tags<cr>
+nnoremap <leader>otb :BTags<cr>
+nnoremap <leader>om :Marks<cr>
+nnoremap <leader>oj :Jumps<cr>
+nnoremap <leader>op :Maps<cr>
+nnoremap <leader>ot :UndotreeToggle<cr>
+
+let g:undotree_SplitWidth=40
+let g:undotree_ShortIndicators=1
+let g:undotree_HighlightChangedText=0
 nnoremap <leader>ut :UndotreeToggle<cr>
 
-" let g:netrw_browse_split=4
 let g:netrw_banner=0
 let g:netrw_altv=1
 let g:netrw_liststyle=3
@@ -138,27 +179,27 @@ vnoremap kj <ESC>
 
 nnoremap <silent> <leader>w :write<CR>
 nnoremap <silent> <localleader>w :wall<CR>
-nnoremap <leader>q :quit!<CR>
-nnoremap <leader>z :write<CR>:quit<CR>
+nnoremap <leader>q ZQ
+nnoremap <leader>z ZZ
 nnoremap <localleader>z :xall<CR>
-nnoremap <leader>o :edit .<CR>
+nnoremap <leader>oo :Neotree<CR>
 nnoremap <localleader>e :edit ~/.config/nvim/init.vim<CR>
 nnoremap <localleader>ve :vsplit<CR><C-w>l:edit ~/.config/nvim/init.vim<CR>
-nnoremap <localleader>s :write<CR>:source ~/.config/nvim/init.vim<CR>:do FileType<CR>:do BufEnter<CR>
+nnoremap <localleader>s
+      \ :write<CR>:source ~/.config/nvim/init.vim<CR>:do FileType<CR>:do BufEnter<CR>
 nnoremap <leader>t :terminal<CR>
 
 tnoremap <ESC> <C-\><C-n>
 tnoremap <C-v><ESC> <ESC>
+
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap > >gv
 vnoremap < <gv
 
-nnoremap <C-f> <C-d>
-nnoremap <leader>p "+p
+nnoremap zz zt
 nnoremap <silent> <leader>bn :bnext<CR>
 nnoremap <silent> <leader>bp :bprevious<CR>
-nnoremap <leader>a zt
 nnoremap ' `
 nnoremap '' ``
 nnoremap n nzz
@@ -177,13 +218,13 @@ nnoremap <leader>[ viw<esc>a[<esc>bi[<esc>lel
 nnoremap <leader>{ viw<esc>a{<esc>bi{<esc>lel
 nnoremap <leader>< viw<esc>a<<esc>bi<<esc>lel
 nnoremap <leader>v :vsplit<CR><C-w>l
-nnoremap <leader>s :split<CR><C-w>j
+nnoremap <localleader>v :split<CR><C-w>j
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
-nnoremap <leader>ll :vertical resize+5<CR>
-nnoremap <leader>jj :resize-5<CR>
+nnoremap <leader>ll :vertical resize+
+nnoremap <leader>kk :resize+
 nnoremap <leader>rs <C-w>=
 nnoremap <leader>to :tabnew<CR>
 nnoremap L :tabnext<CR>
@@ -194,21 +235,25 @@ augroup ALL
   au!
   au InsertEnter * set nornu
   au InsertLeave * set rnu
-  au BufEnter * call GetLine()
-  au BufWritePre * call DelWhiteSpace()
-  au BufWritePre * call Indent()
+  au BufWinEnter * call GetLine()
+  au BufWritePre * call CleanUp()
 augroup END
 
 augroup FILETYPES
   au!
   au FileType vim,lua setlocal ts=2 sw=2
   au FileType python setlocal fdm=indent
-  au FileType sh setlocal nofen
+  au FileType sh setlocal nofen scl=no
   au FileType c,cpp,rust setlocal noai nosi noci cin cino=ln,c2 fdc=4 fdm=indent
   au FileType text setlocal tw=79 wrap
   au FileType gitcommit setlocal ts=2 sw=2 tw=70 wrap cc=50,70
-  au FileType html,css setlocal ts=2 sw=2 aw awa ut=1000
-  au FileType markdown silent setlocal cc=90,100
+  au FileType html,css setlocal ts=2 sw=2 aw awa ut=1000 cc=80,90,100,120
+  au FileType markdown silent setlocal cc=80,90,100
+augroup END
+
+augroup VIM
+  autocmd!
+  autocmd BufWritePre init.vim call WriteDate()
 augroup END
 
 augroup CODE_RUNNERS
@@ -218,6 +263,8 @@ augroup CODE_RUNNERS
   au BufEnter *.py nnoremap <buffer> <F7> :!pylint --rcfile=~/python/pylint.conf %<CR>
   au BufEnter *.sh nnoremap <buffer> <F5> :write<cr>:!./%<cr>
   au BufEnter *.rs nnoremap <buffer> <F5> :write<CR>:!cargo run<CR>
+  au BufEnter *.c nnoremap <buffer> <F5> :write<CR>:!./main<CR>
+  au BufEnter *.c nnoremap <buffer> <leader>mm :write<CR>:make main<CR>
 augroup END
 
 augroup HTML_CSS
@@ -229,7 +276,9 @@ augroup HTML_CSS
         \ *.css nnoremap
         \ <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
   au BufEnter *.html :onoremap <buffer> it :<c-u>normal! f<vi<<cr>
+  au FileType text,html,htmldjango,css EmmetInstall
   au CursorHold *.html,*.css write
+  au BufWritePre *.html,*.css call CleanUp()
 augroup END
 
 augroup ABBREVS
