@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Thu Sep 28 10:32:28 PM CDT 2023
+": Change: Fri Sep 29 08:21:20 PM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -49,7 +49,8 @@ set termguicolors
 set guicursor=""
 
 set tabstop=4
-set shiftwidth =4
+set softtabstop=0
+set shiftwidth=4
 set textwidth=0
 set expandtab
 set nowrap
@@ -335,7 +336,10 @@ augroup END
 augroup C_CPP
   autocmd!
   autocmd FileType c,cpp setlocal ts=4 sw=4 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
-  autocmd BufWritePre *.c,*.cpp,*.h call CleanUp()
+augroup END
+
+augroup ARDUINO
+  autocmd FileType arduino setlocal ts=2 sw=2 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
 augroup END
 
 augroup HTML_CSS
@@ -347,7 +351,6 @@ augroup HTML_CSS
   autocmd BufReadPost,BufEnter *.css nnoremap <buffer> <localleader>c i/**/<esc>hi<space><esc>i<space>
   autocmd BufReadPost,BufEnter *.html onoremap <buffer> it :<c-u>normal! f<vi<<cr>
   autocmd CursorHold *.html,*.css write
-  autocmd BufWritePre *.html,*.css call CleanUp()
 augroup END
 
 augroup TEXT
