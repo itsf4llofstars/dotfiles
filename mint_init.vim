@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Fri Sep 29 08:21:20 PM CDT 2023
+": Change: Sat Sep 30 10:12:58 AM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -302,7 +302,7 @@ nnoremap <leader>ll :vertical resize+
 nnoremap <leader>kk :resize+
 
 augroup ALL
-  au!
+  autocmd!
   autocmd InsertEnter * set nornu
   autocmd InsertLeave * set rnu
   autocmd BufWinEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
@@ -326,6 +326,7 @@ augroup VIM
 augroup END
 
 augroup PYTHON
+  autocmd!
   " autocmd FileType python let @c=':vsplitl:edit $HOME/notes/py_snips.txt:vertical resize-34h'
   autocmd BufWinEnter *.py nnoremap <F5> :write<CR>:!python3 %<CR>
   autocmd BufWinEnter *.py nnoremap <F6> :write<CR>:!black %<CR>
@@ -339,7 +340,13 @@ augroup C_CPP
 augroup END
 
 augroup ARDUINO
+  autocmd!
   autocmd FileType arduino setlocal ts=2 sw=2 cc=80 noai nosi noci cin cino=ln,c2 fdc=3 fdm=indent fdl=4 fdls=4
+augroup END
+
+augroup JSON
+  autocmd!
+  autocmd FileType json setlocal ts=2 sw=2
 augroup END
 
 augroup HTML_CSS
