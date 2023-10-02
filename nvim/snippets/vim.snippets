@@ -1,0 +1,16 @@
+snippet nmap
+nnoremap <leader>${1:X} ${2:rhs}
+
+snippet auft
+	autocmd FileType ${1:type} ${2:code}
+
+snippet group
+	augroup ${1:NAME}
+	  autocmd!
+	  $0
+	augroup END
+
+snippet aube
+	autocmd BufEnter *.${1:ext} ${2:code}
+snippet aubwe
+	autocmd BufWinEnter *.${1:ext} ${2:code}

@@ -1,0 +1,130 @@
+snippet hashbang
+	#!/usr/bin/env python3
+	"""
+	Name: ${1:main}.py
+	Author: itsfullofstars
+	Desc: ${2:Description}
+	"""
+
+
+	def main():
+		${3:pass}
+
+
+	if __name__ == "__main__":
+		main()
+
+snippet imp
+	import ${1:module}$0
+
+snippet impa
+	import ${1:module} as ${2:var}$0
+
+snippet impf
+	from ${1:module} import ${2:func}$0
+
+snippet deff
+	def ${1:NAME}(${2:ATTRS}):
+		${3:pass}$0
+
+snippet defd
+	def ${1:name}(${2:attr}) -> ${3:int}:
+		"""${4:DOC}
+
+		Args:
+			${2} (${3}): ${5:desc}
+
+		Returns:
+			($3): ${6:desc}
+		"""
+		${7:pass}$0
+
+snippet alist
+	${1:name} = [$2]$0
+
+snippet adict
+	${1:name} = {
+		"${2:key}": $3,
+		"${4:key}": $5,
+	}$0
+
+snippet forr
+	for ${1:this} in ${2:this}:
+		${3:do_this}$0
+
+snippet forp
+	for ${1:item} in $1s:
+		print($1)$0
+
+snippet fori
+	for i, ${1:item} in enumerate($1s):
+		${2:do_this}$0
+
+snippet iff
+	if ${1:this}:
+		${2:pass}$0
+snippet eif
+	elif ${1:this}:
+		${2:pass}$0
+snippet els
+	else:
+		${1:this}$0
+
+snippet wh
+	while ${1:this}:
+		${2:do_this}$0
+
+snippet dowh
+	${1:index} = 0
+	while True:
+		${2:do}
+
+		$1 += 1
+		if $1 >= ${3:int}:
+		break$0
+
+snippet exp
+	os.path.expanduser(os.path.join("~", "${1:dir}"$0))
+
+snippet readf
+	${1:filename} = os.path.expanduser(os.path.join("~", "${2:dir}"$0))
+	${3:file_lines} = []
+
+	try:
+		with open($1) as fo:
+			lines = fo.readlines()
+	except FileNotFoundError as e:
+		raise FileNotFoundError(f"File {$1} was not found") from e
+	else:
+		for line in lines:
+			$3.append(line.rstrip())
+
+snippet clss
+	class ${1:NAME}:
+		def __init__(self, ${2:ATTR}$0) -> None:
+			self.$2 = $2
+
+		def __repr__(self) -> str:
+			return f"{self.$2 = }"
+
+snippet clsi
+	class ${1:NAME}:(${2:PARENT}):
+		def __init__(self, ${3:attrs}, ${4:attr}$0) -> None:
+		super().__init__($3)
+		self.$4 = $4
+
+	def __repr__(self) -> str:
+		return f"{$4}"
+
+snippet pr
+	print($1)$0
+
+snippet prf
+	print(f"{${1:VAR}}")$0
+
+snippet prc
+	[print(${1:item}) for $1 in $1s]$0
+
+snippet prd
+	for k, v in ${1:name}.items():
+	print(k, v)$0
