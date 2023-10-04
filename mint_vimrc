@@ -1,6 +1,50 @@
 ": VIMRC
 ": Change: Thu Sep 14 11:41:45 PM CDT 2023
 
+": Functions
+function WriteDate()
+  let l:view = winsaveview()
+  :normal! ggj
+  :r!date
+  normal! kdd
+  execute "normal I\": Change:\<Space>\<Esc>"
+  call winrestview(l:view)
+endfunction
+
+function GetLine()
+  if line("'\"") > 1 && line("'\"") <= line("$")
+    exe "normal! g'\""
+  endif
+endfunction
+
+function Indent()
+  let l:view = winsaveview()
+  normal! gg=G
+  call winrestview(l:view)
+endfunction
+
+function Whitespace()
+  let l:view = winsaveview()
+  :%s/\s\+$//e
+  call winrestview(l:view)
+endfunction
+
+function CleanUp()
+  let l:go = 1
+  let l:view = winsaveview()
+  :%s/\s\+$//e
+
+  if &filetype == 'python'
+    let l:go = 0
+  endif
+
+  if l:go
+    normal! gg=G
+  endif
+
+  call winrestview(l:view)
+endfunction
+
 ": Settings
 set nocompatible
 
@@ -63,6 +107,144 @@ set writebackup
 let mapleader=" "
 let maplocalleader="\\"
 
-source $HOME/.vim/vim_functions.vim
-source $HOME/.vim/vim_augroups.vim
-source $HOME/.vim/vim_keymaps.vim
+let g:ale_enabled = 0
+let g:ale_lint_on_save = 0
+
+call plug#begin()
+Plug 'yggdroot/indentline'
+Plug 'dense-analysis/ale'
+" Plug 'valloric/youcompleteme'
+Plug 'easymotion/vim-easymotion'
+Plug 'mbbill/undotree'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+call plug#end()
+
+let g:ycm_auto_trigger = 1
+let g:ycm_enable_semantic_highlighting = 1
+let g:ycm_enable_inlay_hints = 1
+let g:ycm_clear_inlay_hints_in_insert_mode = 1
+let g:ycm_always_populate_location_list = 1
+let g:ycm_enable_diagnostic_signs = 1
+let g:ycm_use_ultisnips_completer = 1
+let g:ycm_python_interpreter_path = '/usr/bin/python3'
+nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
+nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
+nmap <leader>yc <Plug>(YCMToggleInlayHints)
+
+nnoremap <leader>of :FZF<CR>
+nnoremap <leader>oh :FZF ~<CR>
+nnoremap <leader>ob :Buffers<CR>
+nnoremap <leader>oc :Colors<CR>
+nnoremap <leader>oll :Lines<CR>
+nnoremap <leader>olb :BLines<CR>
+nnoremap <leader>ott :Tags<CR>
+nnoremap <leader>otb :BTags<CR>
+nnoremap <leader>om :Marks<CR>
+nnoremap <leader>oj :Jumps<CR>
+nnoremap <leader>op :Maps<CR>
+
+nnoremap <leader>ut :UndotreeToggle<cr>
+
+": Keymaps
+inoremap kj <ESC>
+vnoremap kj <ESC>
+
+nnoremap <leader>w :write<CR>
+nnoremap <localleader>w :wall<CR>
+nnoremap <leader>z ZZ
+nnoremap <localleader>z :xall<CR>
+nnoremap <leader>q ZQ
+
+nnoremap <leader>o :edit .<CR>
+nnoremap <localleader>e :write<CR>:edit $MYVIMRC<CR>
+nnoremap <localleader>ve :write<CR>:vsplit<CR><C-w>l:edit $MYVIMRC<CR>
+nnoremap <localleader>s :write<CR>:source $MYVIMRC<CR>:do FileType<CR>:do BufEnter<CR>
+
+nnoremap <leader>t :write<CR>:term<CR>
+nnoremap <localleader>t :shell<CR>
+
+nnoremap E $
+nnoremap Y y$
+nnoremap B _
+nnoremap w W
+nnoremap n nzz
+nnoremap N Nzz
+
+nnoremap ' `
+nnoremap '' ``
+
+vnoremap J :m '>+1<cr>gv=gv
+vnoremap K :m '<-2<cr>gv=gv
+vnoremap < <gv
+vnoremap > >gv
+
+nnoremap <leader>bn :bnext<cr>
+nnoremap <leader>bp :bprev<cr>
+
+nnoremap to :tabnew<CR>
+nnoremap tc :tabclose<CR>
+nnoremap H gT
+nnoremap K g<Tab>
+nnoremap L gt
+
+nnoremap <leader>v :vsplit<cr><C-w>l
+nnoremap <localleader>v :split<cr><C-w>j
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+nnoremap <leader>ll :vertical resize+
+nnoremap <leader>kk :resize+
+
+": Augroups
+augroup ALL
+  au!
+  au InsertEnter * set nornu
+  au InsertLeave * set rnu
+  au BufEnter * if line("'\"") > 1 && line("'\"") <= line("$") | exec "normal g'\"" | endif
+  au BufWritePre * call CleanUp()
+augroup END
+
+augroup FILETYPES
+  au!
+  au FileType vim setlocal ts=2 sw=2 fdc=0 fdm=marker scl=no fdl=0 fdls=-1
+  au FileType python setlocal cc=90 fdm=indent fdc=0 ai si ci
+  au FileType c setlocal fdm=indent noai nosi noci cin cino=ln,c2
+  au FileType arduino setlocal ts=2 sw=2 fdm=indent noai nosi noci cin cino=ln,c2
+  au FileType rust setlocal fdm=indent noai nosi noci cin cino=ln,c2
+  au FileType json syntax match Comment +\/\/.\+$+
+  au Filetype text setlocal ts=8 sw=8 sts=4 tw=80 noet wrap noai nosi noci fdc=0 scl=no cc=80
+augroup END
+
+augroup CODERUNNERS
+  au!
+  au BufWinEnter *.py nnoremap <F5> :write<CR>:!python3 %<CR>
+  au BufWinEnter *.c nnoremap <buffer> <leader>mm :!make main<CR>
+  au BufWinEnter *.c nnoremap <F5> :write<cr>:!./main<CR>
+augroup END
+
+augroup ABBREV
+  au!
+  au BufEnter * iabbrev ifos itsf4llofstars
+  au BufEnter * iabbrev memail irooted4hal@mailfence.com
+  au BufEnter * iabbrev <buffer> tow two
+  au Filetype * abbrev retrun return
+  au FileType text,python,sh abbrev pirnt print
+  au FileType text,python,sh abbrev prnit print
+  au FileType text,python,sh abbrev pritn print
+  au FileType text,python,sh abbrev prnt print
+  au FileType text,python abbrev slef self
+  au FileType text,python abbrev sefl self
+  au FileType c,cpp abbrev pirntf printf
+  au FileType c,cpp abbrev prnitf printf
+  au FileType c,cpp abbrev pritnf printf
+  au FileType c,cpp abbrev print printf
+  au FileType c,cpp abbrev prnt printf
+  au FileType c,cpp abbrev prntf printf
+  au FileType python abbrev slef self
+  au FileType python abbrev sefl self
+  au FileType python abbrev sel.f self.
+augroup END
