@@ -30,6 +30,10 @@ function CleanUp()
     let l:go = 0
   endif
 
+  if &filetype == 'conf'
+    let l:go = 0
+  endif
+
   if l:go
     :normal! gg=G
   endif
@@ -106,7 +110,7 @@ let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_save = 1
-let g:ale_fix_on_save = 1 " 0 is default
+let g:ale_fix_on_save = 0 " 0 is default
 " END ALE Pre-Startup
 
 ": Vim-Plug
@@ -256,14 +260,14 @@ nnoremap <C-l> :bnext<cr>
 nnoremap <C-h> :bpreviouse<cr>
 
 nnoremap <leader>to :tabnew<cr>
-nnoremap H :tabprev<CR>
-nnoremap L :tabnext<CR>
-nnoremap <leader>tn :tabnext<cr>
-nnoremap <leader>tp :tabprev<cr>
 nnoremap <leader>tc :tabclose<cr>
+nnoremap H gt
+nnoremap K g<TAB>
+nnoremap L gT
 
 augroup ALL
   au!
+  au FileType * nnoremap <buffer> <F3> :ALEToggle<CR>
   au InsertEnter * setlocal nornu
   au InsertLeave * setlocal rnu
   au BufWinEnter * call GetLine()
@@ -279,6 +283,7 @@ augroup PYTHON
   au!
   au FileType python setlocal fdm=indent fdc=0 fdl=99 fdls=99 scl=yes
   au FileType python nnoremap <buffer> <F5> :write<cr>:!clear && python3 %<cr>
+  au FileType python nnoremap <buffer> <F4> :ALEFix<CR>
 augroup END
 
 augroup C_CPP
@@ -311,7 +316,6 @@ augroup END
 augroup BASH
   au!
   au FileType sh setlocal nofen fdc=0 scl=no
-  au BufWritePre,BufEnter *.sh call Indent()
 augroup END
 
 augroup MARKDOWN
@@ -321,12 +325,12 @@ augroup END
 
 augroup TEXT
   au!
-  au FileType text setlocal nofen fdc=0 cc=80
+  au FileType text setlocal tw=79 wrap nofen fdc=0 cc=80
 augroup END
 
 augroup MAKE
   au!
-  au Filetype make ts=8 sw=8 note
+  au Filetype make ts=8 sw=8 noet
 augroup END
 
 augroup MyYCMCustom
