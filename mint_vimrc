@@ -150,6 +150,8 @@ nnoremap <leader>ut :UndotreeToggle<cr>
 inoremap kj <ESC>
 vnoremap kj <ESC>
 
+nnoremap <CR> <C-g>
+
 nnoremap <leader>w :write<CR>
 nnoremap <localleader>w :wall<CR>
 nnoremap <leader>z ZZ
@@ -182,11 +184,11 @@ vnoremap > >gv
 nnoremap <leader>bn :bnext<cr>
 nnoremap <leader>bp :bprev<cr>
 
-nnoremap to :tabnew<CR>
-nnoremap tc :tabclose<CR>
-nnoremap H gT
-nnoremap K g<Tab>
-nnoremap L gt
+" nnoremap to :tabnew<CR>
+" nnoremap tc :tabclose<CR>
+" nnoremap H gT
+" nnoremap K g<Tab>
+" nnoremap L gt
 
 nnoremap <leader>v :vsplit<cr><C-w>l
 nnoremap <localleader>v :split<cr><C-w>j
@@ -246,5 +248,4 @@ augroup ABBREV
   au FileType c,cpp abbrev prntf printf
   au FileType python abbrev slef self
   au FileType python abbrev sefl self
-  au FileType python abbrev sel.f self.
 augroup END
