@@ -1,5 +1,5 @@
 ": NeoVim init.vim
-": Change: Sat Sep 30 10:12:58 AM CDT 2023
+": Change: Mon Oct 30 04:01:07 PM CDT 2023
 
 ": :echo resolve(expand('%:p'))
 
@@ -57,7 +57,7 @@ set nowrap
 set number
 set relativenumber
 
-set clipboard="unnamedplus"
+set clipboard=unnamedplus
 set completeopt=menuone,preview
 set foldlevel=99
 set foldlevelstart=99
