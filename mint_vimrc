@@ -120,17 +120,17 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
 
-let g:ycm_auto_trigger = 1
-let g:ycm_enable_semantic_highlighting = 1
-let g:ycm_enable_inlay_hints = 1
-let g:ycm_clear_inlay_hints_in_insert_mode = 1
-let g:ycm_always_populate_location_list = 1
-let g:ycm_enable_diagnostic_signs = 1
-let g:ycm_use_ultisnips_completer = 1
-let g:ycm_python_interpreter_path = '/usr/bin/python3'
-nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
-nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
-nmap <leader>yc <Plug>(YCMToggleInlayHints)
+" let g:ycm_auto_trigger = 1
+" let g:ycm_enable_semantic_highlighting = 1
+" let g:ycm_enable_inlay_hints = 1
+" let g:ycm_clear_inlay_hints_in_insert_mode = 1
+" let g:ycm_always_populate_location_list = 1
+" let g:ycm_enable_diagnostic_signs = 1
+" let g:ycm_use_ultisnips_completer = 1
+" let g:ycm_python_interpreter_path = '/usr/bin/python3'
+" nmap <leader>yfw <Plug>(YCMFindSymbolInWorkspace)
+" nmap <leader>yfd <Plug>(YCMFindSymbolInDocument)
+" nmap <leader>yc <Plug>(YCMToggleInlayHints)
 
 nnoremap <leader>of :FZF<CR>
 nnoremap <leader>oh :FZF ~<CR>
@@ -218,7 +218,7 @@ augroup FILETYPES
   au FileType arduino setlocal ts=2 sw=2 fdm=indent noai nosi noci cin cino=ln,c2
   au FileType rust setlocal fdm=indent noai nosi noci cin cino=ln,c2
   au FileType json syntax match Comment +\/\/.\+$+
-  au Filetype text setlocal ts=8 sw=8 sts=4 tw=80 noet wrap noai nosi noci fdc=0 scl=no cc=80
+  au Filetype text setlocal fdc=0 scl=no cc=80
 augroup END
 
 augroup CODERUNNERS

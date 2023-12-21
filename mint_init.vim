@@ -1,7 +1,5 @@
 ": NeoVim init.vim
-": Change: Mon Oct 30 04:01:07 PM CDT 2023
-
-": :echo resolve(expand('%:p'))
+": Change: Thu Dec 21 11:20:04 AM CST 2023
 
 function WriteDate()
   let l:view = winsaveview()
@@ -49,7 +47,7 @@ set termguicolors
 set guicursor=""
 
 set tabstop=4
-set softtabstop=0
+set softtabstop=4
 set shiftwidth=4
 set textwidth=0
 set expandtab
@@ -314,8 +312,7 @@ augroup FILETYPES
   autocmd FileType vim setlocal ts=2 sw=2 tw=0
   autocmd FileType python setlocal tw=0 fdm=indent
   autocmd FileType c,rust setlocal tw=0 fdm=indent noai nosi noci cin cino=ln,c2
-  autocmd Filetype text setlocal
-        \ ts=8 sw=8 sts=4 tw=79 noet wrap noai nosi noci cc=80
+  autocmd Filetype text setlocal tw=79 wrap noai nosi noci cc=80
   autocmd FileType json syntax match Comment +\/\/.\+$+
   autocmd FileType lua setlocal ts=2 sts=2 sw=2
 augroup END
@@ -364,7 +361,7 @@ augroup TEXT
   autocmd!
   autocmd BufEnter *.txt :IndentLinesDisable
   autocmd BufLeave *.txt :IndentLinesEnable
-  autocmd BufEnter *.txt colorscheme default
+  autocmd BufEnter *.txt colorscheme jellybeans
   autocmd BufLeave *.txt colorscheme catppuccin-mocha
 augroup END
 
