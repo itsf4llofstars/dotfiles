@@ -1,5 +1,5 @@
 "# VIMRC: Sourced from ~/.vimrc
-"# Neovim is installed! A copy of the fancy vimrc is in .config/nvim
+"# Neovim is installed! A copy of the Neovim config is in .config/nvim
 
 " Functions
 function Indent()
@@ -52,7 +52,7 @@ set termguicolors
 set autoindent
 set backspace=indent,eol,start
 set nobackup
-set completeopt=menuone,preview,popup
+" set completeopt=menuone,preview,popup
 set cursorline
 set cursorlineopt=number
 set expandtab
@@ -212,7 +212,7 @@ let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
-inoremap kj <esc>
+inoremap kj <ESC>
 vnoremap kj <ESC>
 
 command! MakeTags !ctags -R .
