@@ -1,5 +1,5 @@
 " NeoVim init.vim
-": Change: Mon 25 Sep 2023 01:44:39 AM CDT
+": Change: Mon 25 Sep 2023 11:47:04 AM CDT
 
 function WriteDate()
   let l:view = winsaveview()
@@ -278,7 +278,6 @@ augroup HTML_CSS
   au BufEnter *.html :onoremap <buffer> it :<c-u>normal! f<vi<<cr>
   au FileType text,html,htmldjango,css EmmetInstall
   au CursorHold *.html,*.css write
-  au BufWritePre *.html,*.css call CleanUp()
 augroup END
 
 augroup ABBREVS
